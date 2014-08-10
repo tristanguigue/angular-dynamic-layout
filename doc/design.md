@@ -12,32 +12,27 @@ This is the module for the IsoGrid library that will be injected in any module t
 - `filters` : the list of filters
 - `rankers` : the list of rankers
 
-#### Variables
-- `showingItems` : the items displaying after filtering and ordered
 
 #### Events
 - Watches `items` 
-  * If items are updated triggers a reset
+  * Triggers a reset
 
 - Watches `filters`
-  * If the filters are updated triggers a reset 
+  * Triggers a reset 
 
 - Watches `rankers`
-  * `OrderService.apply` 
-  * `layout`
+  * Triggers a reset 
 
 #### Functions
 - `reset`
-  * Set `showingItems` to copy of items
-  * `FilterService.apply`
-  * `OrderService.apply`
+  * `FilterService.apply` to set `showing` property of items
+  * `OrderService.apply` to set order of items array
+  * `PositionService.get` to set `x`, `y` properties of items
   * `layout`
 
 - `layout`
-  * Updates `showingItems` with `PositionService.get`
-  * For each item, if template not loaded, load template and compile it with the data
-  * Append items' HTML to the DOM
-
+  * For each item, if template not loaded, load template, compile it with the data and append HTML to the DOM
+  * Applies CSS transform
 
 ### Position Service
 
@@ -59,3 +54,5 @@ This is the module for the IsoGrid library that will be injected in any module t
 ### User Interface
 
 #### CSS
+- `mediaqueries`
+
