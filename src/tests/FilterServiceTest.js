@@ -40,8 +40,8 @@ describe('FilterService', function(){
         ];
 
         var filters = [
-          [color, '=', 'grey'],
-          [atomicNumber, '<', 3]
+          [[color == 'grey'], [color == 'black']],
+          [[atomicNumber, '<', 3]]
           ];
 
         var items = FilterService.apply(angular.copy(items), filters);
