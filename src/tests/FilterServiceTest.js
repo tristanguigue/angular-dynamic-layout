@@ -4,7 +4,7 @@ describe('FilterService', function(){
     beforeEach(module('isoGrid'));
     
     it('check that apply function exists', inject(function(FilterService){ 
-            expect( FilterService.get() ).not.toEqual(null);
+            expect( FilterService.apply() ).not.toEqual(null);
     }))
 
 
@@ -39,17 +39,23 @@ describe('FilterService', function(){
           },
         ];
 
-        var filters = [
-          [[color == 'grey'], [color == 'black']],
-          [[atomicNumber, '<', 3]]
-          ];
+        var filters = [ // an AND goup compose of OR groups
+          [ // an OR group compose of statements
+            ['color', '=', 'grey'], // A statement
+            ['color', '=', 'black']
+          ],
+          [ // a second OR goup composed of statements
+            ['atomicNumber', '<', 3]
+          ]
+        ];
 
-        var items = FilterService.apply(angular.copy(items), filters);
-        expect( items[0].showing ).toBe(false);
-        expect( items[1].showing ).toBe(false);
-        expect( items[2].showing ).toBe(false);
-        expect( items[3].showing ).toBe(false);
-        expect( items[4].showing ).toBe(true);
+        var itemsRes = FilterService.apply(angular.copy(items), filters);
+       
+        expect( itemsRes[0].showing ).toBe(false);
+        expect( itemsRes[1].showing ).toBe(false);
+        expect( itemsRes[2].showing ).toBe(false);
+        expect( itemsRes[3].showing ).toBe(false);
+        expect( itemsRes[4].showing ).toBe(true);
 
         var myCustomFilter = function(item){
           if(item.color != 'red')
@@ -62,12 +68,12 @@ describe('FilterService', function(){
           [myCustomFilter]
         ]
 
-        var items = FilterService.apply(angular.copy(items), filters);
-        expect( items[0].showing ).toBe(false);
-        expect( items[1].showing ).toBe(true);
-        expect( items[2].showing ).toBe(true);
-        expect( items[3].showing ).toBe(true);
-        expect( items[4].showing ).toBe(true);
+        var itemsRes = FilterService.apply(angular.copy(items), filters);
+        expect( itemsRes[0].showing ).toBe(false);
+        expect( itemsRes[1].showing ).toBe(true);
+        expect( itemsRes[2].showing ).toBe(true);
+        expect( itemsRes[3].showing ).toBe(true);
+        expect( itemsRes[4].showing ).toBe(true);
 
       }));
 });
