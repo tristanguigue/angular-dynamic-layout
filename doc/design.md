@@ -23,23 +23,29 @@ This is the module for the IsoGrid library that will be injected in any module t
 - Watches `rankers`
   * Triggers a reset 
 
+- Watches `layout`
+  * Triggers a reset 
+
 #### Functions
-- `reset`
+- `reset()`
   * `FilterService.apply` to set `showing` property of items
   * `OrderService.apply` to set order of items array
-  * `PositionService.get` to set `x`, `y` properties of items
   * `layout`
 
-- `layout`
+- `layout()`
   * For each item, if template not loaded, load template, compile it with the data and append HTML to the DOM
+  * `PositionService.apply` to set `x`, `y` properties of items
   * Applies CSS transform
+
+- `removeItem(itemId)`
 
 ### Position Service
 
-- `get(items, layout)`
+- `apply(items, layout)`
   * Extract number of columns from mediaqueries
   * For each layout compute the list of optimized positions for the list of items
   * Returns the list of items with the updated positions
+  * Fill the columns
 
 ### Filter Service
 - `apply(items, filters)`

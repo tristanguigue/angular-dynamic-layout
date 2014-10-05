@@ -1,29 +1,46 @@
 
-describe('FilterService', function(){
+describe('PositionService', function(){
     
     beforeEach(module('isoGrid'));
     
-    it('apply function exists', inject(function(videoService){ 
-            expect( videoService.get() ).not.toEqual(null);
+    it('check that apply function exists', inject(function(PositionService){ 
+            expect( PositionService.apply ).not.toEqual(null);
     }))
 
-    it('getOne function exists', inject(function(videoService){ 
-            expect( videoService.getOne() ).not.toEqual(null);
-    }))
 
-    it('test fake http call',
-      inject(function(videoService, $httpBackend) {
+    it('check that rankers work properly',
+      inject(function(PositionService) {
 
+        var items = [
+          {
+            id : 1,
+            color : 'red',
+            atomicNumber : 45.65
+          },
+          {
+            id : 2,
+            color : 'green',
+            atomicNumber : 4.2
+          },
+          {
+            id : 3,
+            color : 'black',
+            atomicNumber : 4
+          },
+          {
+            id : 4,
+            color : 'grey',
+            atomicNumber : 60
+          },
+          {
+            id : 5,
+            color : 'grey',
+            atomicNumber : 1.8
+          },
+        ];
+        
+        var itemsRes = PositionService.apply(angular.copy(items), "default");
 
-        videoService.get()
-          .then(function(data) {
-            expect(data[0].id).toEqual(1);
-        });
-
-        videoService.getOne(1)
-          .then(function(data) {
-            expect(data.name).toEqual("The Donkey goes to Eidolon");
-        });
 
       }));
 });

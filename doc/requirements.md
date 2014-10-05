@@ -18,3 +18,10 @@ The user will be able to provide a property or a custom function to sort the ite
 
 The user will be able to provide a statement on a property or a custom function to filter the items
 
+#### Animations
+
+When changing of positions, the items should move on the grid with an animation. Especially when
+
+- Changing the filters
+- An item expands
+- Items are added or removed
