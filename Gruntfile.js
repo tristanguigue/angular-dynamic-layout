@@ -12,6 +12,11 @@ module.exports = function(grunt) {
     // get the configuration info from package.json ----------------------------
     // this way we can use things like name and version (pkg.name)
     pkg: grunt.file.readJSON('package.json'),
+    karma: {
+      unit: {
+        configFile: 'karma.conf.js'
+      }
+    },
     jshint: {
       // when this task is run, lint the Gruntfile and all js files in src
         build: ['Grunfile.js', 'src/**/*.js']
@@ -36,6 +41,7 @@ module.exports = function(grunt) {
   // ===========================================================================
   // we can only load these if they are in our package.json
   // make sure you have run npm install so our app can find these
+  grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.registerTask('default', ['jshint', 'uglify']);
