@@ -1,0 +1,16 @@
+{
+  "name": "IsoGrid",
+  "version": "0.1.0",
+  "homepage": "https://github.com/tristanguigue/IsoGrid",
+  "authors": [
+    "Tristan Guigue <tristan@tyba.com>"
+  ],
+  "description": "An angularJS approach to dynamic grid",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "tests"
+  ]
+}
