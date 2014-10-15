@@ -15,10 +15,12 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular.min.js',
-      'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-route.min.js',
-      'https://ajax.googleapis.com/ajax/libs/angularjs/1.2.19/angular-mocks.js',
-      'src/**/*.js',
+      'bower_components/angular/angular.min.js',
+      'bower_components/angular-mocks/angular-mocks.js',
+      'src/isogrid.js',
+      'src/services/FilterService.js',
+      'src/services/OrderService.js',
+      'src/services/PositionService.js',
       'tests/**/*.js'
     ],
 

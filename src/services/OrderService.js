@@ -24,9 +24,10 @@ isoGridModule.factory('OrderService', function () {
               var value_a = a[ranker];  
               var value_b = b[ranker];                                  
             }  
-            if(value_a > value_b)  return ascDesc=="asc"? 1:-1;
-            else if(value_b < value_a) return ascDesc=="asc"? -1:1;
-
+            if(value_a > value_b)  
+              return ascDesc=="asc"? 1:-1;
+            else if(value_b < value_a) 
+              return ascDesc=="asc"? -1:1;
             ++i;
             if(rankers.length > i){
               return recursiveRanker(a, b);
@@ -40,6 +41,7 @@ isoGridModule.factory('OrderService', function () {
             var ret = recursiveRanker(a, b);
             return ret;
           }
+
           if(rankers)
             items.sort(sorter);
 

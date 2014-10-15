@@ -14,12 +14,13 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
     karma: {
       unit: {
-        configFile: 'karma.conf.js'
+        configFile: 'karma.conf.js',
+        singleRun: true
       }
     },
     jshint: {
       // when this task is run, lint the Gruntfile and all js files in src
-        build: ['Grunfile.js', 'src/**/*.js']
+        build: ['Grunfile.js', 'src/**/*.js', 'tests/**/*.js']
       },
     uglify: {
       options: {
@@ -27,10 +28,7 @@ module.exports = function(grunt) {
       },
       build: {
         files: {
-          'dist/isogrid.min.js':  ['src/isogrid.js', 
-                                   'src/services/FilterService.js',
-                                   'src/services/OrderService.js',
-                                   'src/services/PositionService.js'] 
+          'dist/isogrid.min.js':  ['src/**/*.js'] 
         }
       }
     }

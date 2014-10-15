@@ -4,7 +4,7 @@ describe('FilterService', function(){
     beforeEach(module('isoGrid'));
     
     it('check that apply function exists', inject(function(FilterService){ 
-            expect( FilterService.apply() ).not.toEqual(null);
+            expect( FilterService.apply ).not.toEqual(null);
     }))
 
 
