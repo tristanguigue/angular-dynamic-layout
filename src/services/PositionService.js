@@ -1,17 +1,13 @@
-isoGridModule.factory('PositionService', function () {
-      function getItemHeights(items){
-
-        for(i=0;i<items.length;++i){
-          element = document.getElementById("item-"+items[i].id);
-          items[i].h = element.offsetHeight + parseInt(window.getComputedStyle(element).marginTop);
-        }
-
-        return items
+isoGridModule.factory('PositionService', ["$window",
+  function ($window) {
+      // Positions Logic
+      function isShowing(item){
+         return !('showing' in item) || item.showing;
       }
 
       function initColumns(nb){
         columns = [];
-        for(i=0;i<nb; ++i){
+        for(var i=0; i < nb ; ++i){
           columns.push([]);
         }
         return columns;
@@ -19,10 +15,10 @@ isoGridModule.factory('PositionService', function () {
 
       function getColumnsHeights(columns){
         columnsHeights = [];
-        for(i in columns){
+        for(var i in columns){
           var h = 0;
-          for(j in columns[i]){
-            h+=columns[i][j].h;
+          for(var j in columns[i]){
+            h += columns[i][j].height;
           }
           columnsHeights.push(h);
         }
@@ -30,20 +26,20 @@ isoGridModule.factory('PositionService', function () {
       }
 
 
-      function findItemColumns(item, colHeights){
+      function getItemColumnsAndPosition(item, colHeights, colSize){
         var width = item.width; 
 
         if(width>colHeights.length)
-          throw Error("Item too large")
+          throw Error("Item too large");
 
         var indexOfMin = 0;
         var minFound = 0;
 
-        for(i=0; i<=colHeights.length-width; ++i){
+        for(var i=0; i <= colHeights.length-width; ++i){
           var startingColumn = i;
           var endingColumn = i+width;
           var maxHeightInPart = Math.max.apply(Math, colHeights.slice(startingColumn, endingColumn));
-          if(i==0 || maxHeightInPart < minFound){
+          if(i===0 || maxHeightInPart < minFound){
               minFound = maxHeightInPart;
               indexOfMin = i;         
           }
@@ -54,20 +50,58 @@ isoGridModule.factory('PositionService', function () {
         }
         return {
           columns : itemColumns, 
-          y : minFound
+          position : {
+            x : itemColumns[0]*colSize,
+            y : minFound
+          }
         };
       }
 
       function fillColumnsWithItem(columns, itemColumns, item){
-            for(j in itemColumns){
+            for(var j in itemColumns){
               columns[itemColumns[j]].push(item);
             }
       }
 
-      function applyPositionsToCss(items){
+      function setItemPosition(item, columns){
+            var columnsHeights = getColumnsHeights(columns);
+            var itemColumnsAndPosition = getItemColumnsAndPosition(item, columnsHeights);
+            fillColumnsWithItem(columns, itemColumnsAndPosition.columns, item);
+            item.x = itemColumnsAndPosition.position.x;
+            item.y = itemColumnsAndPosition.position.y;
+      }
+
+      // DOM Manipulation
+      function getDOMElementFromItem(item){
+        return document.getElementById("item-"+item.id);
+      }
+
+      function applyShowHideToDOM(items){
+          for(var k in items){
+            if('showing' in items[k]){
+              if(items[k].showing){
+                showItemInDOM(items[k]);
+              }else{
+                hideItemInDOM(items[k]);
+              }
+            }
+          }
+      }
+
+      function hideItemInDOM(item){
+        element = getDOMElementFromItem(item);
+        element.style.display = "None";
+      }
+
+      function showItemInDOM(item){
+         element = getDOMElementFromItem(item);
+         element.style.display = "";
+      }
+
+      function applyPositionsToDOM(items){
 
           for(i=0;i<items.length;++i){
-            element = document.getElementById("item-"+items[i].id);
+            element = getElementFromItem(items[i]);
             element.style.position = "absolute";
             element.style.left = items[i].x+"px";
             element.style.top = items[i].y+"px";
@@ -75,40 +109,41 @@ isoGridModule.factory('PositionService', function () {
       }
 
       return {
-        apply: function (items, layout) {
+        setItemHeightsFromDOM : function($window, items){
+          for(i=0;i<items.length;++i){
+            element = getDOMElementFromItem(items[i]);
+            items[i].height = element.offsetHeight + parseInt($window.getComputedStyle(element).marginTop);
+          }
+        },
+
+        applyToDOM : function(items){
+          applyShowHideToDOM(items);
+          applyPositionsToDOM(items);        
+        },
+
+        apply: function (items, $window) {
 
           //For building purposes
           nbColumns = 3;
           colSize = 415;
 
-          columns = initColumns(nbColumns);
-          for(k in items){
-            if('showing' in items[k]){
-              element = document.getElementById("item-"+items[k].id);
-              if(items[k].showing){
-                element.style.display = "";
-              }else{
-                element.style.display = "None";
-              }
-            }
-          }
-          
-          items = getItemHeights(items);
-          for(k in items){
-            if('showing' in items[k] && !items[k].showing)
+          this.setItemHeightsFromDOM($window, items);
+
+          var columns = initColumns(nbColumns);
+
+          for(var k in items){
+
+            if(!isShowing(items[k]))
               continue;
-            var columnsHeights = getColumnsHeights(columns);
-            var itemColumnsAndPos = findItemColumns(items[k], columnsHeights);
-            var itemColumns = itemColumnsAndPos.columns;
-            fillColumnsWithItem(columns, itemColumns, items[k]);
-            
-            items[k].x = itemColumns[0]*colSize;
-            items[k].y = itemColumnsAndPos.y;
+
+            setItemPosition(items[k], columns);
 
           }
-          applyPositionsToCss(items);
-              
-        }
-     }
 
-   });
+          this.applyToDOM(items);
+          
+          return columns;
+        }
+     };
+
+   }]);

@@ -5,7 +5,7 @@ describe('OrderService', function(){
     
     it('check that apply function exists', inject(function(OrderService){ 
             expect( OrderService.apply ).not.toEqual(null);
-    }))
+    }));
 
 
     it('check that rankers work properly',
@@ -55,12 +55,12 @@ describe('OrderService', function(){
         var myCustomGetter = function(item){
           if(item.atomicNumber > 5) return 1;
           else return 0;
-        }
+        };
 
-        var rankers = [
+        rankers = [
           [myCustomGetter, "asc"]
-        ]
-        var itemsRes = OrderService.apply(angular.copy(items), rankers);
+        ];
+        itemsRes = OrderService.apply(angular.copy(items), rankers);
 
         expect( itemsRes[0].id).toEqual(2);
         expect( itemsRes[1].id ).toEqual(3);

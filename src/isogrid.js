@@ -9,7 +9,7 @@ var isoGridModule = angular.module('isoGrid', [])
             $compile(element.contents())(scope);
           }, true);
         }
-      }
+      };
     })
 
     .directive('isogrid', ['PositionService', 'FilterService', 'OrderService', '$timeout',
@@ -41,7 +41,7 @@ var isoGridModule = angular.module('isoGrid', [])
                   PositionService.apply(scope.items);
               });
 
-            })            
+            });           
           },
         };
       }]);

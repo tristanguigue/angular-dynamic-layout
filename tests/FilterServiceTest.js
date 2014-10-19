@@ -5,7 +5,7 @@ describe('FilterService', function(){
     
     it('check that apply function exists', inject(function(FilterService){ 
             expect( FilterService.apply ).not.toEqual(null);
-    }))
+    }));
 
 
     it('check that filters work properly',
@@ -62,13 +62,13 @@ describe('FilterService', function(){
             return true;
           else
             return false;
-        }
+        };
 
-        var filters = [
+        filters = [
           [myCustomFilter]
-        ]
+        ];
 
-        var itemsRes = FilterService.apply(angular.copy(items), filters);
+        itemsRes = FilterService.apply(angular.copy(items), filters);
         expect( itemsRes[0].showing ).toBe(false);
         expect( itemsRes[1].showing ).toBe(true);
         expect( itemsRes[2].showing ).toBe(true);
