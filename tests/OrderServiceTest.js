@@ -61,7 +61,6 @@ describe('OrderService', function(){
           [myCustomGetter, "asc"]
         ];
         itemsRes = OrderService.apply(angular.copy(items), rankers);
-
         expect( itemsRes[0].id).toEqual(2);
         expect( itemsRes[1].id ).toEqual(3);
         expect( itemsRes[2].id ).toEqual(5);

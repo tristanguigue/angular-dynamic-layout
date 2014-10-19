@@ -20,7 +20,8 @@
     "grunt-karma": "^0.9.0",
     "karma": "^0.12.24",
     "karma-chrome-launcher": "^0.1.5",
-    "karma-phantomjs-launcher": "latest",
+    "karma-firefox-launcher": "~0.1.3",
+    "karma-safari-launcher": "~0.1.1",
     "karma-jasmine": "^0.1.5",
     "bower": "~1.3.12"
   },

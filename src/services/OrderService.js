@@ -29,10 +29,22 @@ isoGridModule.factory('OrderService', function () {
               value_b = b[ranker];                                  
             }  
 
-            if(value_a > value_b)  
-              return ascDesc=="asc"? 1:-1;
-            else if(value_b < value_a) 
-              return ascDesc=="asc"? -1:1;
+            if(typeof value_a == typeof value_b){
+
+              if(typeof value_a == "string"){
+                var comp = value_a.localeCompare(value_b);
+                if(comp == 1)
+                  return ascDesc == "asc"? 1: -1;
+                else if(comp == -1)
+                  return ascDesc == "asc"? -1: 1;
+              }
+              else{
+                if(value_a > value_b)  
+                  return ascDesc == "asc"? 1: -1;
+                else if(value_a < value_b) 
+                  return ascDesc == "asc"? -1: 1;
+              }
+            }
 
             ++i;
 
