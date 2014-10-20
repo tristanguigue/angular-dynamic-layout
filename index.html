@@ -1,8 +1,12 @@
-<html ng-app="gridApp">
+<!DOCTYPE html>
+<html ng-app="gridApp" lang="en">
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"></script>
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/isogrid/dist/isogrid.min.js"></script>
     <script src="app/app.js"></script>
+
     <style>
     /* Extra small devices (phones, less than 768px) */
     .columns{
@@ -64,17 +68,23 @@
 
 
     </style>
+    <title> IsoGrid Demo</title>
   </head>
   <body ng-controller="GridContainer">
-    <div>
-      <li ng-click="filter('home')">Home</li>
-      <li ng-click="filter('work')">Work</li>
-      <li ng-click="filter('education')">Education</li>
-      <li> -- </li>
-      <li ng-click="orderBy('id')"> Rank by ID </li>
-      <li> -- </li>
-      <li ng-click="addItem()"> Add Card </li>
+    <div class="container-fluid">
+      <h1> IsoGrid Demo</h1>
+      <div>
+        <ul>
+          <li ng-click="filter('home')">Home</li>
+          <li ng-click="filter('work')">Work</li>
+          <li ng-click="filter('education')">Education</li>
+          <li> -- </li>
+          <li ng-click="orderBy('id')"> Rank by ID </li>
+          <li> -- </li>
+          <li ng-click="addItem()"> Add Card </li>
+        </ul>
+      </div>
+      <isogrid items="cards" filters="filters" rankers="rankers" style="position: relative;"></isogrid>
     </div>
-    <isogrid items="cards" filters="filters" rankers="rankers" style="position: relative;"></isogrid>
   </body>
 </html>
