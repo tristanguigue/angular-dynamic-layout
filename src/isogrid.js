@@ -1,6 +1,7 @@
 var isoGridModule = angular.module('isoGrid', [])
 
-  .directive('bindHtmlCompile', function($compile, $parse) {
+  .directive('bindHtmlCompile', ["$compile", "$parse",
+    function($compile, $parse) {
       return {
         restrict: 'A',
         link: function(scope, element, attr) {
@@ -10,7 +11,7 @@ var isoGridModule = angular.module('isoGrid', [])
           }, true);
         }
       };
-    })
+    }])
 
     .directive('isogrid', ['PositionService', 'FilterService', 'OrderService', '$timeout',
       function (PositionService, FilterService, OrderService, $timeout) {
