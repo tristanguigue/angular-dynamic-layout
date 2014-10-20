@@ -101,7 +101,7 @@ isoGridModule.factory('PositionService', ["$window",
       function applyPositionsToDOM(items){
 
           for(i=0;i<items.length;++i){
-            element = getElementFromItem(items[i]);
+            element = getDOMElementFromItem(items[i]);
             element.style.position = "absolute";
             element.style.left = items[i].x+"px";
             element.style.top = items[i].y+"px";
@@ -109,7 +109,7 @@ isoGridModule.factory('PositionService', ["$window",
       }
 
       return {
-        setItemHeightsFromDOM : function($window, items){
+        setItemHeightsFromDOM : function(items){
           for(i=0;i<items.length;++i){
             element = getDOMElementFromItem(items[i]);
             items[i].height = element.offsetHeight + parseInt($window.getComputedStyle(element).marginTop);
@@ -121,13 +121,13 @@ isoGridModule.factory('PositionService', ["$window",
           applyPositionsToDOM(items);        
         },
 
-        apply: function (items, $window) {
+        apply: function (items) {
 
           //For building purposes
           nbColumns = 3;
           colSize = 415;
 
-          this.setItemHeightsFromDOM($window, items);
+          this.setItemHeightsFromDOM(items);
 
           var columns = initColumns(nbColumns);
 
