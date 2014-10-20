@@ -63,9 +63,9 @@ isoGridModule.factory('PositionService', ["$window",
             }
       }
 
-      function setItemPosition(item, columns){
+      function setItemPosition(item, columns, colSize){
             var columnsHeights = getColumnsHeights(columns);
-            var itemColumnsAndPosition = getItemColumnsAndPosition(item, columnsHeights);
+            var itemColumnsAndPosition = getItemColumnsAndPosition(item, columnsHeights, colSize);
             fillColumnsWithItem(columns, itemColumnsAndPosition.columns, item);
             item.x = itemColumnsAndPosition.position.x;
             item.y = itemColumnsAndPosition.position.y;
@@ -136,7 +136,7 @@ isoGridModule.factory('PositionService', ["$window",
             if(!isShowing(items[k]))
               continue;
 
-            setItemPosition(items[k], columns);
+            setItemPosition(items[k], columns, colSize);
 
           }
 
