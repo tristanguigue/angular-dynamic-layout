@@ -1,1 +1,80 @@
-This is a test
+<html ng-app="gridApp">
+  <head>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/isogrid/dist/isogrid.min.js"></script>
+    <script src="app/app.js"></script>
+    <style>
+    /* Extra small devices (phones, less than 768px) */
+    .columns{
+      width: 100%
+    }
+
+    /* Small devices (tablets, 768px and up) */
+    @media (min-width: @screen-sm-min) { 
+      .columns .col1{
+        width: 50%
+      }
+      .columns .col2{
+        width: 50%
+      }
+    }
+
+    /* Medium devices (desktops, 992px and up) */
+    @media (min-width: @screen-md-min) {
+      .columns .col1{
+        width: 33%
+      }
+      .columns .col2{
+        width: 33%
+      }
+      .columns .col3{
+        width: 33%
+      }
+    }
+
+    /* Large devices (large desktops, 1200px and up) */
+    @media (min-width: @screen-lg-min) {
+      .columns .col1{
+        width: 25%
+      }
+      .columns .col2{
+        width: 25%
+      }
+      .columns .col3{
+        width: 25%
+      }      
+      .columns .col4{
+        width: 25%
+      }      
+    }
+
+    div.item {
+      width: 300px;
+      padding: 30px;
+      border: 25px solid navy;
+      margin: 20px 15px 10px 5px;
+      -webkit-transition: 1s ease-in-out; 
+      -moz-transition: 1s ease-in-out; 
+      -o-transition: 1s ease-in-out; 
+      transition: 1s ease-in-out; 
+    }
+    div#item-3 {
+      width: 700px;
+    }
+
+
+    </style>
+  </head>
+  <body ng-controller="GridContainer">
+    <div>
+      <li ng-click="filter('home')">Home</li>
+      <li ng-click="filter('work')">Work</li>
+      <li ng-click="filter('education')">Education</li>
+      <li> -- </li>
+      <li ng-click="orderBy('id')"> Rank by ID </li>
+      <li> -- </li>
+      <li ng-click="addItem()"> Add Card </li>
+    </div>
+    <isogrid items="cards" filters="filters" rankers="rankers" style="position: relative;"></isogrid>
+  </body>
+</html>

@@ -1,0 +1,18 @@
+    <div class="module-header">
+        <span class="icon-play icon icon-s" aria-hidden="true"></span>
+        <h2 class="box-title">About Me</h2> 
+    </div>
+    <img ng-if="vals.aboutMe.picture" class="photo_module" ng-src="{{vals.aboutMe.picture}}"/>
+    <p class="box-text" ng-show="c.data.aboutMe.text" split-text expanded="expanded" expandable="expandable">{{c.data.aboutMe.text}}</p>
+    <div ng-show="expandable" ng-click="expanded = !expanded" class="links single-link expand_work clearfix">
+    <span ng-show="!expanded">More</span></span>
+    <span ng-show="expanded">Less</span></span>
+    </div>
+    <div ng-if="editorMode">
+        <button class="button button-light delete_box_link tooltip" data-tool="Delete" ng-click="deleteCard(c)">
+            <span class="icon-close"></span>
+        </button>
+        <button id="modal_pos_link" class="button button-default edit_box_link tooltip" data-tool="Edit" ng-click="editCard(c)">
+            <span class="icon-pencil"></span>
+        </button>      
+    </div>

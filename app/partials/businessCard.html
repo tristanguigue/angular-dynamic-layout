@@ -1,0 +1,23 @@
+    <div ng-if="editorMode">
+        <button id="modal_pos_link" class="button button-default delete_box_link tooltip" data-tool="Edit" ng-click="editCard(c)">
+            <span class="icon-pencil"></span>
+        </button>
+    </div>
+
+
+    <ul class="about_data">
+        <li><h2 id="aboutme_name" itemprop="name">{{c.data.firstname}} {{c.data.lastname}}</h2></li>
+        <li><p class="about_about" itemprop="role">{{vals.professionalHeadline}}</p></li>
+        <li>
+            <span class="about_location" ng-show="currentLocationDisplay">
+                <span class="icon-location" aria-hidden="true"></span>
+                <span id="current_loc" itemprop="address">{{currentLocationDisplay}}</span>
+            </span>
+           
+            <span id="about_age" class="about_age" ng-show="!vals.dateOfBirth.private && age()">
+                <span class="js-comma" ng-show="currentLocationDisplay">-&nbsp</span>
+                <span class="js-age">{{age()}}</span>
+                years old 
+            </span>                       
+        </li>
+    </ul>

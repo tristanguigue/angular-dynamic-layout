@@ -1,0 +1,8 @@
+{
+  "name": "isogrid_demo",
+  "version": "0.1.0",
+  "dependencies": {
+    "angular": "1.2.26",
+    "isogrid": "git@github.com:tristanguigue/IsoGrid.git"
+  }
+}
