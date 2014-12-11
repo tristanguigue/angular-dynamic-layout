@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"></script>
+    <link rel="stylesheet" href="bower_components/bootcards/dist/css/bootcards-desktop.min.css"></script>
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/angular-animate/angular-animate.min.js"></script>
     <!--<script src="bower_components/isogrid/dist/isogrid.min.js"></script>-->
@@ -16,15 +16,15 @@
 
     <style>
 
-    @media (min-width: 700px) {
+    @media (min-width: 950px) {
       [isogrid]{
-        width: 680px;
+        width: 930px;
       }
       .isogrid-col-4{
-        width : 215px;
+        width : 300px;
       }
       .isogrid-col-8{
-        width : 440px;
+        width : 600px;
       }
     }
 
@@ -41,9 +41,7 @@
     }
 
     .isogrid-item {
-      margin: 10px;
-      padding: 5px;
-      border: 5px solid navy;
+      padding: 15px;
     }
 
     .move-items-animation{
@@ -83,26 +81,18 @@
       float:left;
     }
 
-    .delete-button{
-      position: absolute;
-      top : 3px;
-      right: 3px;
-    }
-    img{
-      width: 100%
-    }
     </style>
     <title> IsoGrid Demo</title>
   </head>
   <body ng-controller="GridContainer">
     <div class="container-fluid">
       <h1> IsoGrid Demo</h1>
-      <div>
-        <p class="buttons">
+      <div class="controls col-sm-12">
+        <p class="buttons col-sm-6">
           <button class="btn btn-lg btn-default" ng-click="orderBy('added')"> Rank by Time </button>
           <button class="btn btn-lg btn-default" ng-click="addItem()"> Add Card </button>          
         </p>
-        <p class="tabs">
+        <p class="tabs col-sm-6">
           <button class="btn btn-lg btn-default" ng-click="filter('home')">Home</button>
           <button class="btn btn-lg btn-default" ng-click="filter('work')">Work</button>
           <button class="btn btn-lg btn-default" ng-click="filter('education')">Education</button>

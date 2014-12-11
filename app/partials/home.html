@@ -1,6 +1,39 @@
-<div class='isogrid-item isogrid-col-4'>
-  <h4>My Hometown</h4>
-  <img ng-src='http://www.freelive3dwallpapers.com/wp-content/uploads/2014/03/images-7.jpg'>
-  <p>A beautiful place in the surroundings of Saturn!</p>
-  <button class='delete-button' ng-click='externalScope().delete($index)'>X</button>
-</div>
+    <div class="isogrid-item isogrid-col-8 bootcards-cards">
+
+        <div class="panel panel-default bootcards-media">
+          <div class="panel-heading">
+            <h3 class="panel-title">My Hometown</h3>
+              <a class="btn btn-primary pull-right" href="#" ng-click='externalScope().delete($index)'>
+                <i class="fa fa-pencil"></i>
+                X
+              </a>
+          </div>
+          <div class="panel-body">
+            Media card description lorem ipsum dolor est compendium
+          </div>
+          <img ng-src='http://www.freelive3dwallpapers.com/wp-content/uploads/2014/03/images-7.jpg' class="img-responsive"/>
+
+          <div class="panel-footer">
+            <div class="btn-group btn-group-justified">
+              <div class="btn-group">
+                <button class="btn btn-default">
+                  <i class="fa fa-arrow-down"></i>
+                  Download
+                </button>
+              </div>
+              <div class="btn-group">
+                <button class="btn btn-default">
+                  <i class="fa fa-star"></i>
+                  Favorite
+                </button>
+              </div>
+              <div class="btn-group">
+                <button class="btn btn-default">
+                  <i class="fa fa-envelope"></i>
+                  Email
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>

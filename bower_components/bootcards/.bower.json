@@ -1,0 +1,44 @@
+{
+  "name": "bootcards",
+  "description": "A cards-based UI framework for mobile and desktop apps, built on top of Bootstrap",
+  "version": "1.0.0",
+  "license": "MIT",
+  "keywords": [
+    "css",
+    "js",
+    "mobile",
+    "responsive",
+    "front-end",
+    "framework",
+    "web",
+    "bootstrap",
+    "cards"
+  ],
+  "main": [
+    "dist/css/bootcards.css",
+    "dist/js/bootcards.js",
+    "dist/fonts/icomoon.eot",
+    "dist/fonts/icomoon.svg",
+    "dist/fonts/icomoon.ttf",
+    "dist/fonts/icomoon.woff"
+  ],
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "bootstrap": "^3",
+    "jquery": ">1.8",
+    "font-awesome": ">=4",
+    "fastclick": "~1.0.3"
+  },
+  "homepage": "https://github.com/bootcards/bootcards",
+  "_release": "1.0.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.0.0",
+    "commit": "abb8a3eafeb6f61c5e46b597d3e3816e77f12a3b"
+  },
+  "_source": "git://github.com/bootcards/bootcards.git",
+  "_target": "*",
+  "_originalSource": "bootcards"
+}
