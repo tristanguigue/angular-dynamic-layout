@@ -2,36 +2,33 @@
       
         <div class="panel panel-default">
           <div class="panel-heading clearfix">
-            <h3 class="panel-title pull-left">Consultant at Mars Express</h3>
-              <a class="btn btn-primary pull-right" href="#" ng-click='externalScope().delete($index)'>
-                <i class="fa fa-pencil"></i>
-                X
+            <h3 class="panel-title pull-left">Work Experience</h3>
+              <a class="btn btn-default pull-right" href="#" ng-click='externalScope().delete($index)'>
+                <span class="glyphicon glyphicon-remove"></span>                
               </a>
             </div>
             <div class="list-group">
               <div class="list-group-item">
-                <p class="list-group-item-text">Name</p>
-                <h4 class="list-group-item-heading">John Smith</h4>
+                <p class="list-group-item-text">Position</p>
+                <h4 class="list-group-item-heading">{{it.data.position}}</h4>
               </div>
               <div class="list-group-item">
-                <p class="list-group-item-text">Occupation</p>
-                <h4 class="list-group-item-heading">Web Developer</h4>
+                <p class="list-group-item-text">Company</p>
+                <h4 class="list-group-item-heading">{{it.data.company}}</h4>
               </div>
               <div class="list-group-item">
                 <p class="list-group-item-text">
-                    Hi, {{it.data.firstname}}. A nice exprience that has allowed me to discover new 
-                    practives in the Space Shuttle industry and to 
-                    <span ng-show='!showingMoreText'>...</span>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mauris tellus, vehicula ut tellus id, suscipit dapibus tortor. Integer viverra turpis ac fringilla hendrerit. Sed faucibus posuere felis et pellentes <span ng-show='!showingMoreText'>...</span>
                     <span ng-show='showingMoreText'>
-                    let me illustrate how an item expands and how other items rearrange around it.
-                    Thank you for reading this very interesting text
+                    que let me illustrate how an item expands and how other items rearrange around it.
+                    Cras varius tortor vitae molestie tempor. Proin ut viverra elit, ac gravida tortor.
                     </span>
                 </p>
               </div>
             </div>
           <div class="panel-footer">
-             <button class="btn" ng-show='!showingMoreText' ng-click='showingMoreText=true'>More</button>
-             <button class="btn" ng-show='showingMoreText' ng-click='showingMoreText=false'>Less</button>
+             <button class="btn btn-default" ng-show='!showingMoreText' ng-click='showingMoreText=true'>More</button>
+             <button class="btn btn-default" ng-show='showingMoreText' ng-click='showingMoreText=false'>Less</button>
           </div>
         </div>
     </div>

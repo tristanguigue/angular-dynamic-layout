@@ -48,7 +48,7 @@ gridApp.controller('GridContainer',
 
       $scope.addItem = function(){
         if(addingCard<cardsToAdd.length){
-          $scope.cards.push(cardsToAdd[addingCard]);
+          $scope.cards.unshift(cardsToAdd[addingCard]);
           ++addingCard;
         }
       }
@@ -57,13 +57,19 @@ gridApp.controller('GridContainer',
         {
           template : "app/partials/work1.html",
           tabs : ["home", "work"],
-          data : {"firstname" : "Tristan"},
+          data : {
+            "position" : "Web Developer",
+            "company" : "Hacker Inc."
+          },
           added : 1414871272,
         },
         {
           template : "app/partials/work1.html",
           tabs : ["home", "work"],
-          data : {"firstname" : "Océane"},
+          data : {
+            "position" : "Data Scientist",
+            "company" : "Big Data Inc."
+          },
           added : 1414871272,
         },
         {

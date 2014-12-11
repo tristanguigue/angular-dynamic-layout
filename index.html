@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="bower_components/bootcards/dist/css/bootcards-desktop.min.css"></script>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"></script>
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/angular-animate/angular-animate.min.js"></script>
     <!--<script src="bower_components/isogrid/dist/isogrid.min.js"></script>-->
@@ -18,7 +19,7 @@
 
     @media (min-width: 950px) {
       [isogrid]{
-        width: 930px;
+        width: 920px;
       }
       .isogrid-col-4{
         width : 300px;
@@ -41,7 +42,7 @@
     }
 
     .isogrid-item {
-      padding: 15px;
+      padding: 10px;
     }
 
     .move-items-animation{
@@ -73,13 +74,6 @@
       position: relative;
     }
 
-    .buttons{
-      float : right;
-    }
-
-    .tabs{
-      float:left;
-    }
 
     </style>
     <title> IsoGrid Demo</title>
@@ -87,18 +81,29 @@
   <body ng-controller="GridContainer">
     <div class="container-fluid">
       <h1> IsoGrid Demo</h1>
-      <div class="controls col-sm-12">
-        <p class="buttons col-sm-6">
-          <button class="btn btn-lg btn-default" ng-click="orderBy('added')"> Rank by Time </button>
-          <button class="btn btn-lg btn-default" ng-click="addItem()"> Add Card </button>          
-        </p>
-        <p class="tabs col-sm-6">
-          <button class="btn btn-lg btn-default" ng-click="filter('home')">Home</button>
-          <button class="btn btn-lg btn-default" ng-click="filter('work')">Work</button>
-          <button class="btn btn-lg btn-default" ng-click="filter('education')">Education</button>
-        </ul>
+      <div class="btn-toolbar" role="toolbar" aria-label="...">
+        <div class="btn-group btn-group-lg" role="group">
+                  <button class="btn btn-default" ng-click="filter('home')">Home</button>
+                  <button class="btn btn-default" ng-click="filter('work')">Work</button>
+                  <button class="btn btn-default" ng-click="filter('education')">Education</button>
+        </div>
+        <div ng-class="{open: openMenu}" class="btn-group btn-group-lg" role="group" ng-click="openMenu = !openMenu">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            Order
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu" >
+            <li><a href="#" ng-click="orderBy('added')">Time</a></li>
+          </ul>
+        </div>
+        <div class="btn-group btn-group-lg" role="group">
+          <button class="btn btn-default" ng-click="addItem()">
+            <span class="glyphicon glyphicon-plus"></span>
+          </button>          
+        </div>
       </div>
       <div isogrid items="cards" filters="filters" rankers="rankers"></div>
     </div>
+    <a href="https://github.com/tristanguigue/IsoGrid"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
   </body>
 </html>
