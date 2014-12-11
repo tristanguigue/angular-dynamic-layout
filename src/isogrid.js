@@ -1,49 +1,101 @@
-var isoGridModule = angular.module('isoGrid', [])
+var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
 
-  .directive('bindHtmlCompile', ["$compile", "$parse",
-    function($compile, $parse) {
-      return {
-        restrict: 'A',
-        link: function(scope, element, attr) {
-          scope.$watch(attr.content, function() {
-            element.html($parse(attr.content)(scope));
-            $compile(element.contents())(scope);
-          }, true);
-        }
-      };
+    .filter('customFilter', ['FilterService', function(FilterService) {
+        return function( items, filters) {
+          if(filters)
+            return FilterService.apply(items, filters);
+          else
+            return items;
+        };
     }])
 
-    .directive('isogrid', ['PositionService', 'FilterService', 'OrderService', '$timeout',
-      function (PositionService, FilterService, OrderService, $timeout) {
+    .filter('customRanker', ['OrderService', function(OrderService) {
+        return function( items, rankers) {
+          if(rankers){
+            return OrderService.apply(items, rankers);
+          }else{
+            return items;
+          }
+            
+        };
+    }])
+
+    .filter("as", function($parse) {
+      return function(value, context, path) {
+        return $parse(path).assign(context, value);
+      };
+    })
+
+    .directive('isogrid', ['PositionService', '$timeout', '$window', '$q', '$animate',
+      function (PositionService, $timeout, $window, $q, $animate) {
+
         return {
-          restrict: "E",
+          restrict: "A",
           scope: {
             items: '=items',
             rankers: '=rankers',
             filters: '=filters'
           },
-          template: '<div id="item-{{it.id}}" class="item" ng-repeat="it in items" bind-html-compile content="it.template"></div>',
+          template: '<div \
+                          class="isogrid-item-parent" \
+                          ng-repeat="it in items | customFilter: filters | customRanker:rankers | as:this:\'filteredItems\'" \
+                          ng-include="it.template" \
+                          id="isogrid-{{$index}}" \
+                    ></div>',
           link : function (scope, element, attrs){
 
-            $timeout(function(){
-              scope.$watch('items', function(){
-                $timeout(function(){
-                  PositionService.apply(scope.items); 
-                });                 
-              }, true);
-              
-              scope.$watch('filters', function(){
-                  FilterService.apply(scope.items, scope.filters);
-                  PositionService.apply(scope.items);                  
+            var itemsLoaded = function(){
+              var def = $q.defer();
+              $timeout(function(){
+                if(scope.toLoad === 0)
+                  def.resolve();                   
               });
-
-              scope.$watch('rankers', function(){
-                  OrderService.apply(scope.items, scope.rankers);
-                  PositionService.apply(scope.items);
+              scope.$watch('toLoad', function(newValue, oldValue){
+                if(newValue !== oldValue && scope.toLoad === 0)
+                  def.resolve();   
               });
+              return def.promise;
+            };
+            scope.toLoad = 0;
+            scope.$on("$includeContentRequested", function(){
+              scope.toLoad++;
+            });
+            scope.$on("$includeContentLoaded", function(){
+              scope.toLoad--;
+            });
 
-            });           
-          },
+            scope.$watch('filteredItems', function(newValue, oldValue){
+              if(!angular.equals(newValue, oldValue)){
+                itemsLoaded().then(function(){
+                    PositionService.apply(element[0].offsetWidth, scope.filteredItems); 
+                });      
+              }
+            }, true);
+
+            var win = angular.element($window);
+            win.bind("resize",function(e){
+                scope.$apply(function(){
+                  PositionService.apply(element[0].offsetWidth, scope.filteredItems);
+                });
+            });
+
+            scope.externalScope = function(){
+              return scope.$parent;
+            };
+
+            scope.$on('layout', function() {
+              $timeout(function(){
+                PositionService.apply(element[0].offsetWidth, scope.filteredItems); 
+              });          
+            });
+
+            itemsLoaded().then(function(){
+              PositionService.apply(element[0].offsetWidth, scope.filteredItems); 
+            });
+            
+
+
+          }
         };
       }]);
 

@@ -50,12 +50,8 @@ describe('FilterService', function(){
         ];
 
         var itemsRes = FilterService.apply(angular.copy(items), filters);
-       
-        expect( itemsRes[0].showing ).toBe(false);
-        expect( itemsRes[1].showing ).toBe(false);
-        expect( itemsRes[2].showing ).toBe(false);
-        expect( itemsRes[3].showing ).toBe(false);
-        expect( itemsRes[4].showing ).toBe(true);
+        expect( itemsRes.length).toEqual(1);
+        expect( itemsRes[0].id ).toEqual(5);
 
         var myCustomFilter = function(item){
           if(item.color != 'red')
@@ -69,12 +65,7 @@ describe('FilterService', function(){
         ];
 
         itemsRes = FilterService.apply(angular.copy(items), filters);
-        expect( itemsRes[0].showing ).toBe(false);
-        expect( itemsRes[1].showing ).toBe(true);
-        expect( itemsRes[2].showing ).toBe(true);
-        expect( itemsRes[3].showing ).toBe(true);
-        expect( itemsRes[4].showing ).toBe(true);
-
+        expect( itemsRes.length).toEqual(4);
       }));
 });
 

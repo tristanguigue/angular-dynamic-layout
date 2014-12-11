@@ -20,6 +20,9 @@ module.exports = function(grunt) {
     },
     jshint: {
       // when this task is run, lint the Gruntfile and all js files in src
+        options: {
+          multistr: true,
+        },
         build: ['Grunfile.js', 'src/**/*.js', 'tests/**/*.js']
       },
     uglify: {

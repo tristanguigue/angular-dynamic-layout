@@ -1,5 +1,6 @@
-isoGridModule.factory('PositionService', ["$window",
-  function ($window) {
+isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout",
+  function ($window, $animate, $timeout) {
+      var ongoingAnimations = {};
       // Positions Logic
       function isShowing(item){
          return !('showing' in item) || item.showing;
@@ -16,19 +17,20 @@ isoGridModule.factory('PositionService', ["$window",
       function getColumnsHeights(columns){
         columnsHeights = [];
         for(var i in columns){
-          var h = 0;
-          for(var j in columns[i]){
-            h += columns[i][j].height;
-          }
-          columnsHeights.push(h);
+            var h;
+            if(columns[i].length){
+              var last_item = columns[i][columns[i].length-1];
+              h = last_item.y + last_item.height;              
+            }else{
+              h = 0;
+            }
+            columnsHeights.push(h);
         }
         return columnsHeights;
       }
 
-
       function getItemColumnsAndPosition(item, colHeights, colSize){
-        var width = item.width; 
-
+        var width = item.columnSpan;
         if(width>colHeights.length)
           throw Error("Item too large");
 
@@ -72,76 +74,92 @@ isoGridModule.factory('PositionService', ["$window",
       }
 
       // DOM Manipulation
-      function getDOMElementFromItem(item){
-        return document.getElementById("item-"+item.id);
+      function getDOMElementFromItem(index){
+        return angular.element(document.getElementById('isogrid-'+index).children[0]);
       }
 
-      function applyShowHideToDOM(items){
-          for(var k in items){
-            if('showing' in items[k]){
-              if(items[k].showing){
-                showItemInDOM(items[k]);
-              }else{
-                hideItemInDOM(items[k]);
-              }
-            }
+      function getColSize(items){
+        var col_size;
+        for(i=0;i<items.length;++i){
+          if(!col_size || items[i].width < col_size)
+            col_size = items[i].width;
+        }
+        return col_size;
+      }
+
+      function setItemsColumnSpan(items, colSize){
+        for(i=0;i<items.length;++i){
+          items[i].columnSpan = Math.ceil((items[i].width-2) / colSize);
+        }
+      }
+
+      function getNumberOfColumns(containerWidth, colSize){
+        return Math.floor(containerWidth/colSize);
+      }
+
+      function launchAnimation(element, i){
+        var animationPromise = $animate.addClass(element, 'move-items-animation', {
+          from: {
+             position: 'absolute',
+          },
+          to: {
+            left : items[i].x + 'px',
+            top : items[i].y + 'px'
           }
-      }
+        });
 
-      function hideItemInDOM(item){
-        element = getDOMElementFromItem(item);
-        element.style.display = "None";
-      }
+        animationPromise.then(function(){
+          element.removeClass('move-items-animation');
+          delete ongoingAnimations[i];
+        });
 
-      function showItemInDOM(item){
-         element = getDOMElementFromItem(item);
-         element.style.display = "";
-      }
-
-      function applyPositionsToDOM(items){
-
-          for(i=0;i<items.length;++i){
-            element = getDOMElementFromItem(items[i]);
-            element.style.position = "absolute";
-            element.style.left = items[i].x+"px";
-            element.style.top = items[i].y+"px";
-          }              
+        return animationPromise;        
       }
 
       return {
-        setItemHeightsFromDOM : function(items){
+        setItemDimensionFromDOM : function(items){
+          var col_width;
           for(i=0;i<items.length;++i){
-            element = getDOMElementFromItem(items[i]);
-            items[i].height = element.offsetHeight + parseInt($window.getComputedStyle(element).marginTop);
+            element = getDOMElementFromItem(i);
+            items[i].height = element[0].offsetHeight + parseInt($window.getComputedStyle(element[0]).marginTop);
+            items[i].width = element[0].offsetWidth + parseInt($window.getComputedStyle(element[0]).marginLeft);
           }
         },
 
         applyToDOM : function(items){
-          applyShowHideToDOM(items);
-          applyPositionsToDOM(items);        
+          var launchAnimations = function(){
+            for(i=0;i<items.length;++i){
+              element = getDOMElementFromItem(i);
+              ongoingAnimations[i] = launchAnimation(element, i);   
+            }
+          };
+
+          if(Object.keys(ongoingAnimations).length){
+            for(var j in ongoingAnimations){
+              $animate.cancel(ongoingAnimations[j]);
+              delete ongoingAnimations[j];
+            }
+            $timeout(function(){
+              launchAnimations();
+            });
+          }else{
+            launchAnimations();
+          }
         },
 
-        apply: function (items) {
-
-          //For building purposes
-          nbColumns = 3;
-          colSize = 415;
-
-          this.setItemHeightsFromDOM(items);
+        apply: function (containerWidth, items) {
+          items = angular.copy(items);
+          this.setItemDimensionFromDOM(items);
+          colSize = getColSize(items);
+          setItemsColumnSpan(items, colSize);
+          nbColumns = getNumberOfColumns(containerWidth, colSize);
 
           var columns = initColumns(nbColumns);
-
           for(var k in items){
-
-            if(!isShowing(items[k]))
-              continue;
-
             setItemPosition(items[k], columns, colSize);
-
           }
 
           this.applyToDOM(items);
-          
           return columns;
         }
      };

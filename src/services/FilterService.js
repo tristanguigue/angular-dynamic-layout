@@ -62,10 +62,12 @@ isoGridModule.factory('FilterService', function () {
 
       return {
         apply: function (items, filters) {
+          var retItems = [];
           for(var i in items){
-            items[i].showing = checkAndGroup(items[i], filters);
+            if(checkAndGroup(items[i], filters))
+              retItems.push(items[i]);
           }
-          return items;
+          return retItems;
         }
       };
 });
