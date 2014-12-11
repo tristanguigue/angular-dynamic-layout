@@ -97,24 +97,6 @@ isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout",
         return Math.floor(containerWidth/colSize);
       }
 
-      function launchAnimation(element, i){
-        var animationPromise = $animate.addClass(element, 'move-items-animation', {
-          from: {
-             position: 'absolute',
-          },
-          to: {
-            left : items[i].x + 'px',
-            top : items[i].y + 'px'
-          }
-        });
-
-        animationPromise.then(function(){
-          element.removeClass('move-items-animation');
-          delete ongoingAnimations[i];
-        });
-
-        return animationPromise;        
-      }
 
       return {
         setItemDimensionFromDOM : function(items){
@@ -127,6 +109,25 @@ isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout",
         },
 
         applyToDOM : function(items){
+          var launchAnimation = function(element, i){
+            var animationPromise = $animate.addClass(element, 'move-items-animation', {
+              from: {
+                 position: 'absolute',
+              },
+              to: {
+                left : items[i].x + 'px',
+                top : items[i].y + 'px'
+              }
+            });
+
+            animationPromise.then(function(){
+              element.removeClass('move-items-animation');
+              delete ongoingAnimations[i];
+            });
+
+            return animationPromise;        
+          };
+
           var launchAnimations = function(){
             for(i=0;i<items.length;++i){
               element = getDOMElementFromItem(i);
