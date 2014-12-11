@@ -1,8 +1,21 @@
 var gridApp = angular.module('gridApp', ['isoGrid'])
 
+gridApp.controller('Work1Controller', ['$scope', '$rootScope', '$timeout',
+  function($scope, $rootScope, $timeout) {
+    $scope.showingMoreText = false;
+    
+    $scope.$watch("showingMoreText", function(newValue, oldValue){
+      if(newValue !== oldValue){
+        $timeout(function(){
+          $rootScope.$broadcast("layout");
+        });
+      }
+    })
+
+}]);
+
 gridApp.controller('GridContainer',
-  ['$scope',
-     function ($scope) {
+  ['$scope', '$controller', function ($scope, $controller) {
 
       $scope.filters = null;
       $scope.rankers = null;
@@ -19,62 +32,64 @@ gridApp.controller('GridContainer',
         $scope.cards.splice(index, 1);
       }
 
+      var addingCard = 0;
+      var cardsToAdd =  [
+          {
+            template : "app/partials/work3.html",
+            tabs : ["home", "work"],
+            added : 1474871272,
+          },
+          {
+            template : "app/partials/work4.html",
+            tabs : ["home", "work"],
+            added : 1467871272,
+          },
+      ]
+
       $scope.addItem = function(){
-        var card =  {
-          id : 24,
-          template : "<div>Work 24 <span ng-click='$parent.$parent.delete($index)'>X</span></div>",
-          width : 1,
-          tabs : ["home", "work"]
-        };
-
-        $scope.cards.push(card);
-      }
-
-      $scope.moreText = function(index){
-        $scope.cards[index].template = "<div>A very long dive with a lot of text that talks about many different "
-                          + "things and that will "
-                          + "let me illustrate how an item expands and how other items rearrange around it. "
-                          + "Thank you for reading this very interesting text. " 
-                          + "<span ng-click='$parent.$parent.delete($index)'>X</span>"
-                          + "</div>";
+        if(addingCard<cardsToAdd.length){
+          $scope.cards.push(cardsToAdd[addingCard]);
+          ++addingCard;
+        }
       }
 
       $scope.cards = [
         {
-          id : 4,
-          template : "<div>Work 4 "
-                     +"    <span ng-click='$parent.$parent.moreText($index)'>More</span>"
-                     +"    <span ng-click='$parent.$parent.delete($index)'>X</span>"
-                     +"</div>",
-          width : 1,
-          tabs : ["home", "work"]
+          template : "app/partials/work1.html",
+          tabs : ["home", "work"],
+          data : {"firstname" : "Tristan"},
+          added : 1414871272,
         },
         {
-          id : 1,
-          template : "<div>Home 1<p> This was Heelo 1!</p><span ng-click='$parent.$parent.delete($index)'>X</span></div>",
-          width : 1,
-          tabs : ["home"]
+          template : "app/partials/work1.html",
+          tabs : ["home", "work"],
+          data : {"firstname" : "Océane"},
+          added : 1414871272,
         },
         {
-          id : 3,
-          template : "<div>Home 2</p><span ng-click='$parent.$parent.delete($index)'>X</span></div>",
-          width : 2,
-          tabs : ["home"]
+          template : "app/partials/aboutMe.html",
+          tabs : ["home", "education"],
+          added : 1454871272
         },
         {
-          id : 8,
-          template : "<div>Education 5</p><span ng-click='$parent.$parent.delete($index)'>X</span></div>",
-          width : 1,
-          tabs : ["home", "education"]
+          template : "app/partials/businessCard.html",
+          tabs : ["home"],
+          added : 1444871272
         },
         {
-          id : 9,
-          template : "<div>Work 6</p><span ng-click='$parent.$parent.delete($index)'>X</span></div>",
-          width : 1,
-          tabs : ["home", "work"]
+          template : "app/partials/home.html",
+          tabs : ["home"],
+          added : 1484871272
+        },
+        {
+          template : "app/partials/education.html",
+          tabs : ["home", "education"],
+          added : 1424871272
+        },
+        {
+          template : "app/partials/work2.html",
+          tabs : ["home", "work"],
+          added : 1434871272
         }
-
       ];
-    }
-    ]
-   );
+}]);

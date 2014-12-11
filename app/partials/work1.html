@@ -1,0 +1,14 @@
+<div class='isogrid-item isogrid-col-4' ng-controller="Work1Controller">
+ <h4 ng-click="titleClick()">Consultant at Mars Express</h4>
+ <p>Hi, {{it.data.firstname}}. A nice exprience that has allowed me to discover new 
+    practives in the Space Shuttle industry and to 
+    <span ng-show='!showingMoreText'>...</span>
+    <span ng-show='showingMoreText'>
+    let me illustrate how an item expands and how other items rearrange around it.
+    Thank you for reading this very interesting text
+    </span>
+ </p>
+ <button ng-show='!showingMoreText' ng-click='showingMoreText=true'>More</button>
+ <button ng-show='showingMoreText' ng-click='showingMoreText=false'>Less</button>
+ <button class='delete-button' ng-click='externalScope().delete($index)'>X</button>
+</div>

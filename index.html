@@ -1,72 +1,96 @@
 <!DOCTYPE html>
 <html ng-app="gridApp" lang="en">
   <head>
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css"></script>
     <script src="bower_components/angular/angular.min.js"></script>
-    <script src="bower_components/isogrid/dist/isogrid.min.js"></script>
+    <script src="bower_components/angular-animate/angular-animate.min.js"></script>
+    <!--<script src="bower_components/isogrid/dist/isogrid.min.js"></script>-->
+    <script src="bower_components/isogrid/src/isogrid.js"></script>
+    <script src="bower_components/isogrid/src/services/OrderService.js"></script>
+    <script src="bower_components/isogrid/src/services/FilterService.js"></script>
+    <script src="bower_components/isogrid/src/services/PositionService.js"></script>
+
     <script src="app/app.js"></script>
 
     <style>
-    /* Extra small devices (phones, less than 768px) */
-    .columns{
+
+    @media (min-width: 700px) {
+      [isogrid]{
+        width: 680px;
+      }
+      .isogrid-col-4{
+        width : 215px;
+      }
+      .isogrid-col-8{
+        width : 440px;
+      }
+    }
+
+    @media (min-width: 420px) and (max-width: 700px){
+      [isogrid]{
+        width: 400px;
+      }
+      .isogrid-col-4{
+        width : 185px;
+      }
+      .isogrid-col-8{
+        width : 380px;
+      }
+    }
+
+    .isogrid-item {
+      margin: 10px;
+      padding: 5px;
+      border: 5px solid navy;
+    }
+
+    .move-items-animation{
+      transition: 1s ease-in-out;
+    }
+
+    .move-items-animation-add-active{
+      transition: 1s ease-in-out;
+    }
+
+    .ng-enter{
+      transition: .5s ease-in-out;
+      opacity:0;
+    }
+    .ng-enter-active{
+      opacity:1;
+    }
+/*
+    .ng-leave{
+      transition: .5s ease-in-out;
+      opacity:1;
+    }
+    .ng-leave-active{
+      opacity:0;
+    }
+*/
+    [isogrid]{
+      float: left;
+      position: relative;
+    }
+
+    .buttons{
+      float : right;
+    }
+
+    .tabs{
+      float:left;
+    }
+
+    .delete-button{
+      position: absolute;
+      top : 3px;
+      right: 3px;
+    }
+    img{
       width: 100%
     }
-
-    /* Small devices (tablets, 768px and up) */
-    @media (min-width: @screen-sm-min) { 
-      .columns .col1{
-        width: 50%
-      }
-      .columns .col2{
-        width: 50%
-      }
-    }
-
-    /* Medium devices (desktops, 992px and up) */
-    @media (min-width: @screen-md-min) {
-      .columns .col1{
-        width: 33%
-      }
-      .columns .col2{
-        width: 33%
-      }
-      .columns .col3{
-        width: 33%
-      }
-    }
-
-    /* Large devices (large desktops, 1200px and up) */
-    @media (min-width: @screen-lg-min) {
-      .columns .col1{
-        width: 25%
-      }
-      .columns .col2{
-        width: 25%
-      }
-      .columns .col3{
-        width: 25%
-      }      
-      .columns .col4{
-        width: 25%
-      }      
-    }
-
-    div.item {
-      width: 300px;
-      padding: 30px;
-      border: 25px solid navy;
-      margin: 20px 15px 10px 5px;
-      -webkit-transition: 1s ease-in-out; 
-      -moz-transition: 1s ease-in-out; 
-      -o-transition: 1s ease-in-out; 
-      transition: 1s ease-in-out; 
-    }
-    div#item-3 {
-      width: 700px;
-    }
-
-
     </style>
     <title> IsoGrid Demo</title>
   </head>
@@ -74,17 +98,17 @@
     <div class="container-fluid">
       <h1> IsoGrid Demo</h1>
       <div>
-        <ul>
-          <li ng-click="filter('home')">Home</li>
-          <li ng-click="filter('work')">Work</li>
-          <li ng-click="filter('education')">Education</li>
-          <li> -- </li>
-          <li ng-click="orderBy('id')"> Rank by ID </li>
-          <li> -- </li>
-          <li ng-click="addItem()"> Add Card </li>
+        <p class="buttons">
+          <button class="btn btn-lg btn-default" ng-click="orderBy('added')"> Rank by Time </button>
+          <button class="btn btn-lg btn-default" ng-click="addItem()"> Add Card </button>          
+        </p>
+        <p class="tabs">
+          <button class="btn btn-lg btn-default" ng-click="filter('home')">Home</button>
+          <button class="btn btn-lg btn-default" ng-click="filter('work')">Work</button>
+          <button class="btn btn-lg btn-default" ng-click="filter('education')">Education</button>
         </ul>
       </div>
-      <isogrid items="cards" filters="filters" rankers="rankers" style="position: relative;"></isogrid>
+      <div isogrid items="cards" filters="filters" rankers="rankers"></div>
     </div>
   </body>
 </html>
