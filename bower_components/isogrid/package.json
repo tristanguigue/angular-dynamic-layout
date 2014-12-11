@@ -1,0 +1,34 @@
+{
+  "name": "IsoGrid",
+  "version": "0.1.0",
+  "description": "An angularJS approach to dynamic grid",
+  "main": "index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "scripts": {
+    "test": "karma"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tristanguigue/IsoGrid.git"
+  },
+  "devDependencies": {
+    "bower": "~1.3.12",
+    "grunt": "~0.4.5",
+    "grunt-contrib-jshint": "latest",
+    "grunt-contrib-uglify": "latest",
+    "grunt-karma": "^0.9.0",
+    "karma": "^0.12.24",
+    "karma-chrome-launcher": "^0.1.5",
+    "karma-firefox-launcher": "~0.1.3",
+    "karma-jasmine": "^0.1.5",
+    "karma-safari-launcher": "~0.1.1"
+  },
+  "author": "Tristan Guigue",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tristanguigue/IsoGrid/issues"
+  },
+  "homepage": "https://github.com/tristanguigue/IsoGrid"
+}
