@@ -19,11 +19,11 @@
     "bower_components",
     "tests"
   ],
-  "_release": "aecb6c7ae1",
+  "_release": "933c15d765",
   "_resolution": {
     "type": "branch",
     "branch": "master",
-    "commit": "aecb6c7ae1abc4430967a6990c2e16117d04420c"
+    "commit": "933c15d765d26f541ae72ef32c2022fb5b94cd8d"
   },
   "_source": "git@github.com:tristanguigue/IsoGrid.git",
   "_target": "*",
