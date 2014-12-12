@@ -26,6 +26,21 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
       };
     })
 
+    .directive('img', ['$rootScope', function($rootScope) {
+        return {
+            restrict: 'E',
+            link: function(scope, element, attrs) {
+                element.bind('load', function() {
+                    $rootScope.$broadcast("layout");
+                });
+                element.bind('error', function() {
+                    $rootScope.$broadcast("layout");
+                });
+
+            }
+        };
+    }])
+
     .directive('isogrid', ['PositionService', '$timeout', '$window', '$q', '$animate',
       function (PositionService, $timeout, $window, $q, $animate) {
 
