@@ -59,6 +59,10 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
                     ></div>',
           link : function (scope, element, attrs){
 
+            var layout = function(){
+              PositionService.apply(element[0].offsetWidth, scope.filteredItems.length); 
+            }
+
             var itemsLoaded = function(){
               var def = $q.defer();
               $timeout(function(){
@@ -79,36 +83,34 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
               scope.toLoad--;
             });
 
-            scope.$watch('filteredItems', function(newValue, oldValue){
-              if(!angular.equals(newValue, oldValue)){
-                itemsLoaded().then(function(){
-                    PositionService.apply(element[0].offsetWidth, scope.filteredItems); 
-                });      
-              }
-            }, true);
-
-            var win = angular.element($window);
-            win.bind("resize",function(e){
-                scope.$apply(function(){
-                  PositionService.apply(element[0].offsetWidth, scope.filteredItems);
-                });
-            });
-
             scope.externalScope = function(){
               return scope.$parent;
             };
 
+            scope.$watch('filteredItems', function(newValue, oldValue){
+              if(!angular.equals(newValue, oldValue)){
+                itemsLoaded().then(function(){
+                    layout();
+                });      
+              }
+            }, true);
+
+            angular.element($window).bind("resize",function(e){
+                // We need to apply the scope
+                scope.$apply(function(){
+                  layout();
+                });
+            });
+
             scope.$on('layout', function() {
               $timeout(function(){
-                PositionService.apply(element[0].offsetWidth, scope.filteredItems); 
+                layout();
               });          
             });
 
             itemsLoaded().then(function(){
-              PositionService.apply(element[0].offsetWidth, scope.filteredItems); 
+              layout();
             });
-            
-
 
           }
         };
