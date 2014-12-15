@@ -17,9 +17,9 @@
 
     <style>
 
-    @media (min-width: 950px) {
+    @media (min-width: 900px) {
       [isogrid]{
-        width: 920px;
+        width: 900px;
       }
       .isogrid-col-4{
         width : 300px;
@@ -29,15 +29,27 @@
       }
     }
 
-    @media (min-width: 420px) and (max-width: 700px){
+    @media (min-width: 600px) and (max-width: 950px){
       [isogrid]{
-        width: 400px;
+        width: 600px;
       }
       .isogrid-col-4{
-        width : 185px;
+        width : 300px;
       }
       .isogrid-col-8{
-        width : 380px;
+        width : 600px;
+      }
+    }
+
+    @media (max-width: 600px){
+      [isogrid]{
+        width: 300px;
+      }
+      .isogrid-col-4{
+        width : 300px;
+      }
+      .isogrid-col-8{
+        width : 300px;
       }
     }
 
