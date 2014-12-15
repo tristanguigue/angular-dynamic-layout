@@ -104,6 +104,7 @@ isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout",
               width : element[0].offsetWidth + parseInt($window.getComputedStyle(element[0]).marginLeft)             
             });
           }
+          return items;
         },
 
         applyToDOM : function(previousItems){
@@ -151,9 +152,7 @@ isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout",
 
         apply: function (containerWidth, numberOfItems) {
           var previousItems = angular.copy(items);
-          items = [];
-
-          this.getItemsDimensionFromDOM(numberOfItems);
+          items = this.getItemsDimensionFromDOM(numberOfItems);
 
           var colSize = getColSize();
           var nbColumns = Math.floor(containerWidth / colSize);

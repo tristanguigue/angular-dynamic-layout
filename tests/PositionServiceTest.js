@@ -8,7 +8,7 @@ describe('PositionService', function(){
     }));
 
 
-    it('check that rankers work properly',
+    it('check that positions work properly',
       inject(function(PositionService) {
 
         var items = [
@@ -50,14 +50,15 @@ describe('PositionService', function(){
         ];
 
         // Disable DOM manipulation
-        spyOn(PositionService, 'setItemDimensionFromDOM');
+        spyOn(PositionService, 'getItemsDimensionFromDOM').and.returnValue(items);
         spyOn(PositionService, 'applyToDOM');
 
         // Test that items were properly set up in the grid
         // Input : list of items with their dimensions (width, height)
         // Output : x,y of each item
         
-        var columns = PositionService.apply(300, angular.copy(items));
+        var columns = PositionService.apply(300, items.length);
+
         expect(columns[0].length).toEqual(3);
         expect(columns[1].length).toEqual(2);
         expect(columns[2].length).toEqual(1);

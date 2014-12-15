@@ -61,7 +61,7 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
 
             var layout = function(){
               PositionService.apply(element[0].offsetWidth, scope.filteredItems.length); 
-            }
+            };
 
             var itemsLoaded = function(){
               var def = $q.defer();
