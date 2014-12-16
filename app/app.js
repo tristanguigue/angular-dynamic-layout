@@ -7,7 +7,9 @@ gridApp.controller('Work1Controller', ['$scope', '$rootScope', '$timeout',
     $scope.$watch("showingMoreText", function(newValue, oldValue){
       if(newValue !== oldValue){
         $timeout(function(){
-          $rootScope.$broadcast("layout");
+          $rootScope.$broadcast("layout", function(){
+            console.log("Layout is done")
+          });
         });
       }
     })
