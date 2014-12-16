@@ -1,5 +1,14 @@
-var gridApp = angular.module('gridApp', ['isoGrid'])
+/**
+ * The demo application that will allow to showcase the use of IsoGrid
+ */
+var gridApp = angular.module('gridApp', ['isoGrid']);
 
+/**
+ * An example of controller that can be used to manipulate a specific card
+ *
+ * This broadcasts a layout event and catched the callback when all 
+ * animations are completed
+ */
 gridApp.controller('Work1Controller', ['$scope', '$rootScope', '$timeout',
   function($scope, $rootScope, $timeout) {
     $scope.showingMoreText = false;
@@ -8,7 +17,7 @@ gridApp.controller('Work1Controller', ['$scope', '$rootScope', '$timeout',
       if(newValue !== oldValue){
         $timeout(function(){
           $rootScope.$broadcast("layout", function(){
-            console.log("Layout is done")
+            // The layout animations have completed
           });
         });
       }
@@ -16,25 +25,41 @@ gridApp.controller('Work1Controller', ['$scope', '$rootScope', '$timeout',
 
 }]);
 
+/**
+ * The main controller that is responsible for created the cards, filters, 
+ * rankers
+ */
 gridApp.controller('GridContainer',
-  ['$scope', '$controller', function ($scope, $controller) {
+  ['$scope', function ($scope) {
 
       $scope.filters = null;
       $scope.rankers = null;
 
+      /**
+       * Update the filters array based on the given filter
+       * $param filter: the name of a tab like 'work'  
+       */
       $scope.filter = function(filter){
         $scope.filters = [[['tabs', 'contains', filter]]];
       }
 
+      /**
+       * Update the rankers array based on the given ranker
+       * $param ranker: the name of a card's property or a custom function 
+       */
       $scope.orderBy = function(ranker){
         $scope.rankers = [[ranker, "asc"]];
       }
 
+      /**
+       * Delete a given card
+       * $param index: the index of the card in the cards array 
+       */
       $scope.delete = function(index){
         $scope.cards.splice(index, 1);
       }
 
-      var addingCard = 0;
+      var nbCardsAdded = 0;
       var cardsToAdd =  [
           {
             template : "app/partials/work3.html",
@@ -46,12 +71,17 @@ gridApp.controller('GridContainer',
             tabs : ["home", "work"],
             added : 1467871272105,
           },
-      ]
+      ];
 
+      /**
+       * Add a card to the main view
+       * Takes a card from the pile of cardsToAdd and prepend it to the list of 
+       * cards
+       */
       $scope.addItem = function(){
-        if(addingCard<cardsToAdd.length){
-          $scope.cards.unshift(cardsToAdd[addingCard]);
-          ++addingCard;
+        if(nbCardsAdded < cardsToAdd.length){
+          $scope.cards.unshift(cardsToAdd[nbCardsAdded]);
+          ++nbCardsAdded;
         }
       }
 
