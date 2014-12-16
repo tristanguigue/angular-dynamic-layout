@@ -2,6 +2,7 @@ isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout", "$q
   function ($window, $animate, $timeout, $q) {
       var ongoingAnimations = {};
       var items = [];
+      var elements = [];
 
       // Positions Logic
       function initColumns(nb){
@@ -75,11 +76,6 @@ isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout", "$q
           }
       }
 
-      // DOM Manipulation
-      function getDOMElementFromItem(index){
-        return angular.element(document.getElementById('isogrid-'+index).children[0]);
-      }
-
       function getColSize(){
         var col_size;
         for(i = 0; i < items.length; ++i){
@@ -97,11 +93,18 @@ isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout", "$q
 
       return {
         getItemsDimensionFromDOM : function(numberOfItems){
-          for(i = 0; i < numberOfItems; ++i){
-            element = getDOMElementFromItem(i);
+          // not(.ng-leave) : we don't want to select elements that have been 
+          // removed but are  still in the DOM
+          elements =  document.querySelectorAll(".isogrid-item-parent:not(.ng-leave)");
+          items = [];
+          for(i = 0; i < elements.length; ++i){
+            // Note: we need to get the children element width because that's
+            // where the style is applied
             items.push({
-              height : element[0].offsetHeight + parseInt($window.getComputedStyle(element[0]).marginTop),
-              width : element[0].offsetWidth + parseInt($window.getComputedStyle(element[0]).marginLeft)             
+              height: elements[i].offsetHeight + 
+                parseInt($window.getComputedStyle(elements[i]).marginTop),
+              width: elements[i].children[0].offsetWidth + 
+                parseInt($window.getComputedStyle(elements[i].children[0]).marginLeft)
             });
           }
           return items;
@@ -109,18 +112,21 @@ isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout", "$q
 
         applyToDOM : function(previousItems){
           var launchAnimation = function(element, i){
-            var animationPromise = $animate.addClass(element, 'move-items-animation', {
-              from: {
-                 position: 'absolute',
-              },
-              to: {
-                left : items[i].x + 'px',
-                top : items[i].y + 'px'
+            var animationPromise = $animate.addClass(element, 
+              'move-items-animation', 
+              {
+                from: {
+                   position: 'absolute',
+                },
+                to: {
+                  left : items[i].x + 'px',
+                  top : items[i].y + 'px'
+                }
               }
-            });
+            );
 
             animationPromise.then(function(){
-              element.removeClass('move-items-animation');
+              element.classList.remove('move-items-animation');
               delete ongoingAnimations[i];
             });
 
@@ -129,8 +135,10 @@ isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout", "$q
 
           var launchAnimations = function(){
             for(i = 0; i < items.length; ++i){
-              element = getDOMElementFromItem(i);
-              ongoingAnimations[i] = launchAnimation(element, i);                   
+              // We need to pass the specific element we're dealing with
+              // because at the next iteration elements[i] might point to
+              // something else
+              ongoingAnimations[i] = launchAnimation(elements[i], i);                   
             }
             $q.all(ongoingAnimations).then(function(){
               ret.resolve();
@@ -143,7 +151,6 @@ isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout", "$q
             ret.resolve();
             return ret.promise;            
           }
-
           if(Object.keys(ongoingAnimations).length){
             for(var j in ongoingAnimations){
                 $animate.cancel(ongoingAnimations[j]);
@@ -158,9 +165,9 @@ isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout", "$q
           return ret.promise;
         },
 
-        apply: function (containerWidth, numberOfItems) {
+        apply: function (containerWidth) {
           var previousItems = angular.copy(items);
-          items = this.getItemsDimensionFromDOM(numberOfItems);
+          items = this.getItemsDimensionFromDOM();
 
           var colSize = getColSize();
           var nbColumns = Math.floor(containerWidth / colSize);
