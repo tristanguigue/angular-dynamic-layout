@@ -39,12 +39,12 @@ gridApp.controller('GridContainer',
           {
             template : "app/partials/work3.html",
             tabs : ["home", "work"],
-            added : 1474871272,
+            added : 1474871272105,
           },
           {
             template : "app/partials/work4.html",
             tabs : ["home", "work"],
-            added : 1467871272,
+            added : 1467871272105,
           },
       ]
 
@@ -63,7 +63,7 @@ gridApp.controller('GridContainer',
             "position" : "Web Developer",
             "company" : "Hacker Inc."
           },
-          added : 1414871272,
+          added : 1414871272105,
         },
         {
           template : "app/partials/work1.html",
@@ -72,32 +72,32 @@ gridApp.controller('GridContainer',
             "position" : "Data Scientist",
             "company" : "Big Data Inc."
           },
-          added : 1414871272,
+          added : 1423871272105,
         },
         {
           template : "app/partials/aboutMe.html",
           tabs : ["home", "education"],
-          added : 1454871272
+          added : 1454871272105
         },
         {
           template : "app/partials/businessCard.html",
           tabs : ["home"],
-          added : 1444871272
+          added : 1434871272105
         },
         {
           template : "app/partials/home.html",
           tabs : ["home"],
-          added : 1484871272
+          added : 1484871272105
         },
         {
           template : "app/partials/education.html",
           tabs : ["home", "education"],
-          added : 1424871272
+          added : 1484871272105
         },
         {
           template : "app/partials/work2.html",
           tabs : ["home", "work"],
-          added : 1434871272
+          added : 1434871272105
         }
       ];
 }]);

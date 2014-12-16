@@ -29,7 +29,7 @@
       }
     }
 
-    @media (min-width: 600px) and (max-width: 950px){
+    @media (min-width: 600px) and (max-width: 900px){
       [isogrid]{
         width: 600px;
       }
@@ -63,12 +63,6 @@
       transition-timing-function: ease-in-out;
     }
 
-    .move-items-animation{
-      transition-property: left, top;
-      transition-duration: 1s;
-      transition-timing-function: ease-in-out;
-    }
-
     .ng-enter{
       transition: .5s ease-in-out;
       opacity:0;
@@ -90,7 +84,6 @@
       position: relative;
     }
 
-
     </style>
     <title> IsoGrid Demo</title>
   </head>
@@ -109,7 +102,7 @@
             <span class="caret"></span>
           </button>
           <ul class="dropdown-menu" role="menu" >
-            <li><a href="#" ng-click="orderBy('added')">Time</a></li>
+            <li><a href="#" ng-click="orderBy('added')">Time Created</a></li>
           </ul>
         </div>
         <div class="btn-group btn-group-lg" role="group">
@@ -120,6 +113,8 @@
       </div>
       <div isogrid items="cards" filters="filters" rankers="rankers"></div>
     </div>
-    <a href="https://github.com/tristanguigue/IsoGrid"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+    <a href="https://github.com/tristanguigue/IsoGrid">
+      <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png">
+    </a>
   </body>
 </html>

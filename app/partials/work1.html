@@ -27,8 +27,11 @@
               </div>
             </div>
           <div class="panel-footer">
-             <button class="btn btn-default" ng-show='!showingMoreText' ng-click='showingMoreText=true'>More</button>
-             <button class="btn btn-default" ng-show='showingMoreText' ng-click='showingMoreText=false'>Less</button>
+              <small class="pull-left">Created on {{it.added | date:'medium'}}</small>
+          </div>
+          <div class="panel-footer">
+             <button class="pull-left btn btn-default" ng-show='!showingMoreText' ng-click='showingMoreText=true'>More</button>
+             <button class="pull-left btn btn-default" ng-show='showingMoreText' ng-click='showingMoreText=false'>Less</button>
           </div>
         </div>
     </div>
