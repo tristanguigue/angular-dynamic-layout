@@ -1,12 +1,12 @@
-isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout",
-  function ($window, $animate, $timeout) {
+isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout", "$q",
+  function ($window, $animate, $timeout, $q) {
       var ongoingAnimations = {};
       var items = [];
 
       // Positions Logic
       function initColumns(nb){
         columns = [];
-        for(var i=0; i < nb ; ++i){
+        for(var i = 0; i < nb ; ++i){
           columns.push([]);
         }
         return columns;
@@ -132,10 +132,17 @@ isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout",
               element = getDOMElementFromItem(i);
               ongoingAnimations[i] = launchAnimation(element, i);                   
             }
+            $q.all(ongoingAnimations).then(function(){
+              ret.resolve();
+            })
           };
 
-          if(angular.equals(previousItems, items))
-            return;
+          var ret = $q.defer();
+
+          if(angular.equals(previousItems, items)){
+            ret.resolve();
+            return ret.promise;            
+          }
 
           if(Object.keys(ongoingAnimations).length){
             for(var j in ongoingAnimations){
@@ -143,11 +150,12 @@ isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout",
                 delete ongoingAnimations[j];
             }
             $timeout(function(){
-              launchAnimations();
+              launchAnimations(ret);
             });
           }else{
-            launchAnimations();
+            launchAnimations(ret);
           }
+          return ret.promise;
         },
 
         apply: function (containerWidth, numberOfItems) {
@@ -162,9 +170,7 @@ isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout",
 
           setItemsPosition(columns, colSize);
 
-          this.applyToDOM(previousItems);
-
-          return columns;
+          return this.applyToDOM(previousItems);
         }
      };
 

@@ -57,7 +57,7 @@ describe('PositionService', function(){
         // Input : list of items with their dimensions (width, height)
         // Output : x,y of each item
         
-        var columns = PositionService.apply(300, items.length);
+        PositionService.apply(300, items.length);
 
         expect(columns[0].length).toEqual(3);
         expect(columns[1].length).toEqual(2);

@@ -60,7 +60,7 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
           link : function (scope, element, attrs){
 
             var layout = function(){
-              PositionService.apply(element[0].offsetWidth, scope.filteredItems.length); 
+              return PositionService.apply(element[0].offsetWidth, scope.filteredItems.length); 
             };
 
             var itemsLoaded = function(){
@@ -102,9 +102,12 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
                 });
             });
 
-            scope.$on('layout', function() {
+            scope.$on('layout', function(event, callback) {
               $timeout(function(){
-                layout();
+                layout().then(function(){
+                  if(typeof callback === "function")
+                    callback();
+                });
               });          
             });
 
