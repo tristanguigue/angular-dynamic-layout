@@ -142,7 +142,7 @@ isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout", "$q
             }
             $q.all(ongoingAnimations).then(function(){
               ret.resolve();
-            })
+            });
           };
 
           var ret = $q.defer();
