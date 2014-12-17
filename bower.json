@@ -12,6 +12,10 @@
   "authors": [
     "Tristan Guigue <tristan@tyba.com>"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tristanguigue/IsoGrid.git"
+  },
   "description": "An angularJS approach to dynamic grid",
   "license": "MIT",
   "ignore": [
@@ -19,5 +23,6 @@
     "node_modules",
     "bower_components",
     "tests"
-  ]
+  ],
+  "private": false
 }
