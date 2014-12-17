@@ -8,7 +8,7 @@ describe('FilterService', function(){
     }));
 
 
-    it('check that filters work properly',
+    it('check that filter service work properly',
       inject(function(FilterService) {
 
         var items = [

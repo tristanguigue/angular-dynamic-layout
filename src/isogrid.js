@@ -83,6 +83,7 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
         link : function (scope, element, attrs){
           /**
           * Use the PositionService to layout the items
+          * @return the promise of the cards being animated
           */
           var layout = function(){
             return PositionService.apply(element[0].offsetWidth); 
@@ -95,8 +96,8 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
           var itemsLoaded = function(){
             var def = $q.defer();
 
-            // $timeout : We need to wait for the includeContentRequested to be called
-            // before we can assume there is no templates to be loaded
+            // $timeout : We need to wait for the includeContentRequested to 
+            // be called before we can assume there is no templates to be loaded
             $timeout(function(){
               if(scope.templatesToLoad === 0)
                 def.resolve();                   
@@ -122,6 +123,7 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
           /**
           * This allows the external scope, that is the scope of isogrid's
           * container to be  called from the templates
+          * @return the given scope
           */
           scope.externalScope = function(){
             return scope.$parent;
