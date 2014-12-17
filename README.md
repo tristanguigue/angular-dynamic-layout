@@ -4,6 +4,8 @@ IsoGrid is a angularJS approach to dynamic grids. It is inspired from the [jQuer
 
 It is a very light and customizable frame, a lot of freedom is left to the user.
 
+This is a beta version and not production-ready.
+
 # Demo
 - [Demo](http://tristanguigue.github.io/IsoGrid)
 - [Demo Code](https://github.com/tristanguigue/IsoGrid/tree/gh-pages)
