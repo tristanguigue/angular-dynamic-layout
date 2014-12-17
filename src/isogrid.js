@@ -1,5 +1,8 @@
 var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
 
+  /**
+  * The filter to be applied on the ng-repeat directive
+  */
   .filter('customFilter', ['FilterService', function(FilterService) {
       return function( items, filters) {
         if(filters)
@@ -9,6 +12,9 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
       };
   }])
 
+  /**
+  * The ranker to be applied on the ng-repeat directive
+  */
   .filter('customRanker', ['OrderService', function(OrderService) {
       return function( items, rankers) {
         if(rankers){
@@ -20,12 +26,19 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
       };
   }])
 
+  /**
+  * This allowed the result of the filters to be assigned to the scope
+  */
   .filter("as", ['$parse', function($parse) {
     return function(value, context, path) {
       return $parse(path).assign(context, value);
     };
   }])
 
+  /**
+  * Directive on images to layout after each load
+  * TODO: make it specific to images within the isotope container
+  */
   .directive('img', ['$rootScope', function($rootScope) {
       return {
           restrict: 'E',
@@ -41,7 +54,15 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
       };
   }])
 
-  .directive('isogrid', ['PositionService', '$timeout', '$window', '$q', '$animate',
+  /**
+  * The isotope directive that renders the templates based on the array of items
+  * passed
+  * @scope items: the list of items to be rendered
+  * @scope rankers: the rankers to be applied on the list of items 
+  * @scope filters: the filters to be applied on the list of items 
+  */
+  .directive('isogrid',
+    ['PositionService', '$timeout', '$window', '$q', '$animate',
     function (PositionService, $timeout, $window, $q, $animate) {
 
       return {
@@ -51,15 +72,19 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
           rankers: '=rankers',
           filters: '=filters'
         },
-        template: '<div \
-                        class="isogrid-item-parent" \
-                        ng-repeat="it in items | customFilter: filters | customRanker:rankers | as:this:\'filteredItems\'" \
-                        ng-include="it.template" \
+        template: '<div                                     \
+                      class="isogrid-item-parent"           \
+                      ng-repeat="it in items |              \
+                                 customFilter: filters |    \
+                                 customRanker:rankers |     \
+                                 as:this:\'filteredItems\'" \
+                      ng-include="it.template"              \
                   ></div>',
         link : function (scope, element, attrs){
 
           var layout = function(){
-            return PositionService.apply(element[0].offsetWidth, scope.filteredItems.length); 
+            return PositionService.apply(element[0].offsetWidth, 
+                                         scope.filteredItems.length); 
           };
 
           var itemsLoaded = function(){
