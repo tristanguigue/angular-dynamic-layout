@@ -20,11 +20,11 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
         };
     }])
 
-    .filter("as", function($parse) {
+    .filter("as", ['$parse', function($parse) {
       return function(value, context, path) {
         return $parse(path).assign(context, value);
       };
-    })
+    }])
 
     .directive('img', ['$rootScope', function($rootScope) {
         return {
