@@ -81,36 +81,55 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
                       ng-include="it.template"              \
                   ></div>',
         link : function (scope, element, attrs){
-
+          /**
+          * Use the PositionService to layout the items
+          */
           var layout = function(){
-            return PositionService.apply(element[0].offsetWidth, 
-                                         scope.filteredItems.length); 
+            return PositionService.apply(element[0].offsetWidth); 
           };
 
+          /**
+          * Check when all the items have been loaded by the ng-include 
+          * directive
+          */
           var itemsLoaded = function(){
             var def = $q.defer();
+
+            // $timeout : We need to wait for the includeContentRequested to be called
+            // before we can assume there is no templates to be loaded
             $timeout(function(){
-              if(scope.toLoad === 0)
+              if(scope.templatesToLoad === 0)
                 def.resolve();                   
             });
-            scope.$watch('toLoad', function(newValue, oldValue){
-              if(newValue !== oldValue && scope.toLoad === 0)
+
+            scope.$watch('templatesToLoad', function(newValue, oldValue){
+              if(newValue !== oldValue && scope.templatesToLoad === 0)
                 def.resolve();   
             });
+
             return def.promise;
           };
-          scope.toLoad = 0;
+
+          scope.templatesToLoad = 0;
+
           scope.$on("$includeContentRequested", function(){
-            scope.toLoad++;
+            scope.templatesToLoad++;
           });
           scope.$on("$includeContentLoaded", function(){
-            scope.toLoad--;
+            scope.templatesToLoad--;
           });
 
+          /**
+          * This allows the external scope, that is the scope of isogrid's
+          * container to be  called from the templates
+          */
           scope.externalScope = function(){
             return scope.$parent;
           };
 
+          /**
+          * Triggers a layout every time the items are changed
+          */
           scope.$watch('filteredItems', function(newValue, oldValue){
             if(!angular.equals(newValue, oldValue)){
               itemsLoaded().then(function(){
@@ -119,22 +138,31 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
             }
           }, true);
 
+          /**
+          * Triggers a layout every time the window is resized
+          */
           angular.element($window).bind("resize",function(e){
-              // We need to apply the scope
+              // We need to apply the scope 
               scope.$apply(function(){
                 layout();
               });
           });
 
+          /**
+          * Triggers a layout whenever requested by an external source
+          * Allows a callback to be fired after the layout animation is 
+          * completed
+          */
           scope.$on('layout', function(event, callback) {
-            $timeout(function(){
-              layout().then(function(){
-                if(typeof callback === "function")
-                  callback();
-              });
-            });          
+            layout().then(function(){
+              if(typeof callback === "function")
+                callback();
+            });
           });
 
+          /**
+          * Triggers the initial layout once all the templates are loaded
+          */
           itemsLoaded().then(function(){
             layout();
           });
