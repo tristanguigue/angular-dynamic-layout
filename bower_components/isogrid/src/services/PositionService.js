@@ -1,14 +1,13 @@
-isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout",
-  function ($window, $animate, $timeout) {
+isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout", "$q",
+  function ($window, $animate, $timeout, $q) {
       var ongoingAnimations = {};
-      // Positions Logic
-      function isShowing(item){
-         return !('showing' in item) || item.showing;
-      }
+      var items = [];
+      var elements = [];
 
+      // Positions Logic
       function initColumns(nb){
         columns = [];
-        for(var i=0; i < nb ; ++i){
+        for(var i = 0; i < nb ; ++i){
           columns.push([]);
         }
         return columns;
@@ -30,26 +29,28 @@ isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout",
       }
 
       function getItemColumnsAndPosition(item, colHeights, colSize){
-        var width = item.columnSpan;
-        if(width>colHeights.length)
+        if(item.columnSpan > colHeights.length)
           throw Error("Item too large");
 
         var indexOfMin = 0;
         var minFound = 0;
 
-        for(var i=0; i <= colHeights.length-width; ++i){
+        for(var i = 0; i <= colHeights.length - item.columnSpan; ++i){
           var startingColumn = i;
-          var endingColumn = i+width;
+          var endingColumn = i + item.columnSpan;
           var maxHeightInPart = Math.max.apply(Math, colHeights.slice(startingColumn, endingColumn));
+
           if(i===0 || maxHeightInPart < minFound){
               minFound = maxHeightInPart;
               indexOfMin = i;         
           }
         }
+
         var itemColumns = [];
-        for(i=indexOfMin; i<indexOfMin+width; ++i){
+        for(i = indexOfMin; i < indexOfMin + item.columnSpan; ++i){
           itemColumns.push(i);
         }
+
         return {
           columns : itemColumns, 
           position : {
@@ -59,69 +60,73 @@ isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout",
         };
       }
 
-      function fillColumnsWithItem(columns, itemColumns, item){
-            for(var j in itemColumns){
-              columns[itemColumns[j]].push(item);
-            }
-      }
-
-      function setItemPosition(item, columns, colSize){
+      function setItemsPosition(columns, colSize){
+        for(i = 0; i < items.length; ++i){
             var columnsHeights = getColumnsHeights(columns);
-            var itemColumnsAndPosition = getItemColumnsAndPosition(item, columnsHeights, colSize);
-            fillColumnsWithItem(columns, itemColumnsAndPosition.columns, item);
-            item.x = itemColumnsAndPosition.position.x;
-            item.y = itemColumnsAndPosition.position.y;
+
+            var itemColumnsAndPosition = getItemColumnsAndPosition(items[i], columnsHeights, colSize);
+
+            for(var j in itemColumnsAndPosition.columns){
+              columns[itemColumnsAndPosition.columns[j]].push(items[i]);
+            }
+
+
+            items[i].x = itemColumnsAndPosition.position.x;
+            items[i].y = itemColumnsAndPosition.position.y;
+          }
       }
 
-      // DOM Manipulation
-      function getDOMElementFromItem(index){
-        return angular.element(document.getElementById('isogrid-'+index).children[0]);
-      }
-
-      function getColSize(items){
+      function getColSize(){
         var col_size;
-        for(i=0;i<items.length;++i){
+        for(i = 0; i < items.length; ++i){
           if(!col_size || items[i].width < col_size)
             col_size = items[i].width;
         }
         return col_size;
       }
 
-      function setItemsColumnSpan(items, colSize){
-        for(i=0;i<items.length;++i){
-          items[i].columnSpan = Math.ceil((items[i].width-2) / colSize);
+      function setItemsColumnSpan(colSize){
+        for(i = 0; i < items.length; ++i){
+          items[i].columnSpan = Math.ceil(items[i].width / colSize);
         }
       }
 
-      function getNumberOfColumns(containerWidth, colSize){
-        return Math.floor(containerWidth/colSize);
-      }
-
-
       return {
-        setItemDimensionFromDOM : function(items){
-          var col_width;
-          for(i=0;i<items.length;++i){
-            element = getDOMElementFromItem(i);
-            items[i].height = element[0].offsetHeight + parseInt($window.getComputedStyle(element[0]).marginTop);
-            items[i].width = element[0].offsetWidth + parseInt($window.getComputedStyle(element[0]).marginLeft);
+        getItemsDimensionFromDOM : function(numberOfItems){
+          // not(.ng-leave) : we don't want to select elements that have been 
+          // removed but are  still in the DOM
+          elements =  document.querySelectorAll(".isogrid-item-parent:not(.ng-leave)");
+          items = [];
+          for(i = 0; i < elements.length; ++i){
+            // Note: we need to get the children element width because that's
+            // where the style is applied
+            items.push({
+              height: elements[i].offsetHeight + 
+                parseInt($window.getComputedStyle(elements[i]).marginTop),
+              width: elements[i].children[0].offsetWidth + 
+                parseInt($window.getComputedStyle(elements[i].children[0]).marginLeft)
+            });
           }
+          return items;
         },
 
-        applyToDOM : function(items){
+        applyToDOM : function(previousItems){
           var launchAnimation = function(element, i){
-            var animationPromise = $animate.addClass(element, 'move-items-animation', {
-              from: {
-                 position: 'absolute',
-              },
-              to: {
-                left : items[i].x + 'px',
-                top : items[i].y + 'px'
+            var animationPromise = $animate.addClass(element, 
+              'move-items-animation', 
+              {
+                from: {
+                   position: 'absolute',
+                },
+                to: {
+                  left : items[i].x + 'px',
+                  top : items[i].y + 'px'
+                }
               }
-            });
+            );
 
             animationPromise.then(function(){
-              element.removeClass('move-items-animation');
+              element.classList.remove('move-items-animation');
               delete ongoingAnimations[i];
             });
 
@@ -129,39 +134,50 @@ isoGridModule.factory('PositionService', ["$window", "$animate", "$timeout",
           };
 
           var launchAnimations = function(){
-            for(i=0;i<items.length;++i){
-              element = getDOMElementFromItem(i);
-              ongoingAnimations[i] = launchAnimation(element, i);   
+            for(i = 0; i < items.length; ++i){
+              // We need to pass the specific element we're dealing with
+              // because at the next iteration elements[i] might point to
+              // something else
+              ongoingAnimations[i] = launchAnimation(elements[i], i);                   
             }
+            $q.all(ongoingAnimations).then(function(){
+              ret.resolve();
+            });
           };
 
+          var ret = $q.defer();
+
+          if(angular.equals(previousItems, items)){
+            ret.resolve();
+            return ret.promise;            
+          }
           if(Object.keys(ongoingAnimations).length){
             for(var j in ongoingAnimations){
-              $animate.cancel(ongoingAnimations[j]);
-              delete ongoingAnimations[j];
+                $animate.cancel(ongoingAnimations[j]);
+                delete ongoingAnimations[j];
             }
             $timeout(function(){
-              launchAnimations();
+              launchAnimations(ret);
             });
           }else{
-            launchAnimations();
+            launchAnimations(ret);
           }
+          return ret.promise;
         },
 
-        apply: function (containerWidth, items) {
-          items = angular.copy(items);
-          this.setItemDimensionFromDOM(items);
-          colSize = getColSize(items);
-          setItemsColumnSpan(items, colSize);
-          nbColumns = getNumberOfColumns(containerWidth, colSize);
+        apply: function (containerWidth) {
+          var previousItems = angular.copy(items);
+          items = this.getItemsDimensionFromDOM();
 
+          var colSize = getColSize();
+          var nbColumns = Math.floor(containerWidth / colSize);
           var columns = initColumns(nbColumns);
-          for(var k in items){
-            setItemPosition(items[k], columns, colSize);
-          }
 
-          this.applyToDOM(items);
-          return columns;
+          setItemsColumnSpan(colSize);
+
+          setItemsPosition(columns, colSize);
+
+          return this.applyToDOM(previousItems);
         }
      };
 

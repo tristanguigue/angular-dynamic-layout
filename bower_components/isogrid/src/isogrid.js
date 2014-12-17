@@ -20,11 +20,11 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
         };
     }])
 
-    .filter("as", function($parse) {
+    .filter("as", ['$parse', function($parse) {
       return function(value, context, path) {
         return $parse(path).assign(context, value);
       };
-    })
+    }])
 
     .directive('img', ['$rootScope', function($rootScope) {
         return {
@@ -55,9 +55,12 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
                           class="isogrid-item-parent" \
                           ng-repeat="it in items | customFilter: filters | customRanker:rankers | as:this:\'filteredItems\'" \
                           ng-include="it.template" \
-                          id="isogrid-{{$index}}" \
                     ></div>',
           link : function (scope, element, attrs){
+
+            var layout = function(){
+              return PositionService.apply(element[0].offsetWidth, scope.filteredItems.length); 
+            };
 
             var itemsLoaded = function(){
               var def = $q.defer();
@@ -79,36 +82,37 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
               scope.toLoad--;
             });
 
-            scope.$watch('filteredItems', function(newValue, oldValue){
-              if(!angular.equals(newValue, oldValue)){
-                itemsLoaded().then(function(){
-                    PositionService.apply(element[0].offsetWidth, scope.filteredItems); 
-                });      
-              }
-            }, true);
-
-            var win = angular.element($window);
-            win.bind("resize",function(e){
-                scope.$apply(function(){
-                  PositionService.apply(element[0].offsetWidth, scope.filteredItems);
-                });
-            });
-
             scope.externalScope = function(){
               return scope.$parent;
             };
 
-            scope.$on('layout', function() {
+            scope.$watch('filteredItems', function(newValue, oldValue){
+              if(!angular.equals(newValue, oldValue)){
+                itemsLoaded().then(function(){
+                    layout();
+                });      
+              }
+            }, true);
+
+            angular.element($window).bind("resize",function(e){
+                // We need to apply the scope
+                scope.$apply(function(){
+                  layout();
+                });
+            });
+
+            scope.$on('layout', function(event, callback) {
               $timeout(function(){
-                PositionService.apply(element[0].offsetWidth, scope.filteredItems); 
+                layout().then(function(){
+                  if(typeof callback === "function")
+                    callback();
+                });
               });          
             });
 
             itemsLoaded().then(function(){
-              PositionService.apply(element[0].offsetWidth, scope.filteredItems); 
+              layout();
             });
-            
-
 
           }
         };
