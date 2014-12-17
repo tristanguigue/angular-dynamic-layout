@@ -30,8 +30,8 @@
               <small class="pull-left">Created on {{it.added | date:'medium'}}</small>
           </div>
           <div class="panel-footer">
-             <button class="pull-left btn btn-default" ng-show='!showingMoreText' ng-click='showingMoreText=true'>More</button>
-             <button class="pull-left btn btn-default" ng-show='showingMoreText' ng-click='showingMoreText=false'>Less</button>
+             <button class="pull-left btn btn-default" ng-show='!showingMoreText' ng-click='toggleText()'>More</button>
+             <button class="pull-left btn btn-default" ng-show='showingMoreText' ng-click='toggleText()'>Less</button>
           </div>
         </div>
     </div>

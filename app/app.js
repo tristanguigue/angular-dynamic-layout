@@ -13,16 +13,16 @@ gridApp.controller('Work1Controller', ['$scope', '$rootScope', '$timeout',
   function($scope, $rootScope, $timeout) {
     $scope.showingMoreText = false;
     
-    $scope.$watch("showingMoreText", function(newValue, oldValue){
-      if(newValue !== oldValue){
-        $timeout(function(){
-          $rootScope.$broadcast("layout", function(){
-            // The layout animations have completed
-          });
+    $scope.toggleText = function(){
+      $scope.showingMoreText = !$scope.showingMoreText;
+      // We need to broacast the layout on the next digest once the text
+      // is actually shown
+      $timeout(function(){
+        $rootScope.$broadcast("layout", function(){
+          // The layout animations have completed
         });
-      }
-    })
-
+      });
+    }
 }]);
 
 /**
