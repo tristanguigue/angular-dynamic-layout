@@ -55,7 +55,6 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
                           class="isogrid-item-parent" \
                           ng-repeat="it in items | customFilter: filters | customRanker:rankers | as:this:\'filteredItems\'" \
                           ng-include="it.template" \
-                          id="isogrid-{{$index}}" \
                     ></div>',
           link : function (scope, element, attrs){
 
