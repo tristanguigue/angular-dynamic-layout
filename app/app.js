@@ -60,6 +60,9 @@ gridApp.controller('GridContainer',
       }
 
       var nbCardsAdded = 0;
+      /**
+       * The pile of cards to be added
+       */
       var cardsToAdd =  [
           {
             template : "app/partials/work3.html",
@@ -85,6 +88,9 @@ gridApp.controller('GridContainer',
         }
       }
 
+      /**
+       * The list of cards that show initialy
+       */
       $scope.cards = [
         {
           template : "app/partials/work1.html",
