@@ -1,8 +1,11 @@
 # What is this?
 
-IsoGrid is a angularJS approach to dynamic grids. It is inspired from the [jQuery isotope library](http://isotope.metafizzy.co/).
+IsoGrid is an angularJS (no jQuery) approach to dynamic grids. It is inspired from the successfull [jQuery isotope library](http://isotope.metafizzy.co/) and its underlying [masonry layout](http://masonry.desandro.com/)
 
-It is a very light and customizable frame, a lot of freedom is left to the user.
+Including jQuery isotope into angularJS directives gets easily hacky. This reproduces the layout behavior while 
+taking full advantage of `ngRepeat` filtering and ordering as well as `ngAnimate` module.
+
+It is meant to be a very light and customizable frame leaving a lot of freedom to the user, especially regarding templates, animations and overall design and responsiveness.
 
 This is a beta version and not production-ready.
 
