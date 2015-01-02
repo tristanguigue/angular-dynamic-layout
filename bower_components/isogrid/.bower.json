@@ -31,7 +31,8 @@
     "tag": "0.1.1",
     "commit": "b095120433d24c3acb9837206757f296b48a5e05"
   },
-  "_source": "git@github.com:tristanguigue/IsoGrid.git",
-  "_target": "*",
-  "_originalSource": "git@github.com:tristanguigue/IsoGrid.git"
+  "_source": "git://github.com/tristanguigue/IsoGrid.git",
+  "_target": "~0.1.1",
+  "_originalSource": "isogrid",
+  "_direct": true
 }
