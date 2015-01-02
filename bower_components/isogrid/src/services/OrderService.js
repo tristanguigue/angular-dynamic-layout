@@ -1,7 +1,7 @@
 /**
 * The rankers service
 *
-* Allows a list of rankers to give priority to the items.
+* Allows a list of rankers to sort the items.
 * If two items are the same regarding the first ranker, the second one is used
 * to part them, etc. 
 *

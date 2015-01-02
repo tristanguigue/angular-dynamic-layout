@@ -1,5 +1,6 @@
 {
   "name": "IsoGrid",
+  "version": "0.1.1",
   "dependencies": {
     "angular": "1.3.5",
     "angular-animate": "1.3.5"
@@ -11,6 +12,10 @@
   "authors": [
     "Tristan Guigue <tristan@tyba.com>"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tristanguigue/IsoGrid.git"
+  },
   "description": "An angularJS approach to dynamic grid",
   "license": "MIT",
   "ignore": [
@@ -19,11 +24,12 @@
     "bower_components",
     "tests"
   ],
-  "_release": "db4ccb4c9d",
+  "private": false,
+  "_release": "0.1.1",
   "_resolution": {
-    "type": "branch",
-    "branch": "master",
-    "commit": "db4ccb4c9dc4fa8f896316bb788928843082ddf3"
+    "type": "version",
+    "tag": "0.1.1",
+    "commit": "b095120433d24c3acb9837206757f296b48a5e05"
   },
   "_source": "git@github.com:tristanguigue/IsoGrid.git",
   "_target": "*",

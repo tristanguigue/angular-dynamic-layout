@@ -37,11 +37,10 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
 
   /**
   * Directive on images to layout after each load
-  * TODO: make it specific to images within the isotope container
   */
-  .directive('img', ['$rootScope', function($rootScope) {
+  .directive('layoutOnLoad', ['$rootScope', function($rootScope) {
       return {
-          restrict: 'E',
+          restrict: 'A',
           link: function(scope, element, attrs) {
               element.bind('load', function() {
                   $rootScope.$broadcast("layout");
