@@ -20,7 +20,7 @@ module.exports = function(config) {
       'bower_components/angular-mocks/angular-mocks.js',
       'src/isogrid.js',
       'src/services/FilterService.js',
-      'src/services/OrderService.js',
+      'src/services/RankerService.js',
       'src/services/PositionService.js',
       'tests/**/*.js'
     ],

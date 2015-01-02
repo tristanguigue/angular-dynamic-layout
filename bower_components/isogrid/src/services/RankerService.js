@@ -19,7 +19,10 @@
 *
 */
 
-isoGridModule.factory('OrderService', function () {
+isoGridModule.factory('RankerService', function () {
+
+  "use strict";
+  
   return {
     /**
     * Order the items with the given rankers
@@ -27,7 +30,7 @@ isoGridModule.factory('OrderService', function () {
     * @param rankers: the array of rankers used to rank the items
     * @return the ordered list of items
     */
-    apply: function (items, rankers) {
+    applyRankers: function (items, rankers) {
       // The ranker counter
       var i = 0;
 
@@ -70,16 +73,20 @@ isoGridModule.factory('OrderService', function () {
 
           if(typeof value_a == "string"){
             var comp = value_a.localeCompare(value_b);
-            if(comp == 1)
-              return ascDesc == "asc"? 1: -1;
-            else if(comp == -1)
-              return ascDesc == "asc"? -1: 1;
+            if(comp == 1){
+              return ascDesc == "asc"? 1: -1;              
+            }
+            else if(comp == -1){
+              return ascDesc == "asc"? -1: 1;              
+            }
           }
           else{
-            if(value_a > value_b)  
-              return ascDesc == "asc"? 1: -1;
-            else if(value_a < value_b) 
-              return ascDesc == "asc"? -1: 1;
+            if(value_a > value_b){
+              return ascDesc == "asc"? 1: -1;              
+            }
+            else if(value_a < value_b){
+              return ascDesc == "asc"? -1: 1;              
+            } 
           }
         }
 

@@ -11,33 +11,38 @@
 isoGridModule.factory('PositionService', 
   ["$window", "$animate", "$timeout", "$q",
   function ($window, $animate, $timeout, $q) {
+    
+     "use strict";
+
     // The list of ongoing animations
     var ongoingAnimations = {};
     // The list of items related to the DOM elements
     var items = [];
     // The list of the DOM elements
     var elements = [];
+    // The columns that contains the items
+    var columns = [];
 
     /**
     * Intialize the columns
     * @param nb: the number of columns to be initialized
     * @return: the empty columns
     */
-    function initColumns(nb){
+    var initColumns = function(nb){
       columns = [];
       for(var i = 0; i < nb ; ++i){
         columns.push([]);
       }
       return columns;
-    }
+    };
 
     /**
-    * Intialize the columns
-    * @param nb: the number of columns to be initialized
-    * @return: the empty columns
+    * Get the columns heights
+    * @param columns: the columns with the items they contain
+    * @return: an array of columns heights
     */
-    function getColumnsHeights(columns){
-      columnsHeights = [];
+    var getColumnsHeights = function(columns){
+      var columnsHeights = [];
       for(var i in columns){
           var h;
           if(columns[i].length){
@@ -49,7 +54,7 @@ isoGridModule.factory('PositionService',
           columnsHeights.push(h);
       }
       return columnsHeights;
-    }
+    };
 
     /**
     * Find the item absolute position and what columns it belongs too
@@ -59,9 +64,10 @@ isoGridModule.factory('PositionService',
     * @param colSize: the column size
     * @return the item's columms and coordinates
     */
-    function getItemColumnsAndPosition(item, colHeights, colSize){
-      if(item.columnSpan > colHeights.length)
-        throw Error("Item too large");
+    var getItemColumnsAndPosition = function(item, colHeights, colSize){
+      if(item.columnSpan > colHeights.length){
+        throw "Item too large";        
+      }
 
       var indexOfMin = 0;
       var minFound = 0;
@@ -85,22 +91,24 @@ isoGridModule.factory('PositionService',
         itemColumns.push(i);
       }
 
-      return {
-        columns : itemColumns, 
-        position : {
+      var position = {
           x : itemColumns[0]*colSize,
           y : minFound
-        }
       };
-    }
+
+      return {
+        columns : itemColumns, 
+        position : position
+      };
+    };
 
     /**
     * Set the items' absolute position
     * @param columns: the empty columns
     * @param colSize: the column size
     */
-    function setItemsPosition(columns, colSize){
-      for(i = 0; i < items.length; ++i){
+    var setItemsPosition = function(columns, colSize){
+      for(var i = 0; i < items.length; ++i){
         var columnsHeights = getColumnsHeights(columns);
 
         var itemColumnsAndPosition = getItemColumnsAndPosition(items[i], 
@@ -115,31 +123,31 @@ isoGridModule.factory('PositionService',
         items[i].x = itemColumnsAndPosition.position.x;
         items[i].y = itemColumnsAndPosition.position.y;
       }
-    }
+    };
 
     /**
     * Get the column size based on the minimum width of the items
     * @return: column size
     */
-    function getColSize(){
+    var getColSize = function(){
       var col_size;
-      for(i = 0; i < items.length; ++i){
+      for(var i = 0; i < items.length; ++i){
         if(!col_size || items[i].width < col_size)
           col_size = items[i].width;
       }
       return col_size;
-    }
+    };
 
     /**
     * Set the column span for each of the items based on their width and the
     * column size
     * @param: column size
     */
-    function setItemsColumnSpan(colSize){
-      for(i = 0; i < items.length; ++i){
+    var setItemsColumnSpan = function(colSize){
+      for(var i = 0; i < items.length; ++i){
         items[i].columnSpan = Math.ceil(items[i].width / colSize);
       }
-    }
+    };
 
     return {
       /**
@@ -175,6 +183,9 @@ isoGridModule.factory('PositionService',
       * @return: the promise of the position animations being completed
       */
       applyToDOM : function(previousItems){
+
+        var ret = $q.defer();
+
         /**
         * Launch an animation on a specific element
         * Once the animation is complete remove it from the ongoing animation
@@ -221,11 +232,9 @@ isoGridModule.factory('PositionService',
           });
         };
 
-        var ret = $q.defer();
-
         if(angular.equals(previousItems, items)){
           ret.resolve();
-          return ret.promise;            
+          return ret.promise;
         }
         // We need to cancel all ongoing animations before we start the new
         // ones
@@ -250,7 +259,7 @@ isoGridModule.factory('PositionService',
       * @param containerWidth: the width of the isogrid container
       * @return: the promise of the position animations being completed
       */
-      apply: function (containerWidth) {
+      layout: function (containerWidth) {
         // We keep a copy of the previous items so that if they haven't change
         // we don't launch the animations
         var previousItems = angular.copy(items);
@@ -273,6 +282,11 @@ isoGridModule.factory('PositionService',
 
         // We apply those positions to the DOM with an animation
         return this.applyToDOM(previousItems);
+      },
+
+      // Make the columns public 
+      columns: function(){
+        return columns;
       }
    };
 

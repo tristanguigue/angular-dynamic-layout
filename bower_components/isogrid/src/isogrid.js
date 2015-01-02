@@ -4,32 +4,43 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
   * The filter to be applied on the ng-repeat directive
   */
   .filter('customFilter', ['FilterService', function(FilterService) {
-      return function( items, filters) {
-        if(filters)
-          return FilterService.apply(items, filters);
-        else
-          return items;
-      };
+
+    "use strict";
+    
+    return function( items, filters) {
+      if(filters){
+        return FilterService.applyFilters(items, filters);        
+      }
+      else{
+        return items;        
+      }
+    };
   }])
 
   /**
   * The ranker to be applied on the ng-repeat directive
   */
-  .filter('customRanker', ['OrderService', function(OrderService) {
-      return function( items, rankers) {
-        if(rankers){
-          return OrderService.apply(items, rankers);
-        }else{
-          return items;
-        }
-          
-      };
+  .filter('customRanker', ['RankerService', function(RankerService) {
+
+    "use strict";
+    
+    return function( items, rankers) {
+      if(rankers){
+        return RankerService.applyRankers(items, rankers);
+      }else{
+        return items;
+      }
+        
+    };
   }])
 
   /**
   * This allowed the result of the filters to be assigned to the scope
   */
   .filter("as", ['$parse', function($parse) {
+
+    "use strict";
+    
     return function(value, context, path) {
       return $parse(path).assign(context, value);
     };
@@ -39,18 +50,17 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
   * Directive on images to layout after each load
   */
   .directive('layoutOnLoad', ['$rootScope', function($rootScope) {
-      return {
-          restrict: 'A',
-          link: function(scope, element, attrs) {
-              element.bind('load', function() {
-                  $rootScope.$broadcast("layout");
-              });
-              element.bind('error', function() {
-                  $rootScope.$broadcast("layout");
-              });
 
-          }
-      };
+    "use strict";
+    
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+          element.bind('load error', function() {
+              $rootScope.$broadcast("layout");
+          });
+        }
+    };
   }])
 
   /**
@@ -61,9 +71,11 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
   * @scope filters: the filters to be applied on the list of items 
   */
   .directive('isogrid',
-    ['PositionService', '$timeout', '$window', '$q', '$animate',
-    function (PositionService, $timeout, $window, $q, $animate) {
+    ['$timeout', '$window', '$q', '$animate','PositionService',
+    function ($timeout, $window, $q, $animate, PositionService) {
 
+      "use strict";
+      
       return {
         restrict: "A",
         scope: {
@@ -80,12 +92,15 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
                       ng-include="it.template"              \
                   ></div>',
         link : function (scope, element, attrs){
+          // Keep count of the number of templates left to load
+          scope.templatesToLoad = 0;
+
           /**
           * Use the PositionService to layout the items
           * @return the promise of the cards being animated
           */
           var layout = function(){
-            return PositionService.apply(element[0].offsetWidth); 
+            return PositionService.layout(element[0].offsetWidth); 
           };
 
           /**
@@ -103,18 +118,20 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
             });
 
             scope.$watch('templatesToLoad', function(newValue, oldValue){
-              if(newValue !== oldValue && scope.templatesToLoad === 0)
-                def.resolve();   
+              if(newValue !== oldValue && scope.templatesToLoad === 0){
+                def.resolve();                
+              }
             });
 
             return def.promise;
           };
 
-          scope.templatesToLoad = 0;
-
+          // Fires when a template is requested through the ng-include directive
           scope.$on("$includeContentRequested", function(){
             scope.templatesToLoad++;
           });
+          // Fires when a template has been loaded through the ng-include 
+          // directive
           scope.$on("$includeContentLoaded", function(){
             scope.templatesToLoad--;
           });

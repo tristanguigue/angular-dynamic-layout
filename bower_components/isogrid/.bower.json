@@ -1,6 +1,6 @@
 {
   "name": "IsoGrid",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "dependencies": {
     "angular": "1.3.5",
     "angular-animate": "1.3.5"
@@ -25,14 +25,13 @@
     "tests"
   ],
   "private": false,
-  "_release": "0.1.1",
+  "_release": "0.1.2",
   "_resolution": {
     "type": "version",
-    "tag": "0.1.1",
-    "commit": "b095120433d24c3acb9837206757f296b48a5e05"
+    "tag": "0.1.2",
+    "commit": "36860e830f281eed2e80317c6bf730ef31f2cb77"
   },
   "_source": "git://github.com/tristanguigue/IsoGrid.git",
-  "_target": "~0.1.1",
-  "_originalSource": "isogrid",
-  "_direct": true
+  "_target": "*",
+  "_originalSource": "isogrid"
 }
