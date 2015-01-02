@@ -41,24 +41,27 @@ isoGridModule.factory('FilterService', function () {
   */
   var checkStatement = function(item, statement){
     // If the statement is a custom filter, we give the item as a parameter
-    if(typeof(statement) == "function")
-      return statement(item);                    
+    if(typeof(statement) == "function"){
+      return statement(item);      
+    }
 
     // If the statement is a regular filter, it has to be with the form
-    // [propertyName, comparator, value]    
+    // [propertyName, comparator, value]
     else{
-      if(statement.length<2)
+      var STATEMENT_LENGTH = 3;
+      if(statement.length < STATEMENT_LENGTH){
         throw "Incorrect statement";
+      }
       
       var property = statement[0];
       var comparator = statement[1];
       var value = statement[2];
       
-      if(COMPARATORS.indexOf(comparator) === -1)
-        throw "Incorrect statement comparator: " +  comparator;
-
-      if(!item[property])
-        return false;
+      // If the property is not found in the item then we consider the 
+      // statement to be false
+      if(!item[property]){
+        return false;        
+      }
 
       switch(comparator){
         case '=':
@@ -81,6 +84,8 @@ isoGridModule.factory('FilterService', function () {
           if(!(item[property] instanceof Array))
             throw "contains statement has to be applied on array";
           return item[property].indexOf(value) > -1;
+        default:
+          throw "Incorrect statement comparator: " +  comparator;  
       }
     }
   };
@@ -94,8 +99,9 @@ isoGridModule.factory('FilterService', function () {
   */
   var checkOrGroup = function(item, orGroup){
     for(var j in orGroup){
-      if(checkStatement(item, orGroup[j]))
-        return true;
+      if(checkStatement(item, orGroup[j])){
+        return true;        
+      }
     }
     return false;
   };
@@ -109,8 +115,9 @@ isoGridModule.factory('FilterService', function () {
   */
   var checkAndGroup = function(item, andGroup){
     for(var i in andGroup){
-      if(!checkOrGroup(item, andGroup[i]))
-        return false;
+      if(!checkOrGroup(item, andGroup[i])){
+        return false;        
+      }
     }
     return true;
   };
@@ -122,11 +129,12 @@ isoGridModule.factory('FilterService', function () {
     * @param filters: the array of and groups use to probe the item
     * @return the list of items that passes the filters
     */
-    apply: function (items, filters) {
+    applyFilters: function (items, filters) {
       var retItems = [];
       for(var i in items){
-        if(checkAndGroup(items[i], filters))
-          retItems.push(items[i]);
+        if(checkAndGroup(items[i], filters)){
+          retItems.push(items[i]);          
+        }
       }
       return retItems;
     }

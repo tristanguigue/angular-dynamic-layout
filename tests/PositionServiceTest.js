@@ -50,14 +50,15 @@ describe('PositionService', function(){
         ];
 
         // Disable DOM manipulation
-        spyOn(PositionService, 'getItemsDimensionFromDOM').and.returnValue(items);
+        spyOn(PositionService, 'getItemsDimensionFromDOM')
+            .and.returnValue(items);
         spyOn(PositionService, 'applyToDOM');
 
         // Test that items were properly set up in the grid
         // Input : list of items with their dimensions (width, height)
         // Output : x,y of each item
         
-        PositionService.apply(300, items.length);
+        PositionService.layout(300);
 
         expect(columns[0].length).toEqual(3);
         expect(columns[1].length).toEqual(2);

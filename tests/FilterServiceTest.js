@@ -49,7 +49,7 @@ describe('FilterService', function(){
           ]
         ];
 
-        var itemsRes = FilterService.apply(angular.copy(items), filters);
+        var itemsRes = FilterService.applyFilters(angular.copy(items), filters);
         expect( itemsRes.length).toEqual(1);
         expect( itemsRes[0].id ).toEqual(5);
 
@@ -64,7 +64,7 @@ describe('FilterService', function(){
           [myCustomFilter]
         ];
 
-        itemsRes = FilterService.apply(angular.copy(items), filters);
+        itemsRes = FilterService.applyFilters(angular.copy(items), filters);
         expect( itemsRes.length).toEqual(4);
       }));
 });

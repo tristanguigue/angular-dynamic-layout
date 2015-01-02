@@ -1,15 +1,15 @@
 
-describe('OrderService', function(){
+describe('RankerService', function(){
     
     beforeEach(module('isoGrid'));
     
-    it('check that apply function exists', inject(function(OrderService){ 
-            expect( OrderService.apply ).not.toEqual(null);
+    it('check that apply function exists', inject(function(RankerService){ 
+            expect( RankerService.apply ).not.toEqual(null);
     }));
 
 
     it('check that rankers work properly',
-      inject(function(OrderService) {
+      inject(function(RankerService) {
 
         var items = [
           {
@@ -44,7 +44,7 @@ describe('OrderService', function(){
           ["atomicNumber", "desc"]
         ];
 
-        var itemsRes = OrderService.apply(angular.copy(items), rankers);
+        var itemsRes = RankerService.applyRankers(angular.copy(items), rankers);
 
         expect( itemsRes[0].id).toEqual(3);
         expect( itemsRes[1].id ).toEqual(2);
@@ -60,7 +60,7 @@ describe('OrderService', function(){
         rankers = [
           [myCustomGetter, "asc"]
         ];
-        itemsRes = OrderService.apply(angular.copy(items), rankers);
+        itemsRes = RankerService.applyRankers(angular.copy(items), rankers);
         expect( itemsRes[0].id).toEqual(2);
         expect( itemsRes[1].id ).toEqual(3);
         expect( itemsRes[2].id ).toEqual(5);

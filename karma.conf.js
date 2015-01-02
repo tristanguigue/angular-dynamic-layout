@@ -20,7 +20,7 @@ module.exports = function(config) {
       'bower_components/angular-mocks/angular-mocks.js',
       'src/isogrid.js',
       'src/services/FilterService.js',
-      'src/services/OrderService.js',
+      'src/services/RankerService.js',
       'src/services/PositionService.js',
       'tests/**/*.js'
     ],
@@ -62,7 +62,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Firefox', 'Chrome', 'Safari'],
+    browsers: ['Firefox'],
 
 
     // Continuous Integration mode
