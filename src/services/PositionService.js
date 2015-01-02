@@ -162,7 +162,7 @@ isoGridModule.factory('PositionService',
         );
         items = [];
 
-        for(i = 0; i < elements.length; ++i){
+        for(var i = 0; i < elements.length; ++i){
           // Note: we need to get the children element width because that's
           // where the style is applied
           items.push({
@@ -221,7 +221,7 @@ isoGridModule.factory('PositionService',
         * @return: the promise of the animations being completed
         */
         var launchAnimations = function(){
-          for(i = 0; i < items.length; ++i){
+          for(var i = 0; i < items.length; ++i){
             // We need to pass the specific element we're dealing with
             // because at the next iteration elements[i] might point to
             // something else
