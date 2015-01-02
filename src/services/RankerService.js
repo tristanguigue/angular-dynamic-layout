@@ -20,6 +20,9 @@
 */
 
 isoGridModule.factory('RankerService', function () {
+
+  "use strict";
+  
   return {
     /**
     * Order the items with the given rankers

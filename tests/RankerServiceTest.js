@@ -4,7 +4,7 @@ describe('RankerService', function(){
     beforeEach(module('isoGrid'));
     
     it('check that apply function exists', inject(function(RankerService){ 
-            expect( RankerService.apply ).not.toEqual(null);
+            expect( RankerService.applyRankers ).toBeDefined();
     }));
 
 
@@ -68,5 +68,6 @@ describe('RankerService', function(){
         expect( itemsRes[4].id ).toEqual(4);
 
       }));
+
 });
 

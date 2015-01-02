@@ -29,6 +29,9 @@
 */
 
 isoGridModule.factory('FilterService', function () {
+
+  "use strict";
+  
   // The list of available comparators
   var COMPARATORS = ['=', '<', '>', '<=', '>=', '!=', 
                      'in', 'not in', 'contains'];

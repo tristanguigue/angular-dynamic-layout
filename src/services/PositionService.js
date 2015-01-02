@@ -11,12 +11,17 @@
 isoGridModule.factory('PositionService', 
   ["$window", "$animate", "$timeout", "$q",
   function ($window, $animate, $timeout, $q) {
+    
+     "use strict";
+
     // The list of ongoing animations
     var ongoingAnimations = {};
     // The list of items related to the DOM elements
     var items = [];
     // The list of the DOM elements
     var elements = [];
+    // The columns that contains the items
+    var columns = [];
 
     /**
     * Intialize the columns
@@ -37,7 +42,7 @@ isoGridModule.factory('PositionService',
     * @return: an array of columns heights
     */
     var getColumnsHeights = function(columns){
-      columnsHeights = [];
+      var columnsHeights = [];
       for(var i in columns){
           var h;
           if(columns[i].length){
@@ -61,7 +66,7 @@ isoGridModule.factory('PositionService',
     */
     var getItemColumnsAndPosition = function(item, colHeights, colSize){
       if(item.columnSpan > colHeights.length){
-        throw Error("Item too large");        
+        throw "Item too large";        
       }
 
       var indexOfMin = 0;
@@ -103,7 +108,7 @@ isoGridModule.factory('PositionService',
     * @param colSize: the column size
     */
     var setItemsPosition = function(columns, colSize){
-      for(i = 0; i < items.length; ++i){
+      for(var i = 0; i < items.length; ++i){
         var columnsHeights = getColumnsHeights(columns);
 
         var itemColumnsAndPosition = getItemColumnsAndPosition(items[i], 
@@ -126,7 +131,7 @@ isoGridModule.factory('PositionService',
     */
     var getColSize = function(){
       var col_size;
-      for(i = 0; i < items.length; ++i){
+      for(var i = 0; i < items.length; ++i){
         if(!col_size || items[i].width < col_size)
           col_size = items[i].width;
       }
@@ -139,7 +144,7 @@ isoGridModule.factory('PositionService',
     * @param: column size
     */
     var setItemsColumnSpan = function(colSize){
-      for(i = 0; i < items.length; ++i){
+      for(var i = 0; i < items.length; ++i){
         items[i].columnSpan = Math.ceil(items[i].width / colSize);
       }
     };
@@ -229,7 +234,7 @@ isoGridModule.factory('PositionService',
 
         if(angular.equals(previousItems, items)){
           ret.resolve();
-          return ret.promise;            
+          return ret.promise;
         }
         // We need to cancel all ongoing animations before we start the new
         // ones
@@ -277,6 +282,11 @@ isoGridModule.factory('PositionService',
 
         // We apply those positions to the DOM with an animation
         return this.applyToDOM(previousItems);
+      },
+
+      // Make the columns public 
+      columns: function(){
+        return columns;
       }
    };
 
