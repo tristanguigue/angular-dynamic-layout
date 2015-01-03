@@ -18,10 +18,10 @@ module.exports = function(config) {
       'bower_components/angular/angular.min.js',
       'bower_components/angular-animate/angular-animate.min.js',
       'bower_components/angular-mocks/angular-mocks.js',
-      'src/isogrid.js',
-      'src/services/FilterService.js',
-      'src/services/RankerService.js',
-      'src/services/PositionService.js',
+      'src/dynamic-layout.js',
+      'src/services/filter.js',
+      'src/services/ranker.js',
+      'src/services/position.js',
       'tests/**/*.js'
     ],
 
@@ -62,7 +62,7 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Firefox', 'Chrome', 'Safari'],
+    browsers: ['Firefox'],
 
 
     // Continuous Integration mode

@@ -1,4 +1,4 @@
-var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
+var dynamicLayoutModule = angular.module('dynamicLayout', ['ngAnimate'])
 
   /**
   * The filter to be applied on the ng-repeat directive
@@ -70,7 +70,7 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
   * @scope rankers: the rankers to be applied on the list of items 
   * @scope filters: the filters to be applied on the list of items 
   */
-  .directive('isogrid',
+  .directive('dynamicLayout',
     ['$timeout', '$window', '$q', '$animate','PositionService',
     function ($timeout, $window, $q, $animate, PositionService) {
 
@@ -84,7 +84,7 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
           filters: '=filters'
         },
         template: '<div                                     \
-                      class="isogrid-item-parent"           \
+                      class="dynamic-layout-item-parent"           \
                       ng-repeat="it in items |              \
                                  customFilter: filters |    \
                                  customRanker:rankers |     \
@@ -137,8 +137,8 @@ var isoGridModule = angular.module('isoGrid', ['ngAnimate'])
           });
 
           /**
-          * This allows the external scope, that is the scope of isogrid's
-          * container to be  called from the templates
+          * This allows the external scope, that is the scope of
+          * dynamic-layout's container to be  called from the templates
           * @return the given scope
           */
           scope.externalScope = function(){

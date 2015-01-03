@@ -31,7 +31,7 @@ module.exports = function(grunt) {
       },
       build: {
         files: {
-          'dist/isogrid.min.js':  ['src/**/*.js'] 
+          'dist/angular-dynamic-layout.min.js':  ['src/**/*.js'] 
         }
       }
     }

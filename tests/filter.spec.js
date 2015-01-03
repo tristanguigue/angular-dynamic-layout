@@ -1,6 +1,6 @@
 describe('FilterService', function(){
     
-  beforeEach(module('isoGrid'));
+  beforeEach(module('dynamicLayout'));
   
   it('check that apply function exists', inject(function(FilterService){
     expect( FilterService.applyFilters ).toBeDefined();

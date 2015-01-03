@@ -1,6 +1,6 @@
 describe('PositionService', function(){
     
-  beforeEach(module('isoGrid'));
+  beforeEach(module('dynamicLayout'));
   
   it('check that apply function exists', inject(function(PositionService){ 
     expect( PositionService.layout ).toBeDefined();

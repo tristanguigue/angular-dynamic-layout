@@ -8,7 +8,7 @@
 * personalized animations
 *
 */
-isoGridModule.factory('PositionService', 
+dynamicLayoutModule.factory('PositionService', 
   ["$window", "$animate", "$timeout", "$q",
   function ($window, $animate, $timeout, $q) {
     
@@ -158,7 +158,7 @@ isoGridModule.factory('PositionService',
         // not(.ng-leave) : we don't want to select elements that have been 
         // removed but are  still in the DOM
         elements = document.querySelectorAll(
-          ".isogrid-item-parent:not(.ng-leave)"
+          ".dynamic-layout-item-parent:not(.ng-leave)"
         );
         items = [];
 
@@ -256,7 +256,7 @@ isoGridModule.factory('PositionService',
 
       /**
       * Apply the position service on the elements in the DOM
-      * @param containerWidth: the width of the isogrid container
+      * @param containerWidth: the width of the dynamic-layout container
       * @return: the promise of the position animations being completed
       */
       layout: function (containerWidth) {

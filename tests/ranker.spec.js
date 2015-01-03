@@ -1,7 +1,7 @@
 
 describe('RankerService', function(){
     
-    beforeEach(module('isoGrid'));
+    beforeEach(module('dynamicLayout'));
     
     it('check that apply function exists', inject(function(RankerService){ 
             expect( RankerService.applyRankers ).toBeDefined();
