@@ -1,8 +1,8 @@
 {
-  "name": "isogrid_demo",
+  "name": "dynamic-layout-demo",
   "version": "0.1.0",
   "dependencies": {
-    "isogrid": "latest",
+    "angular-dynamic-layout": "latest",
     "bootstrap": "latest",
     "bootcards": "latest"
   }

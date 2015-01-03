@@ -1,7 +1,8 @@
 /**
- * The demo application that will allow to showcase the use of IsoGrid
+ * The demo application that will allow to showcase the use of 
+ * angular-dynamic-layout
  */
-var gridApp = angular.module('gridApp', ['isoGrid']);
+var gridApp = angular.module('gridApp', ['dynamicLayout']);
 
 /**
  * An example of controller that can be used to manipulate a specific card

@@ -19,7 +19,7 @@
 *
 */
 
-isoGridModule.factory('RankerService', function () {
+dynamicLayoutModule.factory('RankerService', function () {
 
   "use strict";
   

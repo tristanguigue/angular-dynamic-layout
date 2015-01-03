@@ -7,48 +7,53 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css"></script>
     <script src="bower_components/angular/angular.min.js"></script>
     <script src="bower_components/angular-animate/angular-animate.min.js"></script>
-    <script src="bower_components/isogrid/dist/isogrid.min.js"></script>
+    <!--<script src="bower_components/isogrid/dist/isogrid.min.js"></script>-->
+    <script src="bower_components/angular-dynamic-layout/src/dynamic-layout.js"></script>
+    <script src="bower_components/angular-dynamic-layout/src/services/ranker.js"></script>
+    <script src="bower_components/angular-dynamic-layout/src/services/position.js"></script>
+    <script src="bower_components/angular-dynamic-layout/src/services/filter.js"></script>
+
     <script src="app/app.js"></script>
 
     <style>
 
     @media (min-width: 900px) {
-      [isogrid]{
+      [dynamic-layout]{
         width: 900px;
       }
-      .isogrid-col-4{
+      .dynamic-layout-col-4{
         width : 300px;
       }
-      .isogrid-col-8{
+      .dynamic-layout-col-8{
         width : 600px;
       }
     }
 
     @media (min-width: 600px) and (max-width: 900px){
-      [isogrid]{
+      [dynamic-layout]{
         width: 600px;
       }
-      .isogrid-col-4{
+      .dynamic-layout-col-4{
         width : 300px;
       }
-      .isogrid-col-8{
+      .dynamic-layout-col-8{
         width : 600px;
       }
     }
 
     @media (max-width: 600px){
-      [isogrid]{
+      [dynamic-layout]{
         width: 300px;
       }
-      .isogrid-col-4{
+      .dynamic-layout-col-4{
         width : 300px;
       }
-      .isogrid-col-8{
+      .dynamic-layout-col-8{
         width : 300px;
       }
     }
 
-    .isogrid-item {
+    .dynamic-layout-item {
       padding: 10px;
     }
 
@@ -58,23 +63,23 @@
       transition-timing-function: ease-in-out;
     }
 
-    .isogrid-item-parent.ng-enter{
+    .dynamic-layout-item-parent.ng-enter{
       transition: .5s ease-in-out;
       opacity:0;
     }
-    .isogrid-item-parent.ng-enter.ng-enter-active{
+    .dynamic-layout-item-parent.ng-enter.ng-enter-active{
       opacity:1;
     }
 
-    .isogrid-item-parent.ng-leave{
+    .dynamic-layout-item-parent.ng-leave{
       transition: .5s ease-in-out;
       opacity:1;
     }
-    .isogrid-item-parent.ng-leave.ng-leave-active{
+    .dynamic-layout-item-parent.ng-leave.ng-leave-active{
       opacity:0;
     }
 
-    [isogrid]{
+    [dynamic-layout]{
       float: left;
       position: relative;
     }
@@ -87,11 +92,11 @@
     }
 
     </style>
-    <title>IsoGrid Demo</title>
+    <title>angular-dynamic-layout demo</title>
   </head>
   <body ng-controller="GridContainer">
     <div class="container-fluid">
-      <h2>Responsive IsoGrid Demo</h2>
+      <h2>angular-dynamic-layout demo</h2>
       <div class="btn-toolbar" role="toolbar" aria-label="...">
         <div class="btn-group btn-group-lg" role="group">
                   <button class="btn btn-default" ng-click="filter('home')">Home</button>
@@ -113,9 +118,9 @@
           </button>          
         </div>
       </div>
-      <div isogrid items="cards" filters="filters" rankers="rankers"></div>
+      <div dynamic-layout items="cards" filters="filters" rankers="rankers"></div>
     </div>
-    <a href="https://github.com/tristanguigue/IsoGrid">
+    <a href="https://github.com/tristanguigue/angular-dynamic-layout">
       <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png">
     </a>
   </body>

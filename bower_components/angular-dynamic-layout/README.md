@@ -1,22 +1,21 @@
 # What is this?
 
-IsoGrid is an angularJS (no jQuery) approach to dynamic grids. It is inspired from the successfull [jQuery isotope library](http://isotope.metafizzy.co/) and its underlying [masonry layout](http://masonry.desandro.com/)
+angular-dynamic-layout is an angularJS (no jQuery) approach to dynamic grids. It is inspired from the successfull [jQuery isotope library](http://isotope.metafizzy.co/) and its underlying [masonry layout](http://masonry.desandro.com/)
 
-Including jQuery isotope into angularJS directives gets easily hacky. This reproduces the layout behavior while 
-taking full advantage of `ngRepeat` filtering and ordering as well as `ngAnimate` module.
+Including jQuery isotope into angularJS directives gets easily hacky. This reproduces the layout behavior while taking full advantage of `ngRepeat` filtering and ordering as well as `ngAnimate` module.
 
 It is meant to be a very light and customizable frame leaving a lot of freedom to the user, especially regarding templates, animations and overall design and responsiveness.
 
 This is a beta version and not production-ready.
 
 # Demo
-- [Demo](http://tristanguigue.github.io/IsoGrid)
-- [Demo Code](https://github.com/tristanguigue/IsoGrid/tree/gh-pages)
+- [Demo](http://tristanguigue.github.io/angular-dynamic-layout)
+- [Demo Code](https://github.com/tristanguigue/angular-dynamic-layout/tree/gh-pages)
 
 # Installation
 
 ````
-bower install isogrid
+bower install angular-dynamic-layout
 ```
 # Usage
 Controller:
@@ -36,12 +35,12 @@ $scope.cards = [
 ````
 Template:
 ````  
-<div isogrid items="cards"></div>
+<div dynamic-layout items="cards"></div>
 ````
 
 ## Cards
 
-IsoGrid items must have a template property, this template will be dynamically included using the `ng-include` directive.
+Items must have a template property, this template will be dynamically included using the `ng-include` directive.
 
 - Content: the templates' content is entirely up to you. 
 
@@ -95,7 +94,7 @@ Template:
 ````
 
 ## Responsiveness and mediaqueries
-To make IsoGrid responsive just create a set of media queries that ajust the size of your cards and of the container. IsoGrid will find the container and cards widths on its own.
+To make your layout responsive just create a set of media queries that ajust the size of your cards and of the container. dynamic-layout will find the container and cards widths on its own.
 
 ## Animations
 The animations are based on the `ngAnimate` module, they are also up to you. Here are the available animations:
@@ -111,19 +110,19 @@ The animations are based on the `ngAnimate` module, they are also up to you. Her
 - `ng-enter` and `ng-leave`: you can animate the entering and leaving of your cards in the grid, for example when applying filters: 
 
 ````
-.isogrid-item-parent.ng-enter{
+.dynamic-layout-item-parent.ng-enter{
   transition: .5s ease-in-out;
   opacity:0;
 }
-.isogrid-item-parent.ng-enter.ng-enter-active{
+.dynamic-layout-item-parent.ng-enter.ng-enter-active{
   opacity:1;
 }
 
-.isogrid-item-parent.ng-leave{
+.dynamic-layout-item-parent.ng-leave{
   transition: .5s ease-in-out;
   opacity:1;
 }
-.isogrid-item-parent.ng-leave.ng-leave-active{
+.dynamic-layout-item-parent.ng-leave.ng-leave-active{
   opacity:0;
 }
 ````
@@ -133,7 +132,7 @@ The animations are based on the `ngAnimate` module, they are also up to you. Her
 ### Filtering
 You can provide and update a list of filters like this: 
 ````
-<div isogrid items="cards" filters="filters"></div>
+<div dynamic-layout items="cards" filters="filters"></div>
 ````
 Those filters needs to be in the [Conjuctive Normal Form](http://en.wikipedia.org/wiki/Conjunctive_normal_form). Basically a list of and groups composed of or groups. Each statement contains the property to be evaluated, a comparator and the value(s) allowed. For example:
 ````
@@ -170,7 +169,7 @@ filters = [
 ### Sorting
 You can provide and update a list of rankers like this: 
 ````
-<div isogrid items="cards" rankers="rankers"></div>
+<div dynamic-layout items="cards" rankers="rankers"></div>
 ````
 Each ranker contains the property to be evaluated and the order. If two items are the same regarding the first ranker, the second one is used to part them, etc. 
 ````
@@ -196,7 +195,7 @@ rankers = [
 
 ### Adding and removing items
 
-You can add or remove any items from the cards list controller and the IsoGrid directive will detect it. For example:
+You can add or remove any items from the cards list controller and the dynamicLayout directive will detect it. For example:
 ````
 $scope.cards.splice(index, 1);
 ````

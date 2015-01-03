@@ -28,7 +28,7 @@
 *
 */
 
-isoGridModule.factory('FilterService', function () {
+dynamicLayoutModule.factory('FilterService', function () {
 
   "use strict";
   
