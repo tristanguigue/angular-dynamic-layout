@@ -179,10 +179,9 @@ dynamicLayoutModule.factory('PositionService',
 
       /**
       * Apply positions to the DOM with an animation
-      * @param previousItems: the list of items at the previous iteration
       * @return: the promise of the position animations being completed
       */
-      applyToDOM : function(previousItems){
+      applyToDOM : function(){
 
         var ret = $q.defer();
 
@@ -232,10 +231,6 @@ dynamicLayoutModule.factory('PositionService',
           });
         };
 
-        if(angular.equals(previousItems, items)){
-          ret.resolve();
-          return ret.promise;
-        }
         // We need to cancel all ongoing animations before we start the new
         // ones
         if(Object.keys(ongoingAnimations).length){
@@ -260,10 +255,6 @@ dynamicLayoutModule.factory('PositionService',
       * @return: the promise of the position animations being completed
       */
       layout: function (containerWidth) {
-        // We keep a copy of the previous items so that if they haven't change
-        // we don't launch the animations
-        var previousItems = angular.copy(items);
-
         // We first gather the items dimension based on the DOM elements
         items = this.getItemsDimensionFromDOM();
 
@@ -281,7 +272,7 @@ dynamicLayoutModule.factory('PositionService',
         setItemsPosition(columns, colSize);
 
         // We apply those positions to the DOM with an animation
-        return this.applyToDOM(previousItems);
+        return this.applyToDOM();
       },
 
       // Make the columns public 
