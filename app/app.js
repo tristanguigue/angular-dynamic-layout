@@ -18,14 +18,12 @@ gridApp.controller('Work1Controller', ['$scope', '$rootScope', '$timeout',
       $scope.showingMoreText = !$scope.showingMoreText;
       // We need to broacast the layout on the next digest once the text
       // is actually shown
-      // TODO: for some reason 2 timeouts are needed here or 10ms of delay
+      // TODO: for some reason 2 a $timeout is here necessary
       $timeout(function(){
-        $timeout(function(){
-          $rootScope.$broadcast("layout", function(){
-            // The layout animations have completed
-          });
+        $rootScope.$broadcast("layout", function(){
+          // The layout animations have completed
         });
-      });
+      }, 20);
     }
 }]);
 
