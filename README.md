@@ -1,8 +1,8 @@
 # What is this?
 
-angular-dynamic-layout is an angularJS (no jQuery) approach to dynamic grids. It is inspired from the successfull [jQuery isotope library](http://isotope.metafizzy.co/) and its underlying [masonry layout](http://masonry.desandro.com/)
+angular-dynamic-layout is an AngularJS dynamic grid layout. It is inspired from the successfull jQuery [isotope](http://isotope.metafizzy.co/) library and its underlying [masonry](http://masonry.desandro.com/) layout.
 
-Including jQuery isotope into angularJS directives gets easily hacky. This reproduces the layout behavior while taking full advantage of `ngRepeat` filtering and ordering as well as `ngAnimate` module.
+Including jQuery isotope into AngularJS directives gets easily hacky, this library reproduces the layout behavior while taking advantage of `ngRepeat` filtering and ordering as well as `ngAnimate` module.
 
 It is meant to be a very light and customizable frame leaving a lot of freedom to the user, especially regarding templates, animations and overall design and responsiveness.
 
@@ -23,13 +23,9 @@ Controller:
 $scope.cards = [
   {
     template : "app/partials/aboutMe.html",
-    tabs : ["home", "personal"],
-    added : 1454871272105
   },
   {
     template : "app/partials/businessCard.html",
-    tabs : ["home"],
-    added : 1434871272105
   }
 ];
 ````
@@ -42,9 +38,9 @@ Template:
 
 Items must have a template property, this template will be dynamically included using the `ng-include` directive.
 
-- Content: the templates' content is entirely up to you. 
+- Content: the templates' HTML content is entirely up to you. 
 
-- Controller: each card can have its specific controller, you can also have a common controller for all cards. For example: 
+- Controller: each card can have a specific controller, you can also have a common controller for all cards. For example: 
 ````
 <!-- aboutMe.html -->
 <div ng-controller="aboutMeController">
@@ -52,7 +48,7 @@ Items must have a template property, this template will be dynamically included 
 </div>
 ````
 
-- External Scope: to reach the controller that injected the cards from the cards themselves you can use `externalScope()`
+- External Scope: to reach the directive's parent controller you can use `externalScope()` in the cards' template.
 
 - Data: you can provide any data to your templates from the list of cards, for example:
 
@@ -93,11 +89,12 @@ Template:
 </div>
 ````
 
-## Responsiveness and mediaqueries
-To make your layout responsive just create a set of media queries that ajust the size of your cards and of the container. dynamic-layout will find the container and cards widths on its own.
+## Responsiveness
+To make your layout responsive just create a set of media queries that ajust the size of your cards and of the container. dynamic-layout will find the container and cards widths on its own. A layout will be triggered when the screen's size changes.
 
 ## Animations
-The animations are based on the `ngAnimate` module, they are also up to you. Here are the available animations:
+The animations are based on the `ngAnimate` module, they are entirely up to you and set in the CSS.
+Here are the available animations:
 
 - `move-items-animation`: use this class to animate the movement of the cards between two positions, for example:
 ````
