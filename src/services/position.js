@@ -238,14 +238,14 @@ dynamicLayoutModule.factory('PositionService',
               $animate.cancel(ongoingAnimations[j]);
               delete ongoingAnimations[j];
           }
-          // For some reason we need to launch the new animations at the next
-          // digest
-          $timeout(function(){
-            launchAnimations(ret);
-          });
-        }else{
-          launchAnimations(ret);
         }
+        
+        // For some reason we need to launch the new animations at the next
+        // digest
+        $timeout(function(){
+          launchAnimations(ret);
+        });
+
         return ret.promise;
       },
 
