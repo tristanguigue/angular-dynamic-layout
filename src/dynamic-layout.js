@@ -149,6 +149,10 @@ var dynamicLayoutModule = angular.module('dynamicLayout', ['ngAnimate'])
           * Triggers a layout every time the items are changed
           */
           scope.$watch('filteredItems', function(newValue, oldValue){
+            // We want the filteredItems to be available to the controller
+            // This feels hacky, there must be a better way to do this
+            scope.$parent.filteredItems = scope.filteredItems;
+
             if(!angular.equals(newValue, oldValue)){
               itemsLoaded().then(function(){
                   layout();
