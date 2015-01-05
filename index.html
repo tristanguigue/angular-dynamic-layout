@@ -20,6 +20,7 @@
     @media (min-width: 900px) {
       [dynamic-layout]{
         width: 900px;
+        margin-top: 20px;
       }
       .dynamic-layout-col-4{
         width : 300px;
@@ -59,7 +60,7 @@
 
     .move-items-animation{
       transition-property: left, top;
-      transition-duration: 1s;
+      transition-duration: .5s;
       transition-timing-function: ease-in-out;
     }
 
@@ -91,31 +92,72 @@
 
     }
 
+    .title{
+      margin-bottom: 50px;
+    }
+
     </style>
     <title>angular-dynamic-layout demo</title>
   </head>
   <body ng-controller="GridContainer">
     <div class="container-fluid">
-      <h2>angular-dynamic-layout demo</h2>
-      <div class="btn-toolbar" role="toolbar" aria-label="...">
-        <div class="btn-group btn-group-lg" role="group">
-                  <button class="btn btn-default" ng-click="filter('home')">Home</button>
-                  <button class="btn btn-default" ng-click="filter('work')">Work</button>
-                  <button class="btn btn-default" ng-click="filter('education')">Education</button>
+      <h1 class="text-center title">angular-dynamic-layout
+        <p><small>A lightweight AngularJS dynamic grid layout</small></p>
+      </h1>
+      <div class="features">
+        <div class="row">
+          <div class="col-md-3">
+            <h5>Masonry layout</h5>
+            <p>
+            The items provided are displayed by placing elements in optimal position based on available vertical space.
+          </p>
+          </div>
+          <div class="col-md-3">
+            <h5>Templates</h5>
+            Each item needs to have a template that will be loaded and displayed. You can provide data to fill in the templates.
+          </div>
+          <div class="col-md-3">
+            <h5>Animations</h5>
+            All the animations are controlled from the CSS. You can add an animation when a card enters, leaves or move.
+          </div>
+          <div class="col-md-3">
+            <h5>Responsiveness</h5>
+            The layout can be easily made responsive with media queries, a layout is triggered when the screen changes size, try it!
+          </div>
         </div>
-        <div ng-class="{open: openMenu}" class="btn-group btn-group-lg" role="group" ng-click="openMenu = !openMenu">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-            Order
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu" role="menu" >
-            <li><a href="#" ng-click="orderBy('added')">Time Created</a></li>
-          </ul>
-        </div>
-        <div class="btn-group btn-group-lg" role="group">
-          <button class="btn btn-default" ng-click="addItem()">
-            <span class="glyphicon glyphicon-plus"></span>
-          </button>          
+        <div class="row">
+          <!--
+          <div class="col-md-3">
+            <h5>Triggering layout</h5>
+            A layout can be triggered at any time, for example when resizing a card. A callback will be fired once the animations have completed.
+          </div>
+        -->
+          <div class="col-md-4">
+            <h5>Filtering</h5>
+            <div class="btn-group" role="group">
+                <button class="btn btn-default" ng-class="{active: isTabActive('home')}" ng-click="filter('home')">Show all</button>
+                <button class="btn btn-default" ng-class="{active: isTabActive('work')}" ng-click="filter('work')">Experience</button>
+                <button class="btn btn-default" ng-class="{active: isTabActive('education')}" ng-click="filter('education')">Education</button>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <h5>Sorting</h5>
+            <div class="btn-group" role="group">
+                <button class="btn btn-default"ng-class="{active: rankers === null}"   ng-click="rankers = null">Original order</button>
+                <button class="btn btn-default" ng-class="{active: isRankerActive('added')}"  ng-click="orderBy('added')">Time created</button>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <h5>Adding and removing items</h5>
+            <div class="btn-group" role="group">
+              <button class="btn btn-default" ng-click="addCard()">
+                <span class="glyphicon glyphicon-plus"></span>
+              </button>          
+              <button class="btn btn-default" ng-click="removeFirstCard()">
+                <span class="glyphicon glyphicon-minus"></span>
+              </button>          
+            </div>
+          </div>
         </div>
       </div>
       <div dynamic-layout items="cards" filters="filters" rankers="rankers"></div>

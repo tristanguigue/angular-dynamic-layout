@@ -3,22 +3,22 @@
         <div class="panel panel-default">
           <div class="panel-heading clearfix">
             <h3 class="panel-title pull-left">Education</h3>
-              <a class="btn btn-default pull-right" href="#" ng-click='externalScope().delete($index)'>
+              <a class="btn btn-default pull-right" href="#" ng-click='externalScope().delete(it.id)'>
                 <span class="glyphicon glyphicon-remove"></span>
               </a>
             </div>
             <div class="list-group">
               <div class="list-group-item">
                 <p class="list-group-item-text">Degree</p>
-                <h4 class="list-group-item-heading">Master</h4>
+                <h4 class="list-group-item-heading">{{it.data.degree}}</h4>
               </div>
               <div class="list-group-item">
                 <p class="list-group-item-text">Field of Study</p>
-                <h4 class="list-group-item-heading">Physics</h4>
+                <h4 class="list-group-item-heading">{{it.data.field}}</h4>
               </div>
               <div class="list-group-item">
                 <p class="list-group-item-text">School</p>
-                <h4 class="list-group-item-heading">ETH Zurich</h4>
+                <h4 class="list-group-item-heading">{{it.data.school}}</h4>
               </div>
               <div class="list-group-item">
                 <p class="list-group-item-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam mauris tellus, vehicula ut tellus id, suscipit dapibus tortor. Integer viverra turpis ac fringilla hendrerit. Sed faucibus posuere felis et pellentesque. Cras varius tortor vitae molestie tempor. Proin ut viverra elit, ac gravida tortor.</p>

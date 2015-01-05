@@ -35,9 +35,13 @@ gridApp.controller('Work1Controller', ['$scope', '$rootScope', '$timeout',
  */
 gridApp.controller('GridContainer',
   ['$scope', function ($scope) {
-
-      $scope.filters = null;
+      $scope.filters = [[['tabs', 'contains', 'home']]];
       $scope.rankers = null;
+
+      $scope.isDropdownOpen = {
+        orderBy: false,
+        filter: false
+      };
 
       /**
        * Update the filters array based on the given filter
@@ -45,6 +49,10 @@ gridApp.controller('GridContainer',
        */
       $scope.filter = function(filter){
         $scope.filters = [[['tabs', 'contains', filter]]];
+      }
+
+      $scope.isTabActive = function(tab){
+        return $scope.filters && $scope.filters[0][0][2] === tab;
       }
 
       /**
@@ -55,12 +63,26 @@ gridApp.controller('GridContainer',
         $scope.rankers = [[ranker, "asc"]];
       }
 
+      $scope.isRankerActive = function(ranker){
+        return $scope.rankers && $scope.rankers[0][0] === ranker;
+      }
+
       /**
        * Delete a given card
        * $param index: the index of the card in the cards array 
        */
-      $scope.delete = function(index){
+      $scope.deleteCard = function(id){
+        var index = null;
+        for(i in $scope.cards){
+          if($scope.cards[i].id == id){
+            index = i;
+          }
+        }
         $scope.cards.splice(index, 1);
+      }
+
+      $scope.removeFirstCard = function(){
+        $scope.deleteCard($scope.filteredItems[0].id)
       }
 
       var nbCardsAdded = 0;
@@ -85,7 +107,7 @@ gridApp.controller('GridContainer',
        * Takes a card from the pile of cardsToAdd and prepend it to the list of 
        * cards
        */
-      $scope.addItem = function(){
+      $scope.addCard = function(){
         if(nbCardsAdded < cardsToAdd.length){
           $scope.cards.unshift(cardsToAdd[nbCardsAdded]);
           ++nbCardsAdded;
@@ -97,6 +119,7 @@ gridApp.controller('GridContainer',
        */
       $scope.cards = [
         {
+          id: 1,
           template : "app/partials/work1.html",
           tabs : ["home", "work"],
           data : {
@@ -106,6 +129,7 @@ gridApp.controller('GridContainer',
           added : 1444871272105,
         },
         {
+          id: 2,
           template : "app/partials/work1.html",
           tabs : ["home", "work"],
           data : {
@@ -115,26 +139,47 @@ gridApp.controller('GridContainer',
           added : 1423871272105,
         },
         {
+          id: 3,
           template : "app/partials/aboutMe.html",
           tabs : ["home"],
           added : 1454871272105
         },
         {
+          id: 4,
           template : "app/partials/businessCard.html",
           tabs : ["home"],
           added : 1434871272105
         },
         {
+          id: 5,
           template : "app/partials/home.html",
           tabs : ["home"],
           added : 1484871272105
         },
         {
+          id: 6,
           template : "app/partials/education.html",
           tabs : ["home", "education"],
-          added : 1484871272105
+          data : {
+            "degree" : "Master",
+            "field": "Physics",
+            "school" : "ETH Zurich"
+          },
+          added : 1474871272105
         },
         {
+          id: 7,
+          template : "app/partials/education.html",
+          tabs : ["home", "education"],
+          data : {
+            "degree" : "Bachelor",
+            "field": "Mathematics",
+            "school" : "EPFL"
+          },
+          added : 1464871272105
+        },
+        {
+          id: 8,
           template : "app/partials/work2.html",
           tabs : ["home", "work"],
           added : 1434871272105
