@@ -72,45 +72,78 @@ gridApp.controller('GridContainer',
        * $param index: the index of the card in the cards array 
        */
       $scope.deleteCard = function(id){
-        var index = null;
+        var index = -1;
         for(i in $scope.cards){
           if($scope.cards[i].id == id){
             index = i;
+            break;
           }
         }
-        $scope.cards.splice(index, 1);
+        if(index !== -1){
+          $scope.cards.splice(index, 1);
+        }
       }
 
       $scope.removeFirstCard = function(){
         $scope.deleteCard($scope.filteredItems[0].id)
       }
 
-      var nbCardsAdded = 0;
       /**
        * The pile of cards to be added
        */
       var cardsToAdd =  [
-          {
-            template : "app/partials/work3.html",
-            tabs : ["home", "work"],
-            added : 1474871272105,
+        {
+          id: 9,
+          template : "app/partials/work3.html",
+          tabs : ["home", "work"],
+          added : 1474871272105,
+        },
+        {
+          id: 10,
+          template : "app/partials/work4.html",
+          tabs : ["home", "work"],
+          added : 1467871272105,
+        },
+        {
+          id: 11,
+          template : "app/partials/education.html",
+          tabs : ["home", "education"],
+          data : {
+            "degree" : "PhD",
+            "field": "Artificial Intelligence",
+            "school" : "MIT"
           },
-          {
-            template : "app/partials/work4.html",
-            tabs : ["home", "work"],
-            added : 1467871272105,
-          },
+          added : 1479871272105
+        }
       ];
 
       /**
        * Add a card to the main view
        * Takes a card from the pile of cardsToAdd and prepend it to the list of 
-       * cards
+       * cards. Take a card belonging to the selected tab
        */
       $scope.addCard = function(){
-        if(nbCardsAdded < cardsToAdd.length){
-          $scope.cards.unshift(cardsToAdd[nbCardsAdded]);
-          ++nbCardsAdded;
+        var getCurrentTab = function(){
+          return $scope.filters[0][0][2];
+        };
+
+        var getIndexOfNextCardInTab = function(tab){
+          var index = -1;
+
+          for(i in cardsToAdd){
+            if(cardsToAdd[i].tabs.indexOf(tab) !== -1){
+              index = i;
+              break;
+            }
+          }
+          return index;
+        };
+
+        var index =  getIndexOfNextCardInTab(getCurrentTab());        
+
+        if(index !== -1){
+          $scope.cards.unshift(cardsToAdd[index]);
+          cardsToAdd.splice(index, 1);
         }
       }
 
