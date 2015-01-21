@@ -12,6 +12,15 @@ module.exports = function(grunt) {
     // get the configuration info from package.json ----------------------------
     // this way we can use things like name and version (pkg.name)
     pkg: grunt.file.readJSON('package.json'),
+    concat: {
+      options: {
+        separator: ';'
+      },
+      dist: {
+        src: ['src/**/*.js'],
+        dest: 'dist/<%= pkg.name %>.js'
+      }
+    },
     karma: {
       unit: {
         configFile: 'karma.conf.js',
@@ -31,7 +40,7 @@ module.exports = function(grunt) {
       },
       build: {
         files: {
-          'dist/angular-dynamic-layout.min.js':  ['src/**/*.js'] 
+          'dist/<%= pkg.name %>.min.js':  ['src/**/*.js'] 
         }
       }
     }
@@ -44,8 +53,9 @@ module.exports = function(grunt) {
   // make sure you have run npm install so our app can find these
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.registerTask('default', ['karma', 'jshint', 'uglify']);
+  grunt.registerTask('default', ['karma', 'jshint', 'concat', 'uglify']);
 };
 
 
