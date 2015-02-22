@@ -6,13 +6,13 @@ var dynamicLayoutModule = angular.module('dynamicLayout', ['ngAnimate'])
   .filter('customFilter', ['FilterService', function(FilterService) {
 
     "use strict";
-    
+
     return function( items, filters) {
       if(filters){
-        return FilterService.applyFilters(items, filters);        
+        return FilterService.applyFilters(items, filters);
       }
       else{
-        return items;        
+        return items;
       }
     };
   }])
@@ -23,14 +23,14 @@ var dynamicLayoutModule = angular.module('dynamicLayout', ['ngAnimate'])
   .filter('customRanker', ['RankerService', function(RankerService) {
 
     "use strict";
-    
+
     return function( items, rankers) {
       if(rankers){
         return RankerService.applyRankers(items, rankers);
       }else{
         return items;
       }
-        
+
     };
   }])
 
@@ -40,7 +40,7 @@ var dynamicLayoutModule = angular.module('dynamicLayout', ['ngAnimate'])
   .filter("as", ['$parse', function($parse) {
 
     "use strict";
-    
+
     return function(value, context, path) {
       return $parse(path).assign(context, value);
     };
@@ -52,7 +52,7 @@ var dynamicLayoutModule = angular.module('dynamicLayout', ['ngAnimate'])
   .directive('layoutOnLoad', ['$rootScope', function($rootScope) {
 
     "use strict";
-    
+
     return {
         restrict: 'A',
         link: function(scope, element, attrs) {
@@ -67,21 +67,23 @@ var dynamicLayoutModule = angular.module('dynamicLayout', ['ngAnimate'])
   * The isotope directive that renders the templates based on the array of items
   * passed
   * @scope items: the list of items to be rendered
-  * @scope rankers: the rankers to be applied on the list of items 
-  * @scope filters: the filters to be applied on the list of items 
+  * @scope rankers: the rankers to be applied on the list of items
+  * @scope filters: the filters to be applied on the list of items
+  * @scope globaltemplate: (optional) the global template to be applied on the list of items
   */
   .directive('dynamicLayout',
     ['$timeout', '$window', '$q', '$animate','PositionService',
     function ($timeout, $window, $q, $animate, PositionService) {
 
       "use strict";
-      
+
       return {
         restrict: "A",
         scope: {
           items: '=items',
           rankers: '=rankers',
-          filters: '=filters'
+          filters: '=filters',
+          globaltemplate: '=?globaltemplate'
         },
         template: '<div                                     \
                       class="dynamic-layout-item-parent"           \
@@ -89,7 +91,7 @@ var dynamicLayoutModule = angular.module('dynamicLayout', ['ngAnimate'])
                                  customFilter: filters |    \
                                  customRanker:rankers |     \
                                  as:this:\'filteredItems\'" \
-                      ng-include="it.template"              \
+                      ng-include="it.template || globaltemplate" \
                   ></div>',
         link : function (scope, element, attrs){
           // Keep count of the number of templates left to load
@@ -100,26 +102,26 @@ var dynamicLayoutModule = angular.module('dynamicLayout', ['ngAnimate'])
           * @return the promise of the cards being animated
           */
           var layout = function(){
-            return PositionService.layout(element[0].offsetWidth); 
+            return PositionService.layout(element[0].offsetWidth);
           };
 
           /**
-          * Check when all the items have been loaded by the ng-include 
+          * Check when all the items have been loaded by the ng-include
           * directive
           */
           var itemsLoaded = function(){
             var def = $q.defer();
 
-            // $timeout : We need to wait for the includeContentRequested to 
+            // $timeout : We need to wait for the includeContentRequested to
             // be called before we can assume there is no templates to be loaded
             $timeout(function(){
               if(scope.templatesToLoad === 0)
-                def.resolve();                   
+                def.resolve();
             });
 
             scope.$watch('templatesToLoad', function(newValue, oldValue){
               if(newValue !== oldValue && scope.templatesToLoad === 0){
-                def.resolve();                
+                def.resolve();
               }
             });
 
@@ -130,7 +132,7 @@ var dynamicLayoutModule = angular.module('dynamicLayout', ['ngAnimate'])
           scope.$on("$includeContentRequested", function(){
             scope.templatesToLoad++;
           });
-          // Fires when a template has been loaded through the ng-include 
+          // Fires when a template has been loaded through the ng-include
           // directive
           scope.$on("$includeContentLoaded", function(){
             scope.templatesToLoad--;
@@ -156,7 +158,7 @@ var dynamicLayoutModule = angular.module('dynamicLayout', ['ngAnimate'])
             if(!angular.equals(newValue, oldValue)){
               itemsLoaded().then(function(){
                   layout();
-              });      
+              });
             }
           }, true);
 
@@ -164,7 +166,7 @@ var dynamicLayoutModule = angular.module('dynamicLayout', ['ngAnimate'])
           * Triggers a layout every time the window is resized
           */
           angular.element($window).bind("resize",function(e){
-              // We need to apply the scope 
+              // We need to apply the scope
               scope.$apply(function(){
                 layout();
               });
@@ -172,7 +174,7 @@ var dynamicLayoutModule = angular.module('dynamicLayout', ['ngAnimate'])
 
           /**
           * Triggers a layout whenever requested by an external source
-          * Allows a callback to be fired after the layout animation is 
+          * Allows a callback to be fired after the layout animation is
           * completed
           */
           scope.$on('layout', function(event, callback) {
@@ -192,4 +194,3 @@ var dynamicLayoutModule = angular.module('dynamicLayout', ['ngAnimate'])
         }
       };
     }]);
-
