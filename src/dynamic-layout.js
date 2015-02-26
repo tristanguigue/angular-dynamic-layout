@@ -69,7 +69,7 @@ var dynamicLayoutModule = angular.module('dynamicLayout', ['ngAnimate'])
   * @scope items: the list of items to be rendered
   * @scope rankers: the rankers to be applied on the list of items
   * @scope filters: the filters to be applied on the list of items
-  * @scope globaltemplate: (optional) the global template to be applied on the list of items
+  * @scope defaulttemplate: (optional) the deafult template to be applied on each item if no item template is defined
   */
   .directive('dynamicLayout',
     ['$timeout', '$window', '$q', '$animate','PositionService',
@@ -83,7 +83,7 @@ var dynamicLayoutModule = angular.module('dynamicLayout', ['ngAnimate'])
           items: '=items',
           rankers: '=rankers',
           filters: '=filters',
-          globaltemplate: '=?globaltemplate'
+          defaulttemplate: '=?defaulttemplate'
         },
         template: '<div                                     \
                       class="dynamic-layout-item-parent"           \
@@ -91,7 +91,7 @@ var dynamicLayoutModule = angular.module('dynamicLayout', ['ngAnimate'])
                                  customFilter: filters |    \
                                  customRanker:rankers |     \
                                  as:this:\'filteredItems\'" \
-                      ng-include="it.template || globaltemplate" \
+                      ng-include="it.template || defaulttemplate" \
                   ></div>',
         link : function (scope, element, attrs){
           // Keep count of the number of templates left to load
