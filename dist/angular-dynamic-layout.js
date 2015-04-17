@@ -81,7 +81,7 @@ var dynamicLayoutModule = angular.module('dynamicLayout', ['ngAnimate'])
         restrict: "A",
         scope: {
           items: '=items',
-          parentClass: '=parentClass',
+          parentClass: '=?parentClass',
           rankers: '=rankers',
           filters: '=filters',
           defaulttemplate: '=?defaulttemplate'
