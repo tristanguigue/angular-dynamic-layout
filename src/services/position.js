@@ -1,17 +1,17 @@
 /**
 * The position service
 *
-* Find the best adjustements of the elemnts in the DOM according the their 
+* Find the best adjustements of the elemnts in the DOM according the their
 * order, height and width
-* 
+*
 * Fix their absolute position in the DOM while adding a ng-animate class for
 * personalized animations
 *
 */
-dynamicLayoutModule.factory('PositionService', 
+dynamicLayoutModule.factory('PositionService',
   ["$window", "$animate", "$timeout", "$q",
   function ($window, $animate, $timeout, $q) {
-    
+
      "use strict";
 
     // The list of ongoing animations
@@ -47,7 +47,7 @@ dynamicLayoutModule.factory('PositionService',
           var h;
           if(columns[i].length){
             var last_item = columns[i][columns[i].length-1];
-            h = last_item.y + last_item.height;              
+            h = last_item.y + last_item.height;
           }else{
             h = 0;
           }
@@ -66,7 +66,7 @@ dynamicLayoutModule.factory('PositionService',
     */
     var getItemColumnsAndPosition = function(item, colHeights, colSize){
       if(item.columnSpan > colHeights.length){
-        throw "Item too large";        
+        throw "Item too large";
       }
 
       var indexOfMin = 0;
@@ -82,7 +82,7 @@ dynamicLayoutModule.factory('PositionService',
 
         if(i===0 || maxHeightInPart < minFound){
             minFound = maxHeightInPart;
-            indexOfMin = i;         
+            indexOfMin = i;
         }
       }
 
@@ -97,7 +97,7 @@ dynamicLayoutModule.factory('PositionService',
       };
 
       return {
-        columns : itemColumns, 
+        columns : itemColumns,
         position : position
       };
     };
@@ -110,9 +110,8 @@ dynamicLayoutModule.factory('PositionService',
     var setItemsPosition = function(columns, colSize){
       for(var i = 0; i < items.length; ++i){
         var columnsHeights = getColumnsHeights(columns);
-
-        var itemColumnsAndPosition = getItemColumnsAndPosition(items[i], 
-                                                               columnsHeights, 
+        var itemColumnsAndPosition = getItemColumnsAndPosition(items[i],
+                                                               columnsHeights,
                                                                colSize);
 
         // We place the item in the found columns
@@ -155,24 +154,33 @@ dynamicLayoutModule.factory('PositionService',
       * @return: the list of items with their sizes
       */
       getItemsDimensionFromDOM : function(){
-        // not(.ng-leave) : we don't want to select elements that have been 
+        // not(.ng-leave) : we don't want to select elements that have been
         // removed but are  still in the DOM
         elements = document.querySelectorAll(
           ".dynamic-layout-item-parent:not(.ng-leave)"
         );
         items = [];
 
-        for(var i = 0; i < elements.length; ++i){
+        for(var i = 0; i < elements.length; ++i) {
           // Note: we need to get the children element width because that's
           // where the style is applied
+          var rect = elements[i].getBoundingClientRect();
+          var width, height;
+          if (rect.width) {
+            width = rect.width;
+            height = rect.height;
+          } else {
+            width = rect.right - rect.left;
+            height = rect.top - rect.bottom;
+          }
+
           items.push({
-            height: elements[i].offsetHeight + 
-              parseInt($window.getComputedStyle(elements[i]).marginTop),
-            width: elements[i].children[0].offsetWidth + 
-              parseInt(
-                $window.getComputedStyle(elements[i].children[0]).marginLeft
-              )
+            height: height +
+            parseFloat($window.getComputedStyle(elements[i]).marginTop),
+            width: width +
+            parseFloat($window.getComputedStyle(elements[i].children[0]).marginLeft)
           });
+
         }
         return items;
       },
@@ -193,8 +201,8 @@ dynamicLayoutModule.factory('PositionService',
         * @return: the promise of the animation being completed
         */
         var launchAnimation = function(element, i){
-          var animationPromise = $animate.addClass(element, 
-            'move-items-animation', 
+          var animationPromise = $animate.addClass(element,
+            'move-items-animation',
             {
               from: {
                  position: 'absolute',
@@ -212,7 +220,7 @@ dynamicLayoutModule.factory('PositionService',
             delete ongoingAnimations[i];
           });
 
-          return animationPromise;        
+          return animationPromise;
         };
 
         /**
@@ -224,7 +232,7 @@ dynamicLayoutModule.factory('PositionService',
             // We need to pass the specific element we're dealing with
             // because at the next iteration elements[i] might point to
             // something else
-            ongoingAnimations[i] = launchAnimation(elements[i], i);                   
+            ongoingAnimations[i] = launchAnimation(elements[i], i);
           }
           $q.all(ongoingAnimations).then(function(){
             ret.resolve();
@@ -239,7 +247,7 @@ dynamicLayoutModule.factory('PositionService',
               delete ongoingAnimations[j];
           }
         }
-        
+
         // For some reason we need to launch the new animations at the next
         // digest
         $timeout(function(){
@@ -264,7 +272,7 @@ dynamicLayoutModule.factory('PositionService',
         // We create empty columns to be filled with the items
         var columns = initColumns(nbColumns);
 
-        // We determine what is the column size of each of the items based on 
+        // We determine what is the column size of each of the items based on
         // their width and the column size
         setItemsColumnSpan(colSize);
 
@@ -275,7 +283,7 @@ dynamicLayoutModule.factory('PositionService',
         return this.applyToDOM();
       },
 
-      // Make the columns public 
+      // Make the columns public
       columns: function(){
         return columns;
       }

@@ -81,12 +81,13 @@ var dynamicLayoutModule = angular.module('dynamicLayout', ['ngAnimate'])
         restrict: "A",
         scope: {
           items: '=items',
+          parentClass: '=parentClass',
           rankers: '=rankers',
           filters: '=filters',
           defaulttemplate: '=?defaulttemplate'
         },
         template: '<div                                     \
-                      class="dynamic-layout-item-parent"           \
+                      class="{{\'dynamic-layout-item-parent \'+ parentClass }}"           \
                       ng-repeat="it in items |              \
                                  customFilter: filters |    \
                                  customRanker:rankers |     \
