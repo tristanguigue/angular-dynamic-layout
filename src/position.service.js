@@ -26,12 +26,13 @@
     // The columns that contains the items
     var columns = [];
 
-    return {
+    var self = {
       getItemsDimensionFromDOM: getItemsDimensionFromDOM,
       applyToDOM: applyToDOM,
       layout: layout,
       getColumns: getColumns
     };
+    return self;
 
     /*
      * Get the items heights and width from the DOM
@@ -44,7 +45,6 @@
         '.dynamic-layout-item-parent:not(.ng-leave)'
       );
       items = [];
-
       for (var i = 0; i < elements.length; ++i) {
         // Note: we need to get the children element width because that's
         // where the style is applied
@@ -140,23 +140,23 @@
      */
     function layout(containerWidth) {
       // We first gather the items dimension based on the DOM elements
-      items = this.getItemsDimensionFromDOM();
+      items = self.getItemsDimensionFromDOM();
 
       // Then we get the column size base the elements minimum width
       var colSize = getColSize();
       var nbColumns = Math.floor(containerWidth / colSize);
       // We create empty columns to be filled with the items
-      var cols = initColumns(nbColumns);
+      initColumns(nbColumns);
 
       // We determine what is the column size of each of the items based on
       // their width and the column size
       setItemsColumnSpan(colSize);
 
       // We set what should be their absolute position in the DOM
-      setItemsPosition(cols, colSize);
+      setItemsPosition(columns, colSize);
 
       // We apply those positions to the DOM with an animation
-      return this.applyToDOM();
+      return self.applyToDOM();
     }
 
     // Make the columns public
