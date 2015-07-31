@@ -436,10 +436,21 @@
       for (var i = 0; i < elements.length; ++i) {
         // Note: we need to get the children element width because that's
         // where the style is applied
+        var rect = elements[i].getBoundingClientRect();
+        var width;
+        var height;
+        if (rect.width) {
+          width = rect.width;
+          height = rect.height;
+        } else {
+          width = rect.right - rect.left;
+          height = rect.top - rect.bottom;
+        }
+
         items.push({
-          height: elements[i].offsetHeight +
+          height: height +
             parseFloat($window.getComputedStyle(elements[i]).marginTop),
-          width: elements[i].children[0].offsetWidth +
+          width: width +
             parseFloat(
               $window.getComputedStyle(elements[i].children[0]).marginLeft
             )
