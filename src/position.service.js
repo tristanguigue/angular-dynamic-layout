@@ -50,9 +50,9 @@
         // where the style is applied
         items.push({
           height: elements[i].offsetHeight +
-            parseInt($window.getComputedStyle(elements[i]).marginTop),
+            parseFloat($window.getComputedStyle(elements[i]).marginTop),
           width: elements[i].children[0].offsetWidth +
-            parseInt(
+            parseFloat(
               $window.getComputedStyle(elements[i].children[0]).marginLeft
             )
         });
