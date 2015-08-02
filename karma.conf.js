@@ -1,3 +1,4 @@
+/* eslint-env node */
 // Karma configuration
 // Generated on Wed Aug 13 2014 10:18:58 GMT+0200 (CEST)
 
@@ -18,10 +19,15 @@ module.exports = function(config) {
       'bower_components/angular/angular.min.js',
       'bower_components/angular-animate/angular-animate.min.js',
       'bower_components/angular-mocks/angular-mocks.js',
-      'src/dynamic-layout.js',
-      'src/services/filter.js',
-      'src/services/ranker.js',
-      'src/services/position.js',
+      'src/module.js',
+      'src/as.filter.js',
+      'src/custom-filter.filter.js',
+      'src/custom-ranker.filter.js',
+      'src/dynamic-layout.directive.js',
+      'src/layout-on-load.directive.js',
+      'src/filter.service.js',
+      'src/ranker.service.js',
+      'src/position.service.js',
       'tests/**/*.js'
     ],
 
