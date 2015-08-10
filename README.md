@@ -17,6 +17,10 @@ This is a beta version and not production-ready.
 ````
 bower install angular-dynamic-layout
 ```
+Or
+````
+npm install angular-dynamic-layout
+```
 # Usage
 Controller:
 ````
