@@ -8,15 +8,15 @@
 
   <title>Starter Template for Bootcards</title>
 
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+  
   <!-- Bootcards CSS files for desktop, iOS and Android -->
   <!-- You'll only need to load one of these (depending on the device you're using) in production -->
-  <!-- (these include the required Bootstrap CSS) -->
-  <!--<link href="../dist/css/bootcards-desktop.min.css" rel="stylesheet">-->
-  <link href="../dist/css/bootcards-ios.min.css" rel="stylesheet">
-  <!--<link href="../dist/css/bootcards-android.min.css" rel="stylesheet">-->
+  <link href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.1.1/css/bootcards-ios.min.css" rel="stylesheet">
+  <!-- <link href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.1.1/css/bootcards-desktop.min.css" rel="stylesheet">-->
+  <!--<link href="//cdnjs.cloudflare.com/ajax/libs/bootcards/1.1.1/css/bootcards-android.min.css" rel="stylesheet">-->
 
-  <!-- Font awesome -->
-  <link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet" />
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet" />
 
 </head>
 
@@ -39,16 +39,14 @@
       </button>
       <!-- menu button to show/ hide the off canvas menu -->
       <button type="button" class="btn btn-default btn-menu pull-left" data-toggle="offcanvas">
-        <i class="fa fa-lg fa-bars"></i>
-        <span>Menu</span>
+        <i class="fa fa-lg fa-bars"></i><span>Menu</span>
       </button>
 
       <a class="navbar-brand" title="Bootcards Starter" href="/">Bootcards Starter</a>  
 
       <!--right aligned button-->
-      <button type="button" class="btn btn-warning navbar-right">
-        <i class="fa fa-lg fa-refresh"></i>
-        <span>Refresh</span>
+      <button type="button" class="btn btn-warning navbar-right hidden-sm">
+        <i class="fa fa-lg fa-refresh"></i><span>Refresh</span>
       </button> 
 
       <!--navbar menu options: shown on desktop only -->
@@ -56,17 +54,17 @@
         <ul class="nav navbar-nav">
           <li>
             <a href="#">
-              <i class="fa fa-dashboard"></i>Dashboard
+              <i class="fa fa-dashboard"></i> Dashboard
             </a>
           </li>
           <li>
             <a href="#">
-              <i class="fa fa-building-o"></i>Companies
+              <i class="fa fa-building-o"></i> Companies
             </a>
           </li>
           <li class="active">
             <a href="#">
-              <i class="fa fa-font"></i>Contacts
+              <i class="fa fa-font"></i> Contacts
             </a>
           </li>
         </ul>
@@ -79,20 +77,45 @@
     <ul class="nav">
       <li>
         <a href="#">
-          <i class="fa fa-lg fa-dashboard"></i>Dashboard
+          <i class="fa fa-fw fa-dashboard"></i>Dashboard
         </a>
       </li>
       <li class="active">
         <a href="starter-template.html">
-          <i class="fa fa-lg fa-users"></i>Contacts
+          <i class="fa fa-fw fa-users"></i>Contacts
         </a>
       </li>
       <li>
         <a href="az-picker.html">
-          <i class="fa fa-lg fa-users"></i>AZ Picker
+          <i class="fa fa-fw fa-font"></i>AZ Picker (Android)
         </a>
       </li>
+      <li>
+        <a href="double-navbar.html">
+          <i class="fa fa-lg fa-bars"></i>Navbar (desktop)
+        </a>
+      </li>
+
+      <!--option with submenu-->
+      <li class="collapse litop4">
+        <a href="#otherControls" class="bootcards-parent" data-toggle="collapse" data-parent=".collapse">
+          <i class="fa fa-lg fa-fw fa-chevron-circle-right"></i>&nbsp;Settings
+        </a>
+        <div id="otherControls" class="collapse in">
+          <ul class="nav navmenu-nav"><li >
+            <a href="#" ><i class="fa fa-lg fa-fw fa-cog"></i>&nbsp;General</a></li>
+          <li>
+            <a href="#"><i class="fa fa-lg fa-fw fa-user"></i>&nbsp;Account</a>
+          </li>
+           <li>
+            <a href="#"><i class="fa fa-lg fa-fw fa-refresh"></i>&nbsp;Sync</a>
+          </li>
+          </ul>
+        </div>
+      </li>
+
     </ul>
+
   </nav><!--nav-->
 
   <div class="container bootcards-container push-right">
@@ -240,8 +263,8 @@
               <p>This page shows you how to create a master/detail view using Bootcards. Main features:</p>
               <ul>
                 <li>Markup based on <a href="http://getbootstrap.com" target="_blank">Bootstrap 3+</a>.</li>
-                <li>Near-native iOS look (there's one for Android and Desktop too).</li>
-                <li>Fixed header and footer</li>
+                <li>Near-native iOS and Android look (there's one for Desktop too).</li>
+                <li>Fixed header and footer.</li>
                 <li>Independent scrolling columns.</li>
                 <li>Automatic single pane portrait mode (similar to the iOS Mail app): make sure you also view this page using a tablet and rotate to portrait.</li>
                 <li>Off-canvas menu. On this page it is configured to push the main content away, it can also be configured as an overlay.</li>
@@ -249,11 +272,31 @@
               <p>
               This is only a sample page: it is not meant to be fully functional. We've used <a href="http://fortawesome.github.io/Font-Awesome/" target="_blank">Font Awesome</a> for the icons and have include FTLabs' <a href="https://github.com/ftlabs/fastclick" target="_blank">FastClick</a> library to make tapping links on iOS faster.
               </p>
-            </div>
-            <div class="panel-footer">
-              <small>Built with Bootcards - Rich Text Card</small>
+             
             </div>
           </div><!--end rich text card--> 
+
+          <div class="panel panel-default bootcards-richtext">
+            <div class="panel-heading">
+              <h3 class="panel-title">Theme Switcher</h3>
+            </div>
+            <div class="panel-body">
+
+              <!--theme switcher-->
+                <div class="btn-group" data-toggle="buttons">
+                  <label class="btn btn-primary active">
+                    <input type="radio" name="themeSwitcher" value="ios" autocomplete="off" checked> iOS
+                  </label>
+                  <label class="btn btn-primary">
+                    <input type="radio" name="themeSwitcher" value="android" autocomplete="off"> Android
+                  </label>
+                  <label class="btn btn-primary">
+                    <input type="radio" name="themeSwitcher" value="desktop" autocomplete="off"> Desktop
+                  </label>
+                </div>
+            </div>
+
+          </div>
 
           <!--contact details -->
           <div id="contactCard">
@@ -263,13 +306,11 @@
                 <h3 class="panel-title pull-left">Contact Details</h3>
                 <div class="btn-group pull-right visible-xs">
                   <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#editModal">
-                    <i class="fa fa-pencil"></i>
-                    <span>Edit</span>
+                    <i class="fa fa-pencil"></i><span>Edit</span>
                   </a>
                 </div>  
                 <a class="btn btn-primary pull-right hidden-xs" href="#" data-toggle="modal" data-target="#editModal">
-                  <i class="fa fa-pencil"></i>
-                  <span>Edit</span>
+                  <i class="fa fa-pencil"></i><span>Edit</span>
                 </a>
               </div>
               <div class="list-group">
@@ -393,17 +434,98 @@
 
   </div><!--footer-->
 
+  <!--edit contact modal-->
+  <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+
+        <form class="form-horizontal" method="POST" action="/contacts/{{contact.id}}" data-pjax="#main">
+        
+        <div class="modal-header">
+
+          <div class="btn-group pull-left">
+            <button class="btn btn-danger" data-dismiss="modal">
+              Cancel
+            </button>
+          </div>
+        
+          <div class="btn-group pull-right">
+            <button class="btn btn-success" data-dismiss="modal">
+              <i class="fa fa-check"></i>Save
+            </button>
+          </div>
+
+          <h4 class="modal-title">
+              Edit Contact
+          </h4>   
+        </div>  
+
+        <div class="modal-body">
+            <input type="hidden" name="companyId" value="{{contact.companyId}}">
+            <input type="hidden" name="_method" value="put">
+            <div class="form-group">
+              <label class="col-xs-4 control-label">First Name</label>
+              <div class="col-xs-8">
+                <input type="text" name="firstName" class="form-control" placeholder="First Name"
+                value="Sofia">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-4 control-label">Last Name</label>
+              <div class="col-xs-8">
+                <input type="text" name="lastName" class="form-control" placeholder="Last Name"
+                value="Acey">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-4 control-label">Company</label>
+              <div class="col-xs-8">
+                <input type="text" name="department" class="form-control" placeholder="Department"
+                  value="Masung Corp.">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-4 control-label">Phone</label>
+              <div class="col-xs-8">
+                <input type="text" name="phone" class="form-control" 
+                placeholder="Phone"
+                value="+1 650-555-0055">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-xs-4 control-label">Email</label>
+              <div class="col-xs-8">
+                <input type="email" name="email" class="form-control" placeholder="Email"
+                value="Sofia.Acey@masung.com">
+              </div>
+            </div>
+                  
+        </div>
+        </form>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger btn-block"
+            onclick="bootcards.confirmDelete('contact'); return false;">
+            <i class="fa fa-trash-o"></i>
+            Delete Contact
+          </button>   
+        </div>
+
+      </div><!--modal-content-->
+    </div>
+  </div><!--modal-->
+
     <!-- Bootstrap & jQuery core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
 
     <!-- Bootcards JS -->
     <script src="../src/js/bootcards.js"></script>
 
     <!--recommended: FTLabs FastClick library-->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.2/fastclick.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.3/fastclick.min.js"></script>
 
     <script type="text/javascript">
 
@@ -415,21 +537,53 @@
        * - offCanvasHideOnMainClick (boolean): hide the offcanvas menu on clicking outside the off canvas
        * - enableTabletPortraitMode (boolean): enable single pane mode for tablets in portraitmode
        * - disableRubberBanding (boolean): disable the iOS rubber banding effect
-       * - disableBreakoutSelector (boolean) : for iOS apps that are added to the home screen:
+       * - disableBreakoutSelector (string) : for iOS apps that are added to the home screen:
                             jQuery selector to target links for which a fix should be added to not
                             allow those links to break out of fullscreen mode.
        */
+       
       bootcards.init( {
         offCanvasBackdrop : true,
         offCanvasHideOnMainClick : true,
         enableTabletPortraitMode : true,
-        disableRubberBanding : true 
+        disableRubberBanding : true,
+        disableBreakoutSelector : 'a.no-break-out'
       });
 
       //enable FastClick
       window.addEventListener('load', function() {
           FastClick.attach(document.body);
       }, false);
+
+      //activate the sub-menu options in the offcanvas menu
+      $('.collapse').collapse();
+
+      //theme switcher: only needed for this sample page to set the active CSS
+      $('input[name=themeSwitcher]').on('change', function(ev) {
+        var theme = $(ev.target).val();
+        var themeCSSLoaded = false;
+
+        $.each( document.styleSheets, function(idx, css) {
+          var href = css.href;
+          if (href.indexOf('bootcards')>-1) {
+            if (href.indexOf(theme)>-1) {
+              themeCSSLoaded = true;
+              css.disabled = false;
+            } else {
+              css.disabled = true;
+            }
+          }
+        });
+
+        if (!themeCSSLoaded) {
+          $("<link/>", {
+             rel: "stylesheet",
+             type: "text/css",
+             href: "//cdnjs.cloudflare.com/ajax/libs/bootcards/1.1.1/css/bootcards-" + theme + ".min.css"
+          }).appendTo("head");
+        }
+        
+      });
 
     </script>
   </body>

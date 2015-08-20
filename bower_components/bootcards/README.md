@@ -9,10 +9,21 @@ We think Cards are the design pattern for mobile of the future. The near future 
 
 **Release**
 
-The current version of Bootcards is stable, but always work in progress. We built a demo app showcasing what the framework (and your apps) can look like using NodeJS. You'll find it <a href="http://bootcards.herokuapp.com"  target="_blank">here</a> (note that adding, saving and deleting items is not implemented). Please let us know what you think!
+The current version of Bootcards is stable, but always work in progress. We built a demo app showcasing what the framework (and your apps) can look like using NodeJS. You'll find it <a href="http://demo.bootcards.org"  target="_blank">here</a> (note that adding, saving and deleting items is not implemented). Please let us know what you think!
 
 Want to help or want to know more? Drop us a note at bootcards@gmail.com. Look for more info at http://www.bootcards.org and follow us on Twitter (http://www.twitter.com/bootcards).
 
 **License**
 
 Bootcards is released under an MIT license. It contains code from the <a href="http://getbootstrap.com" target="_blank">Twitter Bootstrap</a> and <a href="http://goratchet.com/" target="_blank">Ratchet</a> projects (both also MIT licensed).
+
+**Building**
+
+To build the Bootcards source files using Grunt you'll need:
+
+- Node & NPM
+- Grunt: npm install -g grunt-cli
+- Ruby: check if it's install by running ruby -v in your terminal. (should be Ok if you're on Linux or Mac OS X, otherwise see http://www.ruby-lang.org/en/downloads/)
+- Sass: install using Ruby by running: gem install sass
+
+Bootcards uses Grunt to build the source files. You'lou will need Sass too to compile CSS files from the Sass source files.
