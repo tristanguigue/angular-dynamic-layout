@@ -2,60 +2,7 @@
   'use strict';
 
   angular
-    .module('dynamicLayout')
-    .filter('as', as);
-
-  /*
-   * This allowed the result of the filters to be assigned to the scope
-   */
-  function as($parse) {
-
-    return function(value, context, path) {
-      return $parse(path).assign(context, value);
-    };
-  }
-
-})();
-;(function() {
-  'use strict';
-
-  angular
-    .module('dynamicLayout')
-    .filter('customFilter', customFilter);
-
-  /*
-   * The filter to be applied on the ng-repeat directive
-   */
-  function customFilter(FilterService) {
-
-    return function(items, filters) {
-      if (filters) {
-        return FilterService.applyFilters(items, filters);
-      }
-      return items;
-    };
-  }
-
-})();
-;(function() {
-  'use strict';
-
-  angular
-    .module('dynamicLayout')
-    .filter('customRanker', customRanker);
-
-  /*
-   * The ranker to be applied on the ng-repeat directive
-   */
-  function customRanker(RankerService) {
-
-    return function(items, rankers) {
-      if (rankers) {
-        return RankerService.applyRankers(items, rankers);
-      }
-      return items;
-    };
-  }
+    .module('dynamicLayout', [ 'ngAnimate' ]);
 
 })();
 ;(function() {
@@ -198,6 +145,29 @@
       }
 
     }
+  }
+
+})();
+;(function() {
+  'use strict';
+
+  angular
+    .module('dynamicLayout')
+    .directive('layoutOnLoad', layoutOnLoad);
+
+  /*
+   * Directive on images to layout after each load
+   */
+  function layoutOnLoad($rootScope) {
+
+    return {
+        restrict: 'A',
+        link: function(scope, element) {
+          element.bind('load error', function() {
+            $rootScope.$broadcast('layout');
+          });
+        }
+    };
   }
 
 })();
@@ -354,36 +324,6 @@
     }
 
   }
-
-})();
-;(function() {
-  'use strict';
-
-  angular
-    .module('dynamicLayout')
-    .directive('layoutOnLoad', layoutOnLoad);
-
-  /*
-   * Directive on images to layout after each load
-   */
-  function layoutOnLoad($rootScope) {
-
-    return {
-        restrict: 'A',
-        link: function(scope, element) {
-          element.bind('load error', function() {
-            $rootScope.$broadcast('layout');
-          });
-        }
-    };
-  }
-
-})();
-;(function() {
-  'use strict';
-
-  angular
-    .module('dynamicLayout', [ 'ngAnimate' ]);
 
 })();
 ;(function() {
@@ -819,6 +759,66 @@
       return items;
     }
 
+  }
+
+})();
+;(function() {
+  'use strict';
+
+  angular
+    .module('dynamicLayout')
+    .filter('as', as);
+
+  /*
+   * This allowed the result of the filters to be assigned to the scope
+   */
+  function as($parse) {
+
+    return function(value, context, path) {
+      return $parse(path).assign(context, value);
+    };
+  }
+
+})();
+;(function() {
+  'use strict';
+
+  angular
+    .module('dynamicLayout')
+    .filter('customFilter', customFilter);
+
+  /*
+   * The filter to be applied on the ng-repeat directive
+   */
+  function customFilter(FilterService) {
+
+    return function(items, filters) {
+      if (filters) {
+        return FilterService.applyFilters(items, filters);
+      }
+      return items;
+    };
+  }
+
+})();
+;(function() {
+  'use strict';
+
+  angular
+    .module('dynamicLayout')
+    .filter('customRanker', customRanker);
+
+  /*
+   * The ranker to be applied on the ng-repeat directive
+   */
+  function customRanker(RankerService) {
+
+    return function(items, rankers) {
+      if (rankers) {
+        return RankerService.applyRankers(items, rankers);
+      }
+      return items;
+    };
   }
 
 })();

@@ -2,7 +2,7 @@
 
 // our wrapper function (required by grunt and its plugins)
 // all configuration goes inside this function
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
   // ===========================================================================
   // CONFIGURE GRUNT ===========================================================
@@ -17,7 +17,15 @@ module.exports = function(grunt) {
         separator: ';'
       },
       dist: {
-        src: ['src/**/*.js'],
+        src: ['src/module.js',
+              'src/dynamic-layout.directive.js',
+              'src/layout-on-load.directive.js',
+              'src/filter.service.js',
+              'src/position.service.js',
+              'src/ranker.service.js',
+              'src/as.filter.js',
+              'src/custom-filter.filter.js',
+              'src/custom-ranker.filter.js'],
         dest: 'dist/<%= pkg.name %>.js'
       }
     },
@@ -29,18 +37,19 @@ module.exports = function(grunt) {
     },
     jshint: {
       // when this task is run, lint the Gruntfile and all js files in src
-        options: {
-          multistr: true,
-        },
-        build: ['Grunfile.js', 'src/**/*.js', 'tests/**/*.js']
+      options: {
+        multistr: true,
       },
+      build: ['Grunfile.js', 'src/**/*.js', 'tests/**/*.js']
+    },
     uglify: {
       options: {
-        banner: '/*\n <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> \n*/\n'
+        banner: '/*\n <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> \n*/\n',
+        mangle: false
       },
       build: {
         files: {
-          'dist/<%= pkg.name %>.min.js':  ['src/**/*.js'] 
+          'dist/<%= pkg.name %>.min.js':  ['dist/<%= pkg.name %>.js'],
         }
       }
     }
@@ -57,6 +66,3 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.registerTask('default', ['karma', 'jshint', 'concat', 'uglify']);
 };
-
-
-
