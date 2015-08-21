@@ -48,7 +48,7 @@
       for (var i = 0; i < elements.length; ++i) {
         // Note: we need to get the children element width because that's
         // where the style is applied
-        var rect = elements[i].getBoundingClientRect();
+        var rect = elements[i].children[0].getBoundingClientRect();
         var width;
         var height;
         if (rect.width) {
