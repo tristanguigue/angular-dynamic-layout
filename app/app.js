@@ -170,16 +170,16 @@ gridApp.controller('GridContainer',
           added : 1423871272105,
         },
         {
-          id: 3,
-          template : "app/partials/aboutMe.html",
-          tabs : ["home"],
-          added : 1454871272105
-        },
-        {
           id: 4,
           template : "app/partials/businessCard.html",
           tabs : ["home"],
           added : 1434871272105
+        },
+        {
+          id: 3,
+          template : "app/partials/aboutMe.html",
+          tabs : ["home"],
+          added : 1454871272105
         },
         {
           id: 5,
