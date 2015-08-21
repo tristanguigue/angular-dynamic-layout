@@ -1,6 +1,6 @@
 {
   "name": "angular-dynamic-layout",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "main": "dist/angular-dynamic-layout.min.js",
   "dependencies": {
     "angular": "1.3.5",
@@ -26,11 +26,11 @@
     "tests"
   ],
   "private": false,
-  "_release": "0.1.9",
+  "_release": "0.1.10",
   "_resolution": {
     "type": "version",
-    "tag": "0.1.9",
-    "commit": "5aba281cb170073a5b37ddf78fac7755ee3a72ef"
+    "tag": "0.1.10",
+    "commit": "f7e278184583303377099b0ef583edf17d9d158e"
   },
   "_source": "git://github.com/tristanguigue/angular-dynamic-layout.git",
   "_target": "*",
