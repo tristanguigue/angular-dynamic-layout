@@ -11,7 +11,8 @@
   function as($parse) {
 
     return function(value, context, path) {
-      return $parse(path).assign(context, value);
+      $parse(path).assign(context, value);
+      return value;
     };
   }
 
