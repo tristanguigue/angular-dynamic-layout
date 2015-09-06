@@ -10,7 +10,9 @@
 
   angular
     .module('dynamicLayout')
-    .directive('dynamicLayout', dynamicLayout);
+    .directive('dynamicLayout', function ($timeout, $window, $q, $animate, PositionService) {
+      return dynamicLayout($timeout, $window, $q, $animate, PositionService);
+    });
 
   /*
    * The isotope directive that renders the templates based on the array of items
@@ -331,7 +333,9 @@
 
   angular
     .module('dynamicLayout')
-    .factory('PositionService', PositionService);
+    .factory('PositionService', function ($window, $document, $animate, $timeout, $q) {
+      return positionService($window, $document, $animate, $timeout, $q);
+    });
 
   /*
    * The position service
@@ -343,7 +347,7 @@
    * personalized animations
    *
    */
-  function PositionService($window, $document, $animate, $timeout, $q) {
+  function positionService($window, $document, $animate, $timeout, $q) {
 
     // The list of ongoing animations
     var ongoingAnimations = {};
@@ -767,7 +771,9 @@
 
   angular
     .module('dynamicLayout')
-    .filter('as', as);
+    .filter('as', function ($parse) {
+      return as($parse);
+    });
 
   /*
    * This allowed the result of the filters to be assigned to the scope
@@ -786,7 +792,9 @@
 
   angular
     .module('dynamicLayout')
-    .filter('customFilter', customFilter);
+    .filter('customFilter', function (FilterService) {
+      return customFilter(FilterService);
+    });
 
   /*
    * The filter to be applied on the ng-repeat directive
@@ -807,7 +815,9 @@
 
   angular
     .module('dynamicLayout')
-    .filter('customRanker', customRanker);
+    .filter('customRanker', function (RankerService) {
+        return customRanker(RankerService);
+    });
 
   /*
    * The ranker to be applied on the ng-repeat directive

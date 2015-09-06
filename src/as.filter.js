@@ -3,7 +3,9 @@
 
   angular
     .module('dynamicLayout')
-    .filter('as', as);
+    .filter('as', function ($parse) {
+      return as($parse);
+    });
 
   /*
    * This allowed the result of the filters to be assigned to the scope
