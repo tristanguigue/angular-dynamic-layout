@@ -3,7 +3,9 @@
 
   angular
     .module('dynamicLayout')
-    .factory('PositionService', PositionService);
+    .factory('PositionService', function ($window, $document, $animate, $timeout, $q) {
+      return positionService($window, $document, $animate, $timeout, $q);
+    });
 
   /*
    * The position service
@@ -15,7 +17,7 @@
    * personalized animations
    *
    */
-  function PositionService($window, $document, $animate, $timeout, $q) {
+  function positionService($window, $document, $animate, $timeout, $q) {
 
     // The list of ongoing animations
     var ongoingAnimations = {};

@@ -3,7 +3,9 @@
 
   angular
     .module('dynamicLayout')
-    .filter('customFilter', customFilter);
+    .filter('customFilter', function (FilterService) {
+      return customFilter(FilterService);
+    });
 
   /*
    * The filter to be applied on the ng-repeat directive
