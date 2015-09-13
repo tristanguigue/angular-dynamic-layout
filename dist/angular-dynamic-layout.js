@@ -10,7 +10,7 @@
 
   angular
     .module('dynamicLayout')
-    .directive('dynamicLayout', dynamicLayout);
+    .directive('dynamicLayout', ['$timeout', '$window', '$q', '$animate', 'PositionService', dynamicLayout]);
 
   /*
    * The isotope directive that renders the templates based on the array of items
@@ -153,7 +153,7 @@
 
   angular
     .module('dynamicLayout')
-    .directive('layoutOnLoad', layoutOnLoad);
+    .directive('layoutOnLoad', ['$rootScope', layoutOnLoad]);
 
   /*
    * Directive on images to layout after each load
@@ -331,7 +331,7 @@
 
   angular
     .module('dynamicLayout')
-    .factory('PositionService', PositionService);
+    .factory('PositionService', ['$window', '$document', '$animate', '$timeout', '$q', PositionService]);
 
   /*
    * The position service
@@ -767,7 +767,7 @@
 
   angular
     .module('dynamicLayout')
-    .filter('as', as);
+    .filter('as', ['$parse', as]);
 
   /*
    * This allowed the result of the filters to be assigned to the scope
@@ -786,7 +786,7 @@
 
   angular
     .module('dynamicLayout')
-    .filter('customFilter', customFilter);
+    .filter('customFilter', ['FilterService', customFilter]);
 
   /*
    * The filter to be applied on the ng-repeat directive
@@ -807,7 +807,7 @@
 
   angular
     .module('dynamicLayout')
-    .filter('customRanker', customRanker);
+    .filter('customRanker', ['RankerService', customRanker]);
 
   /*
    * The ranker to be applied on the ng-repeat directive

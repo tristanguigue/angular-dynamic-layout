@@ -3,7 +3,7 @@
 
   angular
     .module('dynamicLayout')
-    .filter('customRanker', customRanker);
+    .filter('customRanker', ['RankerService', customRanker]);
 
   /*
    * The ranker to be applied on the ng-repeat directive
