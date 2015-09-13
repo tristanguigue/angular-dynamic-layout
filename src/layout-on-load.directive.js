@@ -3,7 +3,7 @@
 
   angular
     .module('dynamicLayout')
-    .directive('layoutOnLoad', layoutOnLoad);
+    .directive('layoutOnLoad', ['$rootScope', layoutOnLoad]);
 
   /*
    * Directive on images to layout after each load

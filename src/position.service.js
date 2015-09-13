@@ -3,7 +3,7 @@
 
   angular
     .module('dynamicLayout')
-    .factory('PositionService', PositionService);
+    .factory('PositionService', ['$window', '$document', '$animate', '$timeout', '$q', PositionService]);
 
   /*
    * The position service

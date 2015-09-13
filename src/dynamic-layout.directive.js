@@ -3,7 +3,7 @@
 
   angular
     .module('dynamicLayout')
-    .directive('dynamicLayout', dynamicLayout);
+    .directive('dynamicLayout', ['$timeout', '$window', '$q', '$animate', 'PositionService', dynamicLayout]);
 
   /*
    * The isotope directive that renders the templates based on the array of items
