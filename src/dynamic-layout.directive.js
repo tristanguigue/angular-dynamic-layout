@@ -69,12 +69,7 @@
       /*
        * Triggers a layout every time the window is resized
        */
-      angular.element($window).bind('resize', function() {
-        // We need to apply the scope
-        scope.$apply(function() {
-          layout();
-        });
-      });
+      angular.element($window).on('resize', onResize);
 
       /*
        * Triggers a layout whenever requested by an external source
@@ -95,6 +90,18 @@
       itemsLoaded().then(function() {
         layout();
       });
+
+      // Cleanup
+      scope.$on('$destroy', function() {
+        angular.element($window).off('resize', onResize);
+      });
+
+      function onResize() {
+        // We need to apply the scope
+        scope.$apply(function() {
+          layout();
+        });
+      }
 
       /*
        * Use the PositionService to layout the items
