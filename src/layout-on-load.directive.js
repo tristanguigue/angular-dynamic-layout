@@ -14,7 +14,7 @@
       restrict: 'A',
       link: function(scope, element) {
         element.bind('load error', function() {
-          $rootScope.$broadcast('layout');
+          $rootScope.$broadcast('dynamicLayout.layout');
         });
       }
     };

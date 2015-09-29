@@ -76,7 +76,7 @@
        * Allows a callback to be fired after the layout animation is
        * completed
        */
-      scope.$on('layout', function(event, callback) {
+      scope.$on('dynamicLayout.layout', function(event, callback) {
         layout().then(function() {
           if (angular.isFunction('function')) {
             callback();
