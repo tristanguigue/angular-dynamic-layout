@@ -11,12 +11,12 @@
   function layoutOnLoad($rootScope) {
 
     return {
-        restrict: 'A',
-        link: function(scope, element) {
-          element.bind('load error', function() {
-            $rootScope.$broadcast('layout');
-          });
-        }
+      restrict: 'A',
+      link: function(scope, element) {
+        element.bind('load error', function() {
+          $rootScope.$broadcast('dynamicLayout.layout');
+        });
+      }
     };
   }
 
