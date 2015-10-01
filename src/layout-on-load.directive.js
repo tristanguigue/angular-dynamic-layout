@@ -14,7 +14,10 @@
       restrict: 'A',
       link: function(scope, element) {
         element.bind('load error', function() {
-          $rootScope.$broadcast('dynamicLayout.layout');
+          $timeout.cancel(timeoutId);
+          timeoutId = $timeout(function() {
+            $rootScope.$broadcast('dynamicLayout.layout');
+          });
         });
       }
     };
