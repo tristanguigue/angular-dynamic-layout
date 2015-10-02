@@ -1,0 +1,19 @@
+    <div class="dynamic-layout-item dynamic-layout-col-8 bootcards-cards">
+
+        <div class="panel panel-default bootcards-media">
+          <div class="panel-heading clearfix">
+            <h3 class="panel-title pull-left">My Hometown</h3>
+              <a class="btn btn-default pull-right" href="#" ng-click='grid.remove(card)'>
+                <span class="glyphicon glyphicon-remove"></span>
+              </a>
+          </div>
+          <div class="panel-body">
+            Media card description lorem ipsum dolor est compendium
+          </div>
+          <img layout-on-load ng-src='http://fc09.deviantart.net/fs70/i/2013/307/e/1/sunset_sky_by_koko_stock-d6svrqa.jpg' class="img-responsive"/>
+
+          <div class="panel-footer">
+              <small class="pull-left">Created on {{card.added | date:'medium'}}</small>
+          </div>
+        </div>
+    </div>
