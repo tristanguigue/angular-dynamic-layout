@@ -1,0 +1,19 @@
+    <div class="dynamic-layout-item dynamic-layout-col-8 bootcards-cards">
+
+        <div class="panel panel-default bootcards-media">
+          <div class="panel-heading clearfix">
+            <h3 class="panel-title pull-left">Work Experience</h3>
+              <a class="btn btn-default pull-right" href="#" ng-click='grid.remove(card)'>
+                <span class="glyphicon glyphicon-remove"></span>
+              </a>
+          </div>
+          <div class="panel-body">
+            Media card description lorem ipsum dolor est compendium
+          </div>
+          <img layout-on-load ng-src='http://images.fineartamerica.com/images-medium-large-5/angel-oak-tree-2009-louis-dallara.jpg' class="img-responsive"/>
+
+          <div class="panel-footer">
+              <small class="pull-left">Created on {{card.added | date:'medium'}}</small>
+          </div>
+        </div>
+    </div>

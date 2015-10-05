@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html ng-app="gridApp" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../bower_components/bootcards/dist/css/bootcards-desktop.min.css"></script>
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css"></script>
+    <script src="../bower_components/angular/angular.min.js"></script>
+    <script src="../bower_components/angular-animate/angular-animate.min.js"></script>
+
+    <script src="js/module.js"></script>
+    <script src="js/dynamic-layout.directive.js"></script>
+    <script src="js/dynamic-layout-item.directive.js"></script>
+    <script src="js/layout-on-load.directive.js"></script>
+    <script src="js/layout-on-click.directive.js"></script>
+    <script src="js/position.service.js"></script>
+
+    <script>
+    (function() {
+      'use strict';
+
+      angular
+        .module('gridApp', ['dynamicLayout'])
+        .controller('Work1Controller', Work1Controller)
+        .controller('GridContainer', GridContainer)
+        .filter('contains', function() {
+          return function(values, property, contains) {
+            return values.filter(function(value) {
+              return value[property].indexOf(contains) !== -1;
+            });
+          };
+        });
+
+      function Work1Controller($scope, $rootScope, $timeout) {
+        var vm = this;
+        vm.showingMoreText = false;
+        vm.toggleText = toggleText;
+
+        function toggleText() {
+          vm.showingMoreText = !vm.showingMoreText;
+          $timeout(function(){
+            $rootScope.$broadcast("layout");
+          }, 20);
+        };
+      }
+
+      function GridContainer($scope) {
+        var vm = this;
+        var cardsToAdd = [
+          {
+            id: 9,
+            template : "partials/work3.html",
+            tabs : ["home", "work"],
+            added : 1474871272105,
+          },
+          {
+            id: 10,
+            template : "partials/work4.html",
+            tabs : ["home", "work"],
+            added : 1467871272105,
+          },
+          {
+            id: 11,
+            template : "partials/education.html",
+            tabs : ["home", "education"],
+            data : {
+              "degree" : "PhD",
+              "field": "Artificial Intelligence",
+              "school" : "MIT"
+            },
+            added : 1479871272105
+          }
+        ];
+
+        vm.contains = 'home';
+        vm.orderBy = 'id';
+        vm.cards = [
+          {
+            id: 1,
+            template : "partials/work1.html",
+            tabs : ["home", "work"],
+            data : {
+              "position" : "Web Developer",
+              "company" : "Hacker Inc."
+            },
+            added : 1444871272105,
+          },
+          {
+            id: 2,
+            template : "partials/work1.html",
+            tabs : ["home", "work"],
+            data : {
+              "position" : "Data Scientist",
+              "company" : "Big Data Inc."
+            },
+            added : 1423871272105,
+          },
+          {
+            id: 4,
+            template : "partials/businessCard.html",
+            tabs : ["home"],
+            added : 1434871272105
+          },
+          {
+            id: 3,
+            template : "partials/aboutMe.html",
+            tabs : ["home"],
+            added : 1454871272105
+          },
+          {
+            id: 5,
+            template : "partials/home.html",
+            tabs : ["home"],
+            added : 1484871272105
+          },
+          {
+            id: 6,
+            template : "partials/education.html",
+            tabs : ["home", "education"],
+            data : {
+              "degree" : "Master",
+              "field": "Physics",
+              "school" : "ETH Zurich"
+            },
+            added : 1474871272105
+          },
+          {
+            id: 7,
+            template : "partials/education.html",
+            tabs : ["home", "education"],
+            data : {
+              "degree" : "Bachelor",
+              "field": "Mathematics",
+              "school" : "EPFL"
+            },
+            added : 1464871272105
+          },
+          {
+            id: 8,
+            template : "partials/work2.html",
+            tabs : ["home", "work"],
+            added : 1434871272105
+          }
+        ];
+
+        vm.add = add;
+        vm.remove = remove;
+
+        function add() {
+          if (!cardsToAdd.length) {
+            return;
+          }
+          var card = cardsToAdd.shift();
+          if (card) {
+            vm.cards.unshift(card);
+          }
+        }
+
+        function remove(card) {
+          if (!vm.cards.length) {
+            return;
+          }
+          if (card) {
+            var index = vm.cards.indexOf(card);
+            vm.cards.splice(index, 1);
+          } else {
+            card = vm.cards.shift();
+          }
+          cardsToAdd.unshift(card);
+        }
+      }
+
+    })();
+    </script>
+    <style>
+    @media (min-width: 900px) {
+      [dynamic-layout]{
+        width: 900px;
+        margin-top: 20px;
+      }
+      .dynamic-layout-col-4{
+        width : 300px;
+      }
+      .dynamic-layout-col-8{
+        width : 600px;
+      }
+    }
+
+    @media (min-width: 600px) and (max-width: 900px){
+      [dynamic-layout]{
+        width: 600px;
+      }
+      .dynamic-layout-col-4{
+        width : 300px;
+      }
+      .dynamic-layout-col-8{
+        width : 600px;
+      }
+    }
+
+    @media (max-width: 600px){
+      [dynamic-layout]{
+        width: 300px;
+      }
+      .dynamic-layout-col-4{
+        width : 300px;
+      }
+      .dynamic-layout-col-8{
+        width : 300px;
+      }
+    }
+
+    .dynamic-layout-item {
+      padding: 10px;
+    }
+
+    .move-items-animation{
+      transition-property: left, top;
+      transition-duration: .5s;
+      transition-timing-function: ease-in-out;
+    }
+
+    dynamic-layout-item-parent.ng-enter{
+      transition: .5s ease-in-out;
+      opacity:0;
+    }
+    dynamic-layout-item-parent.ng-enter.ng-enter-active{
+      opacity:1;
+    }
+
+    dynamic-layout-item-parent.ng-leave{
+      transition: .5s ease-in-out;
+      opacity:1;
+    }
+    dynamic-layout-item-parent.ng-leave.ng-leave-active{
+      opacity:0;
+    }
+
+    [dynamic-layout]{
+      float: left;
+      position: relative;
+    }
+
+    .container-fluid{
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%);
+
+    }
+
+    .title{
+      margin-bottom: 50px;
+    }
+
+    </style>
+    <title>angular-dynamic-layout demo</title>
+  </head>
+  <body ng-controller="GridContainer as grid">
+    <div class="container-fluid">
+      <h1 class="text-center title">angular-dynamic-layout
+        <p><small>A lightweight AngularJS dynamic grid layout</small></p>
+      </h1>
+      <div class="features">
+        <div class="row">
+          <div class="col-md-3">
+            <h5>Masonry layout</h5>
+            <p>
+            The items provided are displayed by placing elements in optimal position based on available vertical space.
+          </p>
+          </div>
+          <div class="col-md-3">
+            <h5>Templates</h5>
+            Each item needs to have a template that will be loaded and displayed. You can provide data to fill in the templates.
+          </div>
+          <div class="col-md-3">
+            <h5>Animations</h5>
+            All the animations are controlled from the CSS. You can add an animation when a card enters, leaves or move.
+          </div>
+          <div class="col-md-3">
+            <h5>Responsiveness</h5>
+            The layout can be easily made responsive with media queries, a layout is triggered when the screen changes size, try it!
+          </div>
+        </div>
+        <div class="row">
+          <!--
+          <div class="col-md-3">
+            <h5>Triggering layout</h5>
+            A layout can be triggered at any time, for example when resizing a card. A callback will be fired once the animations have completed.
+          </div>
+        -->
+          <div class="col-md-4">
+            <h5>Filtering</h5>
+            <div class="btn-group" role="group">
+                <button class="btn btn-default" ng-class="{active: grid.contains == 'home'}" ng-click="grid.contains = 'home'">Show all</button>
+                <button class="btn btn-default" ng-class="{active: grid.contains == 'work'}" ng-click="grid.contains = 'work'">Experience</button>
+                <button class="btn btn-default" ng-class="{active: grid.contains == 'education'}" ng-click="grid.contains = 'education'">Education</button>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <h5>Sorting</h5>
+            <div class="btn-group" role="group">
+                <button class="btn btn-default" ng-class="{active: grid.orderBy == 'id'}" ng-click="grid.orderBy = 'id'">Original order</button>
+                <button class="btn btn-default" ng-class="{active: grid.orderBy == 'added'}" ng-click="grid.orderBy = 'added'">Time created</button>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <h5>Adding and removing items</h5>
+            <div class="btn-group" role="group">
+              <button class="btn btn-default" ng-click="grid.add()">
+                <span class="glyphicon glyphicon-plus"></span>
+              </button>
+              <button class="btn btn-default" ng-click="grid.remove()">
+                <span class="glyphicon glyphicon-minus"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div dynamic-layout>
+        <div dynamic-layout-item ng-repeat="card in grid.cards | contains:'tabs':grid.contains | orderBy: grid.orderBy track by card.id" ng-include="card.template"></div>
+      </div>
+
+    </div>
+    <a href="https://github.com/tristanguigue/angular-dynamic-layout">
+      <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png">
+    </a>
+  </body>
+</html>

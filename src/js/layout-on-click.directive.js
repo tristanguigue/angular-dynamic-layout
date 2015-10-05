@@ -3,12 +3,12 @@
 
   angular
     .module('dynamicLayout')
-    .directive('layoutOnLoad', layoutOnLoad);
+    .directive('layoutOnClick', layoutOnClick);
 
   /*
    * Directive on images to layout after each load
    */
-  function layoutOnLoad() {
+  function layoutOnClick() {
 
     return {
       restrict: 'A',
@@ -17,7 +17,7 @@
     };
 
     function link(scope, element, attrs, ctrl) {
-      element.on('load error', function() {
+      element.on('click', function() {
         ctrl.layout();
       });
     }
