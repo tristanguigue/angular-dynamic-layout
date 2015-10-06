@@ -23,15 +23,17 @@
         height: 0
       };
       scope.pos = {
-        x: 0,
-        y: 0
+        x: element[0].offsetLeft,
+        y: element[0].offsetTop
       };
       scope.calculateDimensions = calculateDimensions;
 
       ctrl.subscribe(scope);
 
       scope.$watch('$index', ctrl.layout);
-      scope.$watchCollection('pos', position);
+      scope.$watchCollection('pos', function(newPos, oldPos) {
+        position(newPos, oldPos);
+      });
 
       // Cleanup
       scope.$on('$destroy', function() {
@@ -55,17 +57,19 @@
         scope.dimensions.height = height + parseFloat($window.getComputedStyle(element[0]).marginTop);
       }
 
-      function position() {
+      function position(newPos, oldPos) {
         if (animation) {
           $animate.cancel(animation);
         }
         animation = $animate.addClass(element, 'move-items-animation', {
           from: {
-            position: 'absolute'
+            position: 'absolute',
+            left: oldPos.x + 'px',
+            top: oldPos.y + 'px'
           },
           to: {
-            left: scope.pos.x + 'px',
-            top: scope.pos.y + 'px'
+            left: newPos.x + 'px',
+            top: newPos.y + 'px'
           }
         }).then(function() {
           element.removeClass('move-items-animation');
