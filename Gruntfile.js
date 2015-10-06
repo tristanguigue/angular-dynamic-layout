@@ -2,7 +2,7 @@
 
 // our wrapper function (required by grunt and its plugins)
 // all configuration goes inside this function
-module.exports = function (grunt) {
+module.exports = function(grunt) {
 
   // ===========================================================================
   // CONFIGURE GRUNT ===========================================================
@@ -17,16 +17,26 @@ module.exports = function (grunt) {
         separator: ';'
       },
       dist: {
-        src: ['src/module.js',
-              'src/dynamic-layout.directive.js',
-              'src/layout-on-load.directive.js',
-              'src/filter.service.js',
-              'src/position.service.js',
-              'src/ranker.service.js',
-              'src/as.filter.js',
-              'src/custom-filter.filter.js',
-              'src/custom-ranker.filter.js'],
-        dest: 'dist/<%= pkg.name %>.js'
+        src: ['src/js/module.js',
+              'src/js/dynamic-layout.directive.js',
+              'src/js/layout-on-load.directive.js',
+              'src/js/filter.service.js',
+              'src/js/position.service.js',
+              'src/js/ranker.service.js',
+              'src/js/as.filter.js',
+              'src/js/custom-filter.filter.js',
+              'src/js/custom-ranker.filter.js'],
+        dest: 'dist/js/<%= pkg.name %>.js'
+      }
+    },
+    ngAnnotate: {
+      options: {
+        singleQuotes: true,
+      },
+      dist: {
+        files: {
+          'dist/js/<%= pkg.name %>.js': 'dist/js/<%= pkg.name %>.js'
+        }
       }
     },
     karma: {
@@ -35,12 +45,12 @@ module.exports = function (grunt) {
         singleRun: true
       }
     },
-    jshint: {
+    eslint: {
       // when this task is run, lint the Gruntfile and all js files in src
       options: {
-        multistr: true,
+        configFile: '.eslintrc',
       },
-      build: ['Grunfile.js', 'src/**/*.js', 'tests/**/*.js']
+      build: ['Gruntfile.js', 'src/**/*.js', 'tests/**/*.js']
     },
     uglify: {
       options: {
@@ -49,7 +59,7 @@ module.exports = function (grunt) {
       },
       build: {
         files: {
-          'dist/<%= pkg.name %>.min.js':  ['dist/<%= pkg.name %>.js'],
+          'dist/js/<%= pkg.name %>.min.js':  ['dist/js/<%= pkg.name %>.js'],
         }
       }
     }
@@ -61,8 +71,9 @@ module.exports = function (grunt) {
   // we can only load these if they are in our package.json
   // make sure you have run npm install so our app can find these
   grunt.loadNpmTasks('grunt-karma');
-  grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('gruntify-eslint');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.registerTask('default', ['karma', 'jshint', 'concat', 'uglify']);
+  grunt.loadNpmTasks('grunt-ng-annotate');
+  grunt.registerTask('default', ['eslint', 'karma', 'concat', 'ngAnnotate', 'uglify']);
 };

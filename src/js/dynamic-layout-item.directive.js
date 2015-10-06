@@ -5,9 +5,7 @@
     .module('dynamicLayout')
     .directive('dynamicLayoutItem', dynamicLayoutItem);
 
-  /*
-   *
-   */
+  /* @ngInject */
   function dynamicLayoutItem($window, $animate) {
     return {
       restrict: 'A',

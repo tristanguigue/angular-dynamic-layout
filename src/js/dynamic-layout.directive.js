@@ -8,6 +8,8 @@
   /*
    * The isotope directive that renders the templates based on the array of items
    * passed
+   *
+   * @ngInject
    */
   function dynamicLayout($window, $timeout, PositionService) {
 
