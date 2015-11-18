@@ -52,11 +52,13 @@
           }
         ];
 
+
         // Disable DOM manipulation
         spyOn(PositionService, 'getItemsDimensionFromDOM')
             .and.returnValue(items);
         spyOn(PositionService, 'applyToDOM')
           .and.returnValue($q.defer().promise);
+
 
         // Test that items were properly set up in the grid
         // Input: list of items with their dimensions (width, height)
@@ -93,6 +95,7 @@
         expect(items[3].x).toEqual(0);
         expect(items[4].x).toEqual((300-items[4].width)/2);
 
+
       }));
 
     it('check that item too large is detected and throws errors',
@@ -117,6 +120,30 @@
 
       })
     );
+
+    it('check that item width is set to container width (fullWidth)',
+      inject(function($q, PositionService) {
+
+        var elParent = window.document.createElement('div');
+        elParent.classList.add('dynamic-layout-item-parent');
+        var elChild = window.document.createElement('div');
+        //child have width=150px defined
+        elChild.setAttribute('style','width:150px;');
+        elChild.setAttribute('dynamic-layout-fullWidth','');
+        elChild.innerHTML='<br/>Just a content</br>';
+        elParent.appendChild(elChild);
+        document.body.appendChild(elParent);
+
+        // Disable DOM manipulation
+        spyOn(PositionService, 'applyToDOM')
+          .and.returnValue($q.defer().promise);
+
+        var items = PositionService.getItemsDimensionFromDOM(300);
+
+        //item set width=300px equal to width of container
+        expect(items[0].width).toEqual(300);
+
+      }));
 
   });
 
