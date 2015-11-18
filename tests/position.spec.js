@@ -47,7 +47,8 @@
             color: 'grey',
             atomicNumber: 1.8,
             height: 30,
-            width: 100
+            width: 100,
+            centerH: true
           }
         ];
 
@@ -79,6 +80,19 @@
 
         expect(columns[2][0].id).toEqual(3);
 
+        //test for items that should be centered horizontaly
+        items.forEach(function(item){
+          if (item.centerH === true) {
+            expect(item.x).toEqual((300-item.width)/2);
+          }
+        });
+        //test individual items
+        expect(items[0].x).toEqual(0);
+        expect(items[1].x).toEqual(100);
+        expect(items[2].x).toEqual(200);
+        expect(items[3].x).toEqual(0);
+        expect(items[4].x).toEqual((300-items[4].width)/2);
+
       }));
 
     it('check that item too large is detected and throws errors',
@@ -99,7 +113,7 @@
 
         expect(function() {
           PositionService.layout(300);
-        }).toThrow('Item too large');
+        }).toThrowError(Error, 'Item too large');
 
       })
     );

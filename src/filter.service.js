@@ -76,7 +76,7 @@
 
       var STATEMENT_LENGTH = 3;
       if (statement.length < STATEMENT_LENGTH) {
-        throw 'Incorrect statement';
+        throw new Error('Incorrect statement');
       }
 
       var property = statement[0];
@@ -108,11 +108,11 @@
           return !(item[property] in value);
         case 'contains':
           if (!(item[property] instanceof Array)) {
-            throw 'contains statement has to be applied on array';
+            throw new Error('contains statement has to be applied on array');
           }
           return item[property].indexOf(value) > -1;
         default:
-          throw 'Incorrect statement comparator: ' + comparator;
+          throw new Error('Incorrect statement comparator: ' + comparator);
       }
     }
 

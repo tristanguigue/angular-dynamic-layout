@@ -48,7 +48,8 @@
       for (var i = 0; i < elements.length; ++i) {
         // Note: we need to get the children element width because that's
         // where the style is applied
-        var rect = elements[i].children[0].getBoundingClientRect();
+        var firstChild = elements[i].children[0];
+        var rect = firstChild.getBoundingClientRect();
         var width;
         var height;
         if (rect.width) {
@@ -59,13 +60,15 @@
           height = rect.top - rect.bottom;
         }
 
+        var firstChildCompStyle = $window.getComputedStyle(firstChild);
+
         items.push({
           height: height +
             parseFloat($window.getComputedStyle(elements[i]).marginTop),
           width: width +
-            parseFloat(
-              $window.getComputedStyle(elements[i].children[0]).marginLeft
-            )
+            parseFloat(firstChildCompStyle.marginLeft) +
+            parseFloat(firstChildCompStyle.marginRight),
+          centerH: firstChild.getAttribute('centerH')? true: false
         });
       }
       return items;
@@ -164,7 +167,7 @@
       setItemsColumnSpan(colSize);
 
       // We set what should be their absolute position in the DOM
-      setItemsPosition(columns, colSize);
+      setItemsPosition(columns, colSize, containerWidth);
 
       // We apply those positions to the DOM with an animation
       return self.applyToDOM();
@@ -220,7 +223,7 @@
      */
     function getItemColumnsAndPosition(item, colHeights, colSize) {
       if (item.columnSpan > colHeights.length) {
-        throw 'Item too large';
+        throw new Error('Item too large');
       }
 
       var indexOfMin = 0;
@@ -261,8 +264,9 @@
      * Set the items' absolute position
      * @param columns: the empty columns
      * @param colSize: the column size
+     * @param containerWidth: the container width
      */
-    function setItemsPosition(cols, colSize) {
+    function setItemsPosition(cols, colSize, containerWidth) {
       var i;
       var j;
       for (i = 0; i < items.length; ++i) {
@@ -277,7 +281,7 @@
           columns[itemColumnsAndPosition.columns[j]].push(items[i]);
         }
 
-        items[i].x = itemColumnsAndPosition.position.x;
+        items[i].x = items[i].centerH === true? (containerWidth-items[i].width)/2 : itemColumnsAndPosition.position.x;
         items[i].y = itemColumnsAndPosition.position.y;
       }
     }
