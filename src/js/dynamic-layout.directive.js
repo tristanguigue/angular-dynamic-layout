@@ -51,6 +51,10 @@
         $timeout.cancel(timeoutId);
         timeoutId = $timeout(function() {
 
+          if (!items.length) {
+            return;
+          }
+          
           items.sort(function(a, b) {
             if (a.$index < b.$index) {
               return -1;
