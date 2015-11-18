@@ -374,9 +374,10 @@
 
     /*
      * Get the items heights and width from the DOM
+     * @param containerWidth: the width of the dynamic-layout container
      * @return: the list of items with their sizes
      */
-    function getItemsDimensionFromDOM() {
+    function getItemsDimensionFromDOM(containerWidth) {
       // not(.ng-leave) : we don't want to select elements that have been
       // removed but are  still in the DOM
       elements = $document[0].querySelectorAll(
@@ -387,6 +388,11 @@
         // Note: we need to get the children element width because that's
         // where the style is applied
         var firstChild = elements[i].children[0];
+        var centerH = firstChild.getAttribute('dynamic-layout-centerH') !== null;
+        var fullWidth = firstChild.getAttribute('dynamic-layout-fullWidth') !== null;
+        if (fullWidth){
+          firstChild.style.width = containerWidth + "px";
+        }
         var rect = firstChild.getBoundingClientRect();
         var width;
         var height;
@@ -398,15 +404,16 @@
           height = rect.top - rect.bottom;
         }
 
-        var firstChildCompStyle = $window.getComputedStyle(firstChild);
+        var firstChildComputedStyle = $window.getComputedStyle(firstChild);
 
         items.push({
           height: height +
             parseFloat($window.getComputedStyle(elements[i]).marginTop),
           width: width +
-            parseFloat(firstChildCompStyle.marginLeft) +
-            parseFloat(firstChildCompStyle.marginRight),
-          centerH: firstChild.getAttribute('centerH')? true: false
+            parseFloat(firstChildComputedStyle.marginLeft) +
+            parseFloat(firstChildComputedStyle.marginRight),
+          centerH: centerH,
+          fullWidth: fullWidth
         });
       }
       return items;
@@ -492,7 +499,7 @@
      */
     function layout(containerWidth) {
       // We first gather the items dimension based on the DOM elements
-      items = self.getItemsDimensionFromDOM();
+      items = self.getItemsDimensionFromDOM(containerWidth);
 
       // Then we get the column size base the elements minimum width
       var colSize = getColSize();
