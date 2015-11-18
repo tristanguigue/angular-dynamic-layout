@@ -1,0 +1,35 @@
+{
+  "env": {
+    "browser": true
+  },
+  "plugins": [
+    "angular"
+  ],
+  "rules": {
+    "brace-style": [1, "1tbs"],
+    "camelcase": [1, {"properties": "never"}],
+    "consistent-return": 1,
+    "indent": [2, 2],
+    "new-cap": 0,
+    "no-array-constructor": 2,
+    "no-extra-parens": 1,
+    "no-new-object": 2,
+    "no-use-before-define": 0,
+    "no-underscore-dangle": 0,
+    "no-unexpected-multiline": 2,
+    "no-unused-vars": 1,
+    "one-var": [1, "never"],
+    "quotes": [1, "single"],
+    "space-after-keywords": 1,
+    "space-before-blocks": 1,
+    "space-before-function-paren": [1, "never"],
+    "space-infix-ops": 1,
+    "valid-jsdoc": 1
+  },
+  "globals": {
+    "angular": true,
+    "_": true,
+    "moment": true,
+    "S": true
+  }
+}
