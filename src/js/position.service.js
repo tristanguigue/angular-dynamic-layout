@@ -34,7 +34,7 @@
 
       // Apply columnSpan to each item
       angular.forEach(items, function(item) {
-        item.dimensions.columnSpan = Math.ceil(item.dimensions.width / colWidth);
+        item.dimensions.columnSpan = Math.round(item.dimensions.width / colWidth);
       });
 
       // We set what should be their absolute position in the DOM
@@ -84,7 +84,7 @@
      * @return: the empty columns
      */
     function initColumns(containerWidth, colWidth) {
-      var amount = Math.floor(containerWidth / colWidth);
+      var amount = Math.round(containerWidth / colWidth);
       var columns = [];
       var i;
       for (i = 0; i < amount; ++i) {
