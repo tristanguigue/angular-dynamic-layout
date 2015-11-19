@@ -568,7 +568,12 @@
      */
     function getItemColumnsAndPosition(item, colHeights, colSize) {
       if (item.columnSpan > colHeights.length) {
-        throw new Error('Item too large');
+        if (item.fullWidth) {
+          item.columnSpan = colHeights.length;
+        } else {
+          //Question: should this throw? or could item.columnSpan always be set to colHeights.length?
+          throw new Error('Item too large');
+        }
       }
 
       var indexOfMin = 0;

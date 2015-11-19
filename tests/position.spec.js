@@ -111,7 +111,7 @@
         ];
 
         spyOn(PositionService, 'getItemsDimensionFromDOM')
-            .and.returnValue(items);
+          .and.returnValue(items);
         spyOn(PositionService, 'applyToDOM');
 
         expect(function() {
@@ -143,8 +143,32 @@
         //item set width=300px equal to width of container
         expect(items[0].width).toEqual(300);
 
-      }));
+      })
+    );
 
+    it('check that item with full width do not throws errors',
+      inject(function(PositionService) {
+        var items = [
+          {
+            id: 1,
+            color: 'red',
+            atomicNumber: 45.65,
+            height: 10,
+            width: 100,
+            fullWidth: true
+          }
+        ];
+
+        spyOn(PositionService, 'getItemsDimensionFromDOM')
+          .and.returnValue(items);
+        spyOn(PositionService, 'applyToDOM');
+
+        expect(function() {
+          PositionService.layout(300);
+        }).not.toThrowError(Error, 'Item too large');
+
+      })
+    );
   });
 
 })();
