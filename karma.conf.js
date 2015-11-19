@@ -52,7 +52,6 @@ module.exports = function(config) {
     // web server port
     port: 9876,
 
-
     // enable / disable colors in the output (reporters and logs)
     colors: true,
 
@@ -68,11 +67,19 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    browsers: ['Firefox'],
+    browsers: ['Firefox', 'Chrome','PhantomJS'],
 
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
-    singleRun: false
+    singleRun: false,
+
+    plugins: [
+      //comment the browser plugins that are not used
+      'karma-phantomjs-launcher',
+//      'karma-chrome-launcher',
+//      'karma-firefox-launcher',
+      'karma-jasmine'
+    ]
   });
 };

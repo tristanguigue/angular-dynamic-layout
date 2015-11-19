@@ -89,7 +89,7 @@
 
         expect(function() {
           FilterService.applyFilters(mockedItems, filters);
-        }).toThrow('Incorrect statement');
+        }).toThrowError(Error, 'Incorrect statement');
 
         filters = [[
             ['atomicNumber', 'invalid', 3]
@@ -97,7 +97,7 @@
 
         expect(function() {
           FilterService.applyFilters(mockedItems, filters);
-        }).toThrow('Incorrect statement comparator: invalid');
+        }).toThrowError(Error, 'Incorrect statement comparator: invalid');
 
       })
     );
@@ -119,7 +119,7 @@
 
         expect(function() {
           FilterService.applyFilters(mockedItems, filters);
-        }).toThrow('contains statement has to be applied on array');
+        }).toThrowError(Error, 'contains statement has to be applied on array');
       })
     );
 

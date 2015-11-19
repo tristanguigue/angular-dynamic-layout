@@ -76,19 +76,14 @@
       /*
        * Triggers a layout every time the window is resized
        */
-      angular.element($window).bind('resize', function() {
-        // We need to apply the scope
-        scope.$apply(function() {
-          layout();
-        });
-      });
+      angular.element($window).on('resize', onResize);
 
       /*
        * Triggers a layout whenever requested by an external source
        * Allows a callback to be fired after the layout animation is
        * completed
        */
-      scope.$on('layout', function(event, callback) {
+      scope.$on('dynamicLayout.layout', function(event, callback) {
         layout().then(function() {
           if (angular.isFunction('function')) {
             callback();
@@ -102,6 +97,18 @@
       itemsLoaded().then(function() {
         layout();
       });
+
+      // Cleanup
+      scope.$on('$destroy', function() {
+        angular.element($window).off('resize', onResize);
+      });
+
+      function onResize() {
+        // We need to apply the scope
+        scope.$apply(function() {
+          layout();
+        });
+      }
 
       /*
        * Use the PositionService to layout the items
@@ -161,12 +168,15 @@
   function layoutOnLoad($rootScope) {
 
     return {
-        restrict: 'A',
-        link: function(scope, element) {
-          element.bind('load error', function() {
-            $rootScope.$broadcast('layout');
+      restrict: 'A',
+      link: function(scope, element) {
+        element.bind('load error', function() {
+          $timeout.cancel(timeoutId);
+          timeoutId = $timeout(function() {
+            $rootScope.$broadcast('dynamicLayout.layout');
           });
-        }
+        });
+      }
     };
   }
 
@@ -249,7 +259,7 @@
 
       var STATEMENT_LENGTH = 3;
       if (statement.length < STATEMENT_LENGTH) {
-        throw 'Incorrect statement';
+        throw new Error('Incorrect statement');
       }
 
       var property = statement[0];
@@ -281,11 +291,11 @@
           return !(item[property] in value);
         case 'contains':
           if (!(item[property] instanceof Array)) {
-            throw 'contains statement has to be applied on array';
+            throw new Error('contains statement has to be applied on array');
           }
           return item[property].indexOf(value) > -1;
         default:
-          throw 'Incorrect statement comparator: ' + comparator;
+          throw new Error('Incorrect statement comparator: ' + comparator);
       }
     }
 
@@ -364,9 +374,10 @@
 
     /*
      * Get the items heights and width from the DOM
+     * @param containerWidth: the width of the dynamic-layout container
      * @return: the list of items with their sizes
      */
-    function getItemsDimensionFromDOM() {
+    function getItemsDimensionFromDOM(containerWidth) {
       // not(.ng-leave) : we don't want to select elements that have been
       // removed but are  still in the DOM
       elements = $document[0].querySelectorAll(
@@ -376,7 +387,13 @@
       for (var i = 0; i < elements.length; ++i) {
         // Note: we need to get the children element width because that's
         // where the style is applied
-        var rect = elements[i].children[0].getBoundingClientRect();
+        var firstChild = elements[i].children[0];
+        var centerH = firstChild.getAttribute('dynamic-layout-centerH') !== null;
+        var fullWidth = firstChild.getAttribute('dynamic-layout-fullWidth') !== null;
+        if (fullWidth){
+          firstChild.style.width = containerWidth + "px";
+        }
+        var rect = firstChild.getBoundingClientRect();
         var width;
         var height;
         if (rect.width) {
@@ -387,13 +404,16 @@
           height = rect.top - rect.bottom;
         }
 
+        var firstChildComputedStyle = $window.getComputedStyle(firstChild);
+
         items.push({
           height: height +
             parseFloat($window.getComputedStyle(elements[i]).marginTop),
           width: width +
-            parseFloat(
-              $window.getComputedStyle(elements[i].children[0]).marginLeft
-            )
+            parseFloat(firstChildComputedStyle.marginLeft) +
+            parseFloat(firstChildComputedStyle.marginRight),
+          centerH: centerH,
+          fullWidth: fullWidth
         });
       }
       return items;
@@ -479,7 +499,7 @@
      */
     function layout(containerWidth) {
       // We first gather the items dimension based on the DOM elements
-      items = self.getItemsDimensionFromDOM();
+      items = self.getItemsDimensionFromDOM(containerWidth);
 
       // Then we get the column size base the elements minimum width
       var colSize = getColSize();
@@ -492,7 +512,7 @@
       setItemsColumnSpan(colSize);
 
       // We set what should be their absolute position in the DOM
-      setItemsPosition(columns, colSize);
+      setItemsPosition(columns, colSize, containerWidth);
 
       // We apply those positions to the DOM with an animation
       return self.applyToDOM();
@@ -548,7 +568,12 @@
      */
     function getItemColumnsAndPosition(item, colHeights, colSize) {
       if (item.columnSpan > colHeights.length) {
-        throw 'Item too large';
+        if (item.fullWidth) {
+          item.columnSpan = colHeights.length;
+        } else {
+          //Question: should this throw? or could item.columnSpan always be set to colHeights.length?
+          throw new Error('Item too large');
+        }
       }
 
       var indexOfMin = 0;
@@ -589,8 +614,9 @@
      * Set the items' absolute position
      * @param columns: the empty columns
      * @param colSize: the column size
+     * @param containerWidth: the container width
      */
-    function setItemsPosition(cols, colSize) {
+    function setItemsPosition(cols, colSize, containerWidth) {
       var i;
       var j;
       for (i = 0; i < items.length; ++i) {
@@ -605,7 +631,7 @@
           columns[itemColumnsAndPosition.columns[j]].push(items[i]);
         }
 
-        items[i].x = itemColumnsAndPosition.position.x;
+        items[i].x = items[i].centerH === true? (containerWidth-items[i].width)/2 : itemColumnsAndPosition.position.x;
         items[i].y = itemColumnsAndPosition.position.y;
       }
     }

@@ -36,9 +36,10 @@
 
     /*
      * Get the items heights and width from the DOM
+     * @param containerWidth: the width of the dynamic-layout container
      * @return: the list of items with their sizes
      */
-    function getItemsDimensionFromDOM() {
+    function getItemsDimensionFromDOM(containerWidth) {
       // not(.ng-leave) : we don't want to select elements that have been
       // removed but are  still in the DOM
       elements = $document[0].querySelectorAll(
@@ -48,7 +49,13 @@
       for (var i = 0; i < elements.length; ++i) {
         // Note: we need to get the children element width because that's
         // where the style is applied
-        var rect = elements[i].children[0].getBoundingClientRect();
+        var firstChild = elements[i].children[0];
+        var centerH = firstChild.getAttribute('dynamic-layout-centerH') !== null;
+        var fullWidth = firstChild.getAttribute('dynamic-layout-fullWidth') !== null;
+        if (fullWidth){
+          firstChild.style.width = containerWidth + "px";
+        }
+        var rect = firstChild.getBoundingClientRect();
         var width;
         var height;
         if (rect.width) {
@@ -59,13 +66,16 @@
           height = rect.top - rect.bottom;
         }
 
+        var firstChildComputedStyle = $window.getComputedStyle(firstChild);
+
         items.push({
           height: height +
             parseFloat($window.getComputedStyle(elements[i]).marginTop),
           width: width +
-            parseFloat(
-              $window.getComputedStyle(elements[i].children[0]).marginLeft
-            )
+            parseFloat(firstChildComputedStyle.marginLeft) +
+            parseFloat(firstChildComputedStyle.marginRight),
+          centerH: centerH,
+          fullWidth: fullWidth
         });
       }
       return items;
@@ -151,7 +161,7 @@
      */
     function layout(containerWidth) {
       // We first gather the items dimension based on the DOM elements
-      items = self.getItemsDimensionFromDOM();
+      items = self.getItemsDimensionFromDOM(containerWidth);
 
       // Then we get the column size base the elements minimum width
       var colSize = getColSize();
@@ -164,7 +174,7 @@
       setItemsColumnSpan(colSize);
 
       // We set what should be their absolute position in the DOM
-      setItemsPosition(columns, colSize);
+      setItemsPosition(columns, colSize, containerWidth);
 
       // We apply those positions to the DOM with an animation
       return self.applyToDOM();
@@ -220,7 +230,12 @@
      */
     function getItemColumnsAndPosition(item, colHeights, colSize) {
       if (item.columnSpan > colHeights.length) {
-        throw 'Item too large';
+        if (item.fullWidth) {
+          item.columnSpan = colHeights.length;
+        } else {
+          //Question: should this throw? or could item.columnSpan always be set to colHeights.length?
+          throw new Error('Item too large');
+        }
       }
 
       var indexOfMin = 0;
@@ -261,8 +276,9 @@
      * Set the items' absolute position
      * @param columns: the empty columns
      * @param colSize: the column size
+     * @param containerWidth: the container width
      */
-    function setItemsPosition(cols, colSize) {
+    function setItemsPosition(cols, colSize, containerWidth) {
       var i;
       var j;
       for (i = 0; i < items.length; ++i) {
@@ -277,7 +293,7 @@
           columns[itemColumnsAndPosition.columns[j]].push(items[i]);
         }
 
-        items[i].x = itemColumnsAndPosition.position.x;
+        items[i].x = items[i].centerH === true? (containerWidth-items[i].width)/2 : itemColumnsAndPosition.position.x;
         items[i].y = itemColumnsAndPosition.position.y;
       }
     }
