@@ -53,8 +53,8 @@
           height = rect.top - rect.bottom;
         }
 
-        scope.dimensions.width = width + parseFloat($window.getComputedStyle(element[0].children[0]).marginLeft);
-        scope.dimensions.height = height + parseFloat($window.getComputedStyle(element[0]).marginTop);
+        scope.dimensions.width = width + parseFloat($window.getComputedStyle(element[0]).marginLeft) + parseFloat($window.getComputedStyle(element[0]).marginRight);
+        scope.dimensions.height = height + parseFloat($window.getComputedStyle(element[0]).marginTop) + parseFloat($window.getComputedStyle(element[0]).marginBottom);
       }
 
       function position(newPos, oldPos) {
