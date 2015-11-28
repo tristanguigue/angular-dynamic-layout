@@ -41,7 +41,7 @@
       });
 
       function calculateDimensions() {
-        var rect = element[0].children[0].getBoundingClientRect();
+        var rect = element[0].getBoundingClientRect();
         var width;
         var height;
 
