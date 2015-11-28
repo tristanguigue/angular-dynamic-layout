@@ -30,7 +30,11 @@
 
       ctrl.subscribe(scope);
 
-      scope.$watch('$index', ctrl.layout);
+      scope.$watch('$index', function(newVal, oldVal) {
+        if (newVal !== oldVal) {
+          ctrl.layout();
+        }
+      });
       scope.$watchCollection('pos', function(newPos, oldPos) {
         position(newPos, oldPos);
       });
