@@ -42,6 +42,7 @@
 
       function calculateDimensions() {
         var rect = element[0].getBoundingClientRect();
+        var style = $window.getComputedStyle(element[0]);
         var width;
         var height;
 
@@ -53,8 +54,8 @@
           height = rect.top - rect.bottom;
         }
 
-        scope.dimensions.width = width + parseFloat($window.getComputedStyle(element[0]).marginLeft) + parseFloat($window.getComputedStyle(element[0]).marginRight);
-        scope.dimensions.height = height + parseFloat($window.getComputedStyle(element[0]).marginTop) + parseFloat($window.getComputedStyle(element[0]).marginBottom);
+        scope.dimensions.width = width + parseFloat(style.marginLeft) + parseFloat(style.marginRight);
+        scope.dimensions.height = height + parseFloat(style.marginTop) + parseFloat(style.marginBottom);
       }
 
       function position(newPos, oldPos) {
