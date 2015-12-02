@@ -108,7 +108,14 @@
        * @return the promise of the cards being animated
        */
       function layout() {
-        return PositionService.layout(element[0].offsetWidth);
+        var rect = element[0].getBoundingClientRect();
+        var width;
+        if (rect.width) {
+          width = rect.width;
+        } else {
+          width = rect.right - rect.left;
+        }
+        return PositionService.layout(width);
       }
 
       /*
