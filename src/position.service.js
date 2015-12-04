@@ -316,7 +316,7 @@
     function setItemsColumnSpan(colSize) {
       var i;
       for (i = 0; i < items.length; ++i) {
-        items[i].columnSpan = Math.ceil(items[i].width / colSize);
+        items[i].columnSpan = Math.round(items[i].width / colSize);
       }
     }
 
