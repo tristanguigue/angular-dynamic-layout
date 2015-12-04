@@ -425,6 +425,10 @@
      */
     function applyToDOM() {
 
+      // Set height of the container element so that the real size is
+      // reflected on the page, and other elements flow correctly below it
+      setContainerHeight();
+
       var ret = $q.defer();
 
       /*
@@ -490,6 +494,13 @@
       });
 
       return ret.promise;
+    }
+
+    function setContainerHeight() {
+      if (elements[0]) {
+        var maxColumnHeight = Math.max.apply(null, getColumnsHeights(columns));
+        $(elements[0].parentElement).height(maxColumnHeight);
+      }
     }
 
     /*
