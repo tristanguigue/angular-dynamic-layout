@@ -30,14 +30,17 @@
         filters: '=',
         defaulttemplate: '=?'
       },
-      template: '<div                                     \
-                    class="dynamic-layout-item-parent"    \
-                    ng-repeat="it in items |              \
-                               customFilter: filters |    \
-                               customRanker:rankers |     \
-                               as:this:\'filteredItems\'" \
-                    ng-include="it.template || defaulttemplate" \
-                ></div>',
+      template: function(element, attrs) {
+        var trackby = attrs.trackby ? ' track by ' + attrs.trackby : '';
+        return '<div                                                    \
+                    class="dynamic-layout-item-parent"                  \
+                    ng-repeat="it in items |                            \
+                               customFilter: filters |                  \
+                               customRanker:rankers |                   \
+                               as:this:\'filteredItems\'' + trackby + '"\
+                    ng-include="it.template || defaulttemplate"         \
+                ></div>';
+      },
       link: link
     };
 
