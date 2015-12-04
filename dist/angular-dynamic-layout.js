@@ -30,14 +30,17 @@
         filters: '=',
         defaulttemplate: '=?'
       },
-      template: '<div                                     \
-                    class="dynamic-layout-item-parent"    \
-                    ng-repeat="it in items |              \
-                               customFilter: filters |    \
-                               customRanker:rankers |     \
-                               as:this:\'filteredItems\'" \
-                    ng-include="it.template || defaulttemplate" \
-                ></div>',
+      template: function(element, attrs) {
+        var trackby = attrs.trackby ? ' track by ' + attrs.trackby : '';
+        return '<div                                                    \
+                    class="dynamic-layout-item-parent"                  \
+                    ng-repeat="it in items |                            \
+                               customFilter: filters |                  \
+                               customRanker:rankers |                   \
+                               as:this:\'filteredItems\'' + trackby + '"\
+                    ng-include="it.template || defaulttemplate"         \
+                ></div>';
+      },
       link: link
     };
 
@@ -76,19 +79,14 @@
       /*
        * Triggers a layout every time the window is resized
        */
-      angular.element($window).bind('resize', function() {
-        // We need to apply the scope
-        scope.$apply(function() {
-          layout();
-        });
-      });
+      angular.element($window).on('resize', onResize);
 
       /*
        * Triggers a layout whenever requested by an external source
        * Allows a callback to be fired after the layout animation is
        * completed
        */
-      scope.$on('layout', function(event, callback) {
+      scope.$on('dynamicLayout.layout', function(event, callback) {
         layout().then(function() {
           if (angular.isFunction('function')) {
             callback();
@@ -103,12 +101,31 @@
         layout();
       });
 
+      // Cleanup
+      scope.$on('$destroy', function() {
+        angular.element($window).off('resize', onResize);
+      });
+
+      function onResize() {
+        // We need to apply the scope
+        scope.$apply(function() {
+          layout();
+        });
+      }
+
       /*
        * Use the PositionService to layout the items
        * @return the promise of the cards being animated
        */
       function layout() {
-        return PositionService.layout(element[0].offsetWidth);
+        var rect = element[0].getBoundingClientRect();
+        var width;
+        if (rect.width) {
+          width = rect.width;
+        } else {
+          width = rect.right - rect.left;
+        }
+        return PositionService.layout(width);
       }
 
       /*
@@ -161,12 +178,15 @@
   function layoutOnLoad($rootScope) {
 
     return {
-        restrict: 'A',
-        link: function(scope, element) {
-          element.bind('load error', function() {
-            $rootScope.$broadcast('layout');
+      restrict: 'A',
+      link: function(scope, element) {
+        element.bind('load error', function() {
+          $timeout.cancel(timeoutId);
+          timeoutId = $timeout(function() {
+            $rootScope.$broadcast('dynamicLayout.layout');
           });
-        }
+        });
+      }
     };
   }
 
@@ -405,6 +425,10 @@
      */
     function applyToDOM() {
 
+      // Set height of the container element so that the real size is
+      // reflected on the page, and other elements flow correctly below it
+      setContainerHeight();
+
       var ret = $q.defer();
 
       /*
@@ -470,6 +494,13 @@
       });
 
       return ret.promise;
+    }
+
+    function setContainerHeight() {
+      if (elements[0]) {
+        var maxColumnHeight = Math.max.apply(null, getColumnsHeights(columns));
+        $(elements[0].parentElement).height(maxColumnHeight);
+      }
     }
 
     /*
@@ -633,7 +664,7 @@
     function setItemsColumnSpan(colSize) {
       var i;
       for (i = 0; i < items.length; ++i) {
-        items[i].columnSpan = Math.ceil(items[i].width / colSize);
+        items[i].columnSpan = Math.round(items[i].width / colSize);
       }
     }
 
