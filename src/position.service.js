@@ -149,12 +149,12 @@
      * @param containerWidth: the width of the dynamic-layout container
      * @return: the promise of the position animations being completed
      */
-    function layout(containerWidth) {
+    function layout(containerWidth, colWidth) {
       // We first gather the items dimension based on the DOM elements
       items = self.getItemsDimensionFromDOM();
 
       // Then we get the column size base the elements minimum width
-      var colSize = getColSize();
+      var colSize = getColSize(colWidth);
       var nbColumns = Math.floor(containerWidth / colSize);
       // We create empty columns to be filled with the items
       initColumns(nbColumns);
@@ -286,12 +286,14 @@
      * Get the column size based on the minimum width of the items
      * @return: column size
      */
-    function getColSize() {
-      var colSize;
+    function getColSize(colWidth) {
+      var colSize = typeof colWidth !== 'undefined' ? colWidth : undefined;
       var i;
-      for (i = 0; i < items.length; ++i) {
-        if (!colSize || items[i].width < colSize) {
-          colSize = items[i].width;
+      if(colSize !== undefined) {
+        for (i = 0; i < items.length; ++i) {
+          if (!colSize || items[i].width < colSize) {
+            colSize = items[i].width;
+          }
         }
       }
       return colSize;
