@@ -1,6 +1,6 @@
 {
   "name": "angular-dynamic-layout",
-  "version": "0.1.0",
+  "version": "0.1.11",
   "description": "An angularJS approach to dynamic grid",
   "main": "index.js",
   "directories": {
