@@ -154,17 +154,17 @@
       items = self.getItemsDimensionFromDOM();
 
       // Then we get the column size base the elements minimum width
-      var colSize = getColSize(colWidth);
-      var nbColumns = Math.floor(containerWidth / colSize);
+      var colWidth = colWidth || getColWidth();
+      var nbColumns = Math.floor(containerWidth / colWidth);
       // We create empty columns to be filled with the items
       initColumns(nbColumns);
 
       // We determine what is the column size of each of the items based on
       // their width and the column size
-      setItemsColumnSpan(colSize);
+      setItemsColumnSpan(colWidth);
 
       // We set what should be their absolute position in the DOM
-      setItemsPosition(columns, colSize);
+      setItemsPosition(columns, colWidth);
 
       // We apply those positions to the DOM with an animation
       return self.applyToDOM();
@@ -215,10 +215,10 @@
      * @param item: the item to place
      * @param colHeights: the current heigh of the column when all items prior to this
      * one were places
-     * @param colSize: the column size
+     * @param colWidth: the column width
      * @return the item's columms and coordinates
      */
-    function getItemColumnsAndPosition(item, colHeights, colSize) {
+    function getItemColumnsAndPosition(item, colHeights, colWidth) {
       if (item.columnSpan > colHeights.length) {
         throw 'Item too large';
       }
@@ -247,7 +247,7 @@
       }
 
       var position = {
-        x: itemColumns[0] * colSize,
+        x: itemColumns[0] * colWidth,
         y: minFound
       };
 
@@ -260,9 +260,9 @@
     /*
      * Set the items' absolute position
      * @param columns: the empty columns
-     * @param colSize: the column size
+     * @param colWidth: the column width
      */
-    function setItemsPosition(cols, colSize) {
+    function setItemsPosition(cols, colWidth) {
       var i;
       var j;
       for (i = 0; i < items.length; ++i) {
@@ -270,7 +270,7 @@
 
         var itemColumnsAndPosition = getItemColumnsAndPosition(items[i],
                                                                columnsHeights,
-                                                               colSize);
+                                                               colWidth);
 
         // We place the item in the found columns
         for (j in itemColumnsAndPosition.columns) {
@@ -286,17 +286,15 @@
      * Get the column size based on the minimum width of the items
      * @return: column size
      */
-    function getColSize(colWidth) {
-      var colSize = typeof colWidth !== 'undefined' ? colWidth : undefined;
+    function getColWidth() {
       var i;
-      if(colSize !== undefined) {
-        for (i = 0; i < items.length; ++i) {
-          if (!colSize || items[i].width < colSize) {
-            colSize = items[i].width;
-          }
+      var colWidth;
+      for (i = 0; i < items.length; ++i) {
+        if (!colWidth || items[i].width < colWidth) {
+          colWidth = items[i].width;
         }
       }
-      return colSize;
+      return colWidth;
     }
 
     /*
@@ -304,10 +302,10 @@
      * column size
      * @param: column size
      */
-    function setItemsColumnSpan(colSize) {
+    function setItemsColumnSpan(colWidth) {
       var i;
       for (i = 0; i < items.length; ++i) {
-        items[i].columnSpan = Math.ceil(items[i].width / colSize);
+        items[i].columnSpan = Math.ceil(items[i].width / colWidth);
       }
     }
 
