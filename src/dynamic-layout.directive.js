@@ -21,7 +21,8 @@
         items: '=',
         rankers: '=',
         filters: '=',
-        defaulttemplate: '=?'
+        defaulttemplate: '=?',
+        colWidth: '='
       },
       template: '<div                                     \
                     class="dynamic-layout-item-parent"    \
@@ -108,7 +109,7 @@
        * @return the promise of the cards being animated
        */
       function layout() {
-        return PositionService.layout(element[0].offsetWidth);
+        return PositionService.layout(element[0].offsetWidth, scope.colWidth);
       }
 
       /*
