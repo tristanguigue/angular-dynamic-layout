@@ -28,7 +28,8 @@
         items: '=',
         rankers: '=',
         filters: '=',
-        defaulttemplate: '=?'
+        defaulttemplate: '=?',
+        colWidth: '='
       },
       template: '<div                                     \
                     class="dynamic-layout-item-parent"    \
@@ -76,19 +77,14 @@
       /*
        * Triggers a layout every time the window is resized
        */
-      angular.element($window).bind('resize', function() {
-        // We need to apply the scope
-        scope.$apply(function() {
-          layout();
-        });
-      });
+      angular.element($window).on('resize', onResize);
 
       /*
        * Triggers a layout whenever requested by an external source
        * Allows a callback to be fired after the layout animation is
        * completed
        */
-      scope.$on('layout', function(event, callback) {
+      scope.$on('dynamicLayout.layout', function(event, callback) {
         layout().then(function() {
           if (angular.isFunction('function')) {
             callback();
@@ -103,12 +99,24 @@
         layout();
       });
 
+      // Cleanup
+      scope.$on('$destroy', function() {
+        angular.element($window).off('resize', onResize);
+      });
+
+      function onResize() {
+        // We need to apply the scope
+        scope.$apply(function() {
+          layout();
+        });
+      }
+
       /*
        * Use the PositionService to layout the items
        * @return the promise of the cards being animated
        */
       function layout() {
-        return PositionService.layout(element[0].offsetWidth);
+        return PositionService.layout(element[0].offsetWidth, scope.colWidth);
       }
 
       /*
@@ -161,12 +169,15 @@
   function layoutOnLoad($rootScope) {
 
     return {
-        restrict: 'A',
-        link: function(scope, element) {
-          element.bind('load error', function() {
-            $rootScope.$broadcast('layout');
+      restrict: 'A',
+      link: function(scope, element) {
+        element.bind('load error', function() {
+          $timeout.cancel(timeoutId);
+          timeoutId = $timeout(function() {
+            $rootScope.$broadcast('dynamicLayout.layout');
           });
-        }
+        });
+      }
     };
   }
 
@@ -477,22 +488,30 @@
      * @param containerWidth: the width of the dynamic-layout container
      * @return: the promise of the position animations being completed
      */
-    function layout(containerWidth) {
+    function layout(containerWidth, colWidth) {
       // We first gather the items dimension based on the DOM elements
       items = self.getItemsDimensionFromDOM();
 
       // Then we get the column size base the elements minimum width
-      var colSize = getColSize();
-      var nbColumns = Math.floor(containerWidth / colSize);
+      colWidth = colWidth || getColWidth();
+      var nbColumns = Math.floor(containerWidth / colWidth);
+
+      //Detect and prevent a possible browser crash scenario (infinite loop)
+      if (!isFinite(nbColumns))
+      {
+        console.error("Failed to calculate the number of needed columns. containerWidth: "+containerWidth+", colSize: "+colSize);
+        nbColumns = 1;
+      }
+
       // We create empty columns to be filled with the items
       initColumns(nbColumns);
 
       // We determine what is the column size of each of the items based on
       // their width and the column size
-      setItemsColumnSpan(colSize);
+      setItemsColumnSpan(colWidth);
 
       // We set what should be their absolute position in the DOM
-      setItemsPosition(columns, colSize);
+      setItemsPosition(columns, colWidth);
 
       // We apply those positions to the DOM with an animation
       return self.applyToDOM();
@@ -543,10 +562,10 @@
      * @param item: the item to place
      * @param colHeights: the current heigh of the column when all items prior to this
      * one were places
-     * @param colSize: the column size
+     * @param colWidth: the column width
      * @return the item's columms and coordinates
      */
-    function getItemColumnsAndPosition(item, colHeights, colSize) {
+    function getItemColumnsAndPosition(item, colHeights, colWidth) {
       if (item.columnSpan > colHeights.length) {
         throw 'Item too large';
       }
@@ -575,7 +594,7 @@
       }
 
       var position = {
-        x: itemColumns[0] * colSize,
+        x: itemColumns[0] * colWidth,
         y: minFound
       };
 
@@ -588,9 +607,9 @@
     /*
      * Set the items' absolute position
      * @param columns: the empty columns
-     * @param colSize: the column size
+     * @param colWidth: the column width
      */
-    function setItemsPosition(cols, colSize) {
+    function setItemsPosition(cols, colWidth) {
       var i;
       var j;
       for (i = 0; i < items.length; ++i) {
@@ -598,7 +617,7 @@
 
         var itemColumnsAndPosition = getItemColumnsAndPosition(items[i],
                                                                columnsHeights,
-                                                               colSize);
+                                                               colWidth);
 
         // We place the item in the found columns
         for (j in itemColumnsAndPosition.columns) {
@@ -614,15 +633,15 @@
      * Get the column size based on the minimum width of the items
      * @return: column size
      */
-    function getColSize() {
-      var colSize;
+    function getColWidth() {
       var i;
+      var colWidth;
       for (i = 0; i < items.length; ++i) {
-        if (!colSize || items[i].width < colSize) {
-          colSize = items[i].width;
+        if (!colWidth || items[i].width < colWidth) {
+          colWidth = items[i].width;
         }
       }
-      return colSize;
+      return colWidth;
     }
 
     /*
@@ -630,10 +649,10 @@
      * column size
      * @param: column size
      */
-    function setItemsColumnSpan(colSize) {
+    function setItemsColumnSpan(colWidth) {
       var i;
       for (i = 0; i < items.length; ++i) {
-        items[i].columnSpan = Math.ceil(items[i].width / colSize);
+        items[i].columnSpan = Math.ceil(items[i].width / colWidth);
       }
     }
 
