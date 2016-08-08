@@ -1,3 +1,5 @@
+[This project is looking for a collaborator to take over development as I no longer have the ressources to do so. If you have interested please let me know thanks ]
+
 # What is this?
 
 angular-dynamic-layout is an AngularJS dynamic grid layout. It is inspired from the successfull jQuery [isotope](http://isotope.metafizzy.co/) library and its underlying [masonry](http://masonry.desandro.com/) layout.
