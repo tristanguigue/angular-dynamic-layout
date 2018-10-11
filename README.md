@@ -139,12 +139,12 @@ You can provide and update a list of filters like this:
 ````
 Those filters needs to be in the [Conjuctive Normal Form](http://en.wikipedia.org/wiki/Conjunctive_normal_form). Basically a list of and groups composed of or groups. Each statement contains the property to be evaluated, a comparator and the value(s) allowed. For example:
 ````
-var filters = [ // an AND goup compose of OR groups
+var filters = [ // an AND group compose of OR groups
   [ // an OR group compose of statements
     ['color', '=', 'grey'], // A statement
     ['color', '=', 'black']
   ],
-  [ // a second OR goup composed of statements
+  [ // a second OR group composed of statements
     ['atomicNumber', '<', 3]
   ]
 ];
