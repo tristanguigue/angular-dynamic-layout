@@ -4,7 +4,17 @@
 
   describe('PositionService', function() {
 
+    var $compile, $rootScope;
+
     beforeEach(module('dynamicLayout'));
+
+    beforeEach(inject(
+      ['$compile','$rootScope', function($c, $r) {
+        $compile = $c;
+        $rootScope = $r;
+      }]
+    ));
+
 
     it('check that apply function exists', inject(function(PositionService) {
       expect(PositionService.layout).toBeDefined();
@@ -51,11 +61,14 @@
           }
         ];
 
+        var element = $compile('<div dynamic-layout></div>')($rootScope);
+
         // Disable DOM manipulation
         spyOn(PositionService, 'getItemsDimensionFromDOM')
             .and.returnValue(items);
         spyOn(PositionService, 'applyToDOM')
           .and.returnValue($q.defer().promise);
+        spyOn(angular, 'element').and.returnValue(element);
 
         // Test that items were properly set up in the grid
         // Input: list of items with their dimensions (width, height)

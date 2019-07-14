@@ -280,6 +280,17 @@
         items[i].x = itemColumnsAndPosition.position.x;
         items[i].y = itemColumnsAndPosition.position.y;
       }
+
+      setDynamicLayoutHeight(columns);
+    }
+
+    /*
+     * Get the columns and get the lowest items with there heights.
+     * Then get biggest item position and set it as dynamic-layout height
+     */
+    function setDynamicLayoutHeight(columns) {
+      var columnsHeights = getColumnsHeights(columns);
+      angular.element('[dynamic-layout]').css('height', Math.max.apply(null, columnsHeights));
     }
 
     /*

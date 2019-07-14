@@ -76,19 +76,14 @@
       /*
        * Triggers a layout every time the window is resized
        */
-      angular.element($window).bind('resize', function() {
-        // We need to apply the scope
-        scope.$apply(function() {
-          layout();
-        });
-      });
+      angular.element($window).on('resize', onResize);
 
       /*
        * Triggers a layout whenever requested by an external source
        * Allows a callback to be fired after the layout animation is
        * completed
        */
-      scope.$on('layout', function(event, callback) {
+      scope.$on('dynamicLayout.layout', function(event, callback) {
         layout().then(function() {
           if (angular.isFunction('function')) {
             callback();
@@ -102,6 +97,18 @@
       itemsLoaded().then(function() {
         layout();
       });
+
+      // Cleanup
+      scope.$on('$destroy', function() {
+        angular.element($window).off('resize', onResize);
+      });
+
+      function onResize() {
+        // We need to apply the scope
+        scope.$apply(function() {
+          layout();
+        });
+      }
 
       /*
        * Use the PositionService to layout the items
@@ -153,20 +160,24 @@
 
   angular
     .module('dynamicLayout')
-    .directive('layoutOnLoad', ['$rootScope', layoutOnLoad]);
+    .directive('layoutOnLoad', ['$rootScope', '$timeout', layoutOnLoad]);
 
   /*
    * Directive on images to layout after each load
    */
-  function layoutOnLoad($rootScope) {
+  function layoutOnLoad($rootScope, $timeout) {
 
     return {
-        restrict: 'A',
-        link: function(scope, element) {
-          element.bind('load error', function() {
-            $rootScope.$broadcast('layout');
+      restrict: 'A',
+      link: function(scope, element) {
+        element.bind('load error', function() {
+          var timeoutId;
+          $timeout.cancel(timeoutId);
+          timeoutId = $timeout(function() {
+            $rootScope.$broadcast('dynamicLayout.layout');
           });
-        }
+        });
+      }
     };
   }
 
@@ -608,6 +619,17 @@
         items[i].x = itemColumnsAndPosition.position.x;
         items[i].y = itemColumnsAndPosition.position.y;
       }
+
+      setDynamicLayoutHeight(columns);
+    }
+
+    /*
+     * Get the columns and get the lowest items with there heights.
+     * Then get biggest item position and set it as dynamic-layout height
+     */
+    function setDynamicLayoutHeight(columns) {
+      var columnsHeights = getColumnsHeights(columns);
+      angular.element('[dynamic-layout]').css('height', Math.max.apply(null, columnsHeights));
     }
 
     /*
