@@ -154,8 +154,16 @@
       items = self.getItemsDimensionFromDOM();
 
       // Then we get the column size base the elements minimum width
-      var colWidth = colWidth || getColWidth();
+      colWidth = colWidth || getColWidth();
       var nbColumns = Math.floor(containerWidth / colWidth);
+
+      //Detect and prevent a possible browser crash scenario (infinite loop)
+      if (!isFinite(nbColumns))
+      {
+        console.error("Failed to calculate the number of needed columns. containerWidth: "+containerWidth+", colSize: "+colSize);
+        nbColumns = 1;
+      }
+
       // We create empty columns to be filled with the items
       initColumns(nbColumns);
 
